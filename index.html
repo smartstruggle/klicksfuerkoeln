@@ -16,7 +16,7 @@
 <nav class="top-nav">
 <a href="#angebot">Angebot</a>
 <a href="#portfolio">Portfolio</a>
-<a href="#kontakt">Kontakt</a>
+<a href="#kontakt-info">Kontakt</a>
 </nav>
 
 <main class="hero">
@@ -31,7 +31,7 @@ einfach, freundlich und mit Gefühl gestaltet.
 </p>
 
 <div class="hero-actions">
-<a href="#kontakt" class="btn btn-primary">Kontakt aufnehmen</a>
+<button class="btn btn-primary" id="openContactModal" type="button">Kontakt aufnehmen</button>
 <a href="#portfolio" class="btn btn-secondary">Portfolio ansehen</a>
 </div>
 </section>
@@ -41,7 +41,7 @@ einfach, freundlich und mit Gefühl gestaltet.
 
 <a href="#angebot" class="lamp-tag lamp-tag-1">Angebot</a>
 <a href="#portfolio" class="lamp-tag lamp-tag-2">Portfolio</a>
-<a href="#kontakt" class="lamp-tag lamp-tag-3">Kontakt</a>
+<button class="lamp-tag lamp-tag-3" id="openContactModalTag" type="button">Kontakt</button>
 </section>
 </main>
 
@@ -62,7 +62,7 @@ ohne unnötigen Schnickschnack.
 </p>
 </div>
 
-<div class="info-card" id="kontakt">
+<div class="info-card" id="kontakt-info">
 <h2>Kontakt</h2>
 <p>
 Du hast eine Idee oder brauchst einen neuen Auftritt?
@@ -71,5 +71,103 @@ Schreib uns einfach und wir schauen gemeinsam drauf.
 </div>
 </section>
 
+<!-- Kontakt Modal -->
+<div class="modal-overlay" id="contactModal" aria-hidden="true">
+<div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+<button class="modal-close" id="closeContactModal" type="button" aria-label="Fenster schließen">×</button>
+
+<div class="modal-header">
+<p class="modal-kicker">Klicks für Köln</p>
+<h2 id="contactTitle">Kontaktformular für Anfragen</h2>
+</div>
+
+<!-- FORM ACTION ERSETZEN -->
+<form
+class="contact-form"
+action="https://formspree.io/f/DEINE_FORM_ID"
+method="POST"
+>
+<input type="hidden" name="_subject" value="Neue Anfrage über klicksfuerkoeln.de" />
+<input type="hidden" name="_language" value="de" />
+
+<div class="form-section-title">Kontaktdaten</div>
+
+<div class="form-grid two-cols">
+<div class="form-field">
+<label for="firstname">Vorname</label>
+<input id="firstname" name="Vorname" type="text" placeholder="Vorname – optionale Angabe" />
+</div>
+
+<div class="form-field">
+<label for="lastname">Nachname</label>
+<input id="lastname" name="Nachname" type="text" placeholder="Nachname – optionale Angabe" />
+</div>
+</div>
+
+<div class="form-grid">
+<div class="form-field">
+<label for="email">E-Mail-Adresse</label>
+<input id="email" name="E-Mail" type="email" placeholder="deine@email.de" required />
+</div>
+</div>
+
+<div class="form-section-title">Nachricht</div>
+
+<div class="form-grid">
+<div class="form-field">
+<label for="subject">Betreff</label>
+<input id="subject" name="Betreff" type="text" placeholder="Worum geht es?" required />
+</div>
+</div>
+
+<div class="form-grid">
+<div class="form-field">
+<label for="message">Nachricht</label>
+<textarea id="message" name="Nachricht" placeholder="Erzähl kurz, worum es geht." required></textarea>
+</div>
+</div>
+
+<p class="privacy-note">
+Bitte beachten Sie unsere
+<a href="datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>.
+</p>
+
+<button class="submit-btn" type="submit">Nachricht senden</button>
+</form>
+</div>
+</div>
+
+<script>
+const contactModal = document.getElementById('contactModal');
+const openContactModal = document.getElementById('openContactModal');
+const openContactModalTag = document.getElementById('openContactModalTag');
+const closeContactModal = document.getElementById('closeContactModal');
+
+function openModal() {
+contactModal.classList.add('is-open');
+contactModal.setAttribute('aria-hidden', 'false');
+document.body.classList.add('modal-open');
+}
+
+function closeModal() {
+contactModal.classList.remove('is-open');
+contactModal.setAttribute('aria-hidden', 'true');
+document.body.classList.remove('modal-open');
+}
+
+openContactModal?.addEventListener('click', openModal);
+openContactModalTag?.addEventListener('click', openModal);
+closeContactModal?.addEventListener('click', closeModal);
+
+contactModal?.addEventListener('click', (e) => {
+if (e.target === contactModal) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+if (e.key === 'Escape') closeModal();
+});
+</script>
+
 </body>
 </html>
+
