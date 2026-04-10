@@ -207,18 +207,18 @@ background: var(--card-hover);
 }
 
 .lamp-tag-1 {
-top: 190px;
-left: 56px;
+top: 152px;
+left: -20px;
 }
 
 .lamp-tag-2 {
-top: 350px;
-left: 220px;
+top: 312px;
+left: 144px;
 }
 
 .lamp-tag-3 {
-top: 520px;
-right: 22px;
+top: 482px;
+right: 98px;
 }
 
 /* Bottom info cards */
