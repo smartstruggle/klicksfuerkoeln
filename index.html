@@ -1,44 +1,71 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Klicks für Köln</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Klicks für Köln</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
 
-<section class="hero">
+<header class="site-header">
+<div class="logo-wrap">
+<span class="logo-kicker">Websites fürs Veedel</span>
+<a href="#" class="logo">Klicks für Köln</a>
+</div>
 
-  <div class="hero-text">
-    <h2>Websites fürs Veedel</h2>
-    <h1>Klicks für Köln</h1>
-    <p class="claim">Köln. Hat Klick gemacht.</p>
-  </div>
+<nav class="main-nav">
+<a href="#angebot">Angebot</a>
+<a href="#portfolio">Portfolio</a>
+<a href="#kontakt">Kontakt</a>
+</nav>
+</header>
 
-  <img src="Erleuchtung.png" class="lamp" alt="Erleuchtung">
+<main class="hero">
+<section class="hero-copy">
+<p class="eyebrow">Websites fürs Veedel</p>
+<h1>Klicks für Köln</h1>
+<p class="claim">Köln. Hat Klick gemacht.</p>
+<p class="intro">
+Klare, schöne Websites für kleine Läden in Köln –
+einfach, freundlich und mit Gefühl gestaltet.
+</p>
 
-  <div class="cards">
+<div class="hero-actions">
+<a href="#kontakt" class="btn btn-primary">Kontakt aufnehmen</a>
+<a href="#portfolio" class="btn btn-secondary">Portfolio ansehen</a>
+</div>
+</section>
 
-    <div class="card">
-      <h3>Angebot</h3>
-      <p>Mini-Websites und Landingpages für kleine Läden in Köln.</p>
-    </div>
+<section class="hero-visual" aria-label="Erleuchtung Navigation">
+<div class="visual-frame">
+<img src="Erleuchtung.png" alt="Verbindung aus Lampen und Klick" class="lamp-image" />
 
-    <div class="card">
-      <h3>Portfolio</h3>
-      <p>Schau dir an, wie wir Klarheit und Design verbinden.</p>
-    </div>
+<a href="#angebot" class="lamp-tag lamp-tag-1">Angebot</a>
+<a href="#portfolio" class="lamp-tag lamp-tag-2">Portfolio</a>
+<a href="#kontakt" class="lamp-tag lamp-tag-3">Kontakt</a>
+</div>
+</section>
+</main>
 
-    <div class="card">
-      <h3>Kontakt</h3>
-      <p>Einfach schreiben, kurz austauschen und loslegen.</p>
-    </div>
+<section class="info-strip">
+<div class="info-card" id="angebot">
+<h2>Angebot</h2>
+<p>Mini-Websites und Landingpages für kleine Läden, Studios und lokale Businesses in Köln.</p>
+</div>
 
-  </div>
+<div class="info-card" id="portfolio">
+<h2>Portfolio</h2>
+<p>Ein Blick auf Seiten, die warm, klar und direkt verständlich wirken – ohne unnötigen Schnickschnack.</p>
+</div>
 
+<div class="info-card" id="kontakt">
+<h2>Kontakt</h2>
+<p>Du hast eine Idee oder brauchst einen neuen Auftritt? Schreib uns einfach und wir schauen gemeinsam drauf.</p>
+</div>
 </section>
 
 </body>
