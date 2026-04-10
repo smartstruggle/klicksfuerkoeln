@@ -6,44 +6,21 @@
 <title>Datenschutzerklärung – Klicks für Köln</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-body {
-margin: 0;
-font-family: Inter, sans-serif;
-color: #111;
-background: #f6f2e9;
-line-height: 1.7;
-}
-
-.wrap {
-width: min(900px, calc(100% - 32px));
-margin: 48px auto;
-}
-
-h1, h2 {
-font-family: "Playfair Display", serif;
-line-height: 1.1;
-}
-
-h1 {
-font-size: clamp(2.2rem, 5vw, 3.6rem);
-margin-bottom: 20px;
-}
-
-h2 {
-margin-top: 36px;
-margin-bottom: 10px;
-font-size: 1.5rem;
-}
-
-p {
-margin: 0 0 14px;
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<main class="wrap">
+
+<nav class="top-nav">
+<a href="index.html">Start</a>
+<a href="index.html#angebot">Angebot</a>
+<a href="index.html#portfolio">Portfolio</a>
+<button class="nav-contact-trigger" type="button" data-open-contact>Kontakt</button>
+</nav>
+
+<main class="legal-page">
+<section class="legal-card">
+<p class="eyebrow">Klicks für Köln</p>
 <h1>Datenschutzerklärung</h1>
 
 <h2>Kontaktformular</h2>
@@ -79,6 +56,101 @@ Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht 
 die bei uns gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger sowie den Zweck
 der Datenverarbeitung und gegebenenfalls ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten.
 </p>
+</section>
 </main>
+
+<!-- Kontakt Modal -->
+<div class="modal-overlay" id="contactModal" aria-hidden="true">
+<div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+<button class="modal-close" id="closeContactModal" type="button" aria-label="Fenster schließen">×</button>
+
+<div class="modal-header">
+<p class="modal-kicker">Klicks für Köln</p>
+<h2 id="contactTitle">Kontaktformular für Anfragen</h2>
+</div>
+
+<form class="contact-form" action="https://formspree.io/f/DEINE_FORM_ID" method="POST">
+<input type="hidden" name="_subject" value="Neue Anfrage über klicksfuerkoeln.de" />
+<input type="hidden" name="_language" value="de" />
+
+<div class="form-section-title">Kontaktdaten</div>
+
+<div class="form-grid two-cols">
+<div class="form-field">
+<label for="firstname">Vorname</label>
+<input id="firstname" name="Vorname" type="text" placeholder="Vorname – optionale Angabe" />
+</div>
+
+<div class="form-field">
+<label for="lastname">Nachname</label>
+<input id="lastname" name="Nachname" type="text" placeholder="Nachname – optionale Angabe" />
+</div>
+</div>
+
+<div class="form-grid">
+<div class="form-field">
+<label for="email">E-Mail-Adresse</label>
+<input id="email" name="E-Mail" type="email" placeholder="deine@email.de" required />
+</div>
+</div>
+
+<div class="form-section-title">Nachricht</div>
+
+<div class="form-grid">
+<div class="form-field">
+<label for="subject">Betreff</label>
+<input id="subject" name="Betreff" type="text" placeholder="Worum geht es?" required />
+</div>
+</div>
+
+<div class="form-grid">
+<div class="form-field">
+<label for="message">Nachricht</label>
+<textarea id="message" name="Nachricht" placeholder="Erzähl kurz, worum es geht." required></textarea>
+</div>
+</div>
+
+<p class="privacy-note">
+Bitte beachten Sie unsere
+<a href="datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>.
+</p>
+
+<button class="submit-btn" type="submit">Nachricht senden</button>
+</form>
+</div>
+</div>
+
+<script>
+const contactModal = document.getElementById('contactModal');
+const closeContactModal = document.getElementById('closeContactModal');
+const allContactTriggers = document.querySelectorAll('[data-open-contact]');
+
+function openModal() {
+contactModal.classList.add('is-open');
+contactModal.setAttribute('aria-hidden', 'false');
+document.body.classList.add('modal-open');
+}
+
+function closeModal() {
+contactModal.classList.remove('is-open');
+contactModal.setAttribute('aria-hidden', 'true');
+document.body.classList.remove('modal-open');
+}
+
+allContactTriggers.forEach(trigger => {
+trigger.addEventListener('click', openModal);
+});
+
+closeContactModal?.addEventListener('click', closeModal);
+
+contactModal?.addEventListener('click', (e) => {
+if (e.target === contactModal) closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+if (e.key === 'Escape') closeModal();
+});
+</script>
+
 </body>
 </html>
