@@ -14,9 +14,10 @@
 <body>
 
 <nav class="top-nav">
+<a href="index.html">Start</a>
 <a href="#angebot">Angebot</a>
 <a href="#portfolio">Portfolio</a>
-<a href="#kontakt-info">Kontakt</a>
+<button class="nav-contact-trigger" type="button" data-open-contact>Kontakt</button>
 </nav>
 
 <main class="hero">
@@ -31,7 +32,7 @@ einfach, freundlich und mit Gefühl gestaltet.
 </p>
 
 <div class="hero-actions">
-<button class="btn btn-primary" id="openContactModal" type="button">Kontakt aufnehmen</button>
+<button class="btn btn-primary" type="button" data-open-contact>Kontakt aufnehmen</button>
 <a href="#portfolio" class="btn btn-secondary">Portfolio ansehen</a>
 </div>
 </section>
@@ -41,7 +42,7 @@ einfach, freundlich und mit Gefühl gestaltet.
 
 <a href="#angebot" class="lamp-tag lamp-tag-1">Angebot</a>
 <a href="#portfolio" class="lamp-tag lamp-tag-2">Portfolio</a>
-<button class="lamp-tag lamp-tag-3" id="openContactModalTag" type="button">Kontakt</button>
+<button class="lamp-tag lamp-tag-3" type="button" data-open-contact>Kontakt</button>
 </section>
 </main>
 
@@ -66,10 +67,16 @@ ohne unnötigen Schnickschnack.
 <h2>Kontakt</h2>
 <p>
 Du hast eine Idee oder brauchst einen neuen Auftritt?
-Schreib uns einfach und wir schauen gemeinsam drauf.
+<button class="text-link-button" type="button" data-open-contact>Kontaktformular öffnen</button>
 </p>
 </div>
 </section>
+
+<footer class="site-footer">
+<a href="impressum.html">Impressum</a>
+<a href="datenschutz.html">Datenschutz</a>
+<button class="footer-contact-trigger" type="button" data-open-contact>Kontakt</button>
+</footer>
 
 <!-- Kontakt Modal -->
 <div class="modal-overlay" id="contactModal" aria-hidden="true">
@@ -81,7 +88,6 @@ Schreib uns einfach und wir schauen gemeinsam drauf.
 <h2 id="contactTitle">Kontaktformular für Anfragen</h2>
 </div>
 
-<!-- FORM ACTION ERSETZEN -->
 <form
 class="contact-form"
 action="https://formspree.io/f/DEINE_FORM_ID"
@@ -139,9 +145,8 @@ Bitte beachten Sie unsere
 
 <script>
 const contactModal = document.getElementById('contactModal');
-const openContactModal = document.getElementById('openContactModal');
-const openContactModalTag = document.getElementById('openContactModalTag');
 const closeContactModal = document.getElementById('closeContactModal');
+const allContactTriggers = document.querySelectorAll('[data-open-contact]');
 
 function openModal() {
 contactModal.classList.add('is-open');
@@ -155,8 +160,10 @@ contactModal.setAttribute('aria-hidden', 'true');
 document.body.classList.remove('modal-open');
 }
 
-openContactModal?.addEventListener('click', openModal);
-openContactModalTag?.addEventListener('click', openModal);
+allContactTriggers.forEach(trigger => {
+trigger.addEventListener('click', openModal);
+});
+
 closeContactModal?.addEventListener('click', closeModal);
 
 contactModal?.addEventListener('click', (e) => {
@@ -171,3 +178,34 @@ if (e.key === 'Escape') closeModal();
 </body>
 </html>
 
+
+
+
+
+
+:root {
+--bg-light: #c9ee8e;
+--bg-mid: #75cb7d;
+--bg-deep: #2f8658;
+--bg-accent: #eef8bf;
+
+--text-dark: #101010;
+--text-soft: rgba(16, 16, 16, 0.76);
+
+--card: rgba(248, 244, 235, 0.82);
+--card-hover: rgba(252, 248, 241, 0.94);
+
+--line: rgba(16, 16, 16, 0.08);
+--shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+--shadow-card: 0 16px 40px rgba(0, 0, 0, 0.12);
+
+--max-width: 1380px;
+}
+
+* {
+box-sizing: border-box;
+}
+
+html {
+scroll-behavior: smooth;
+}
