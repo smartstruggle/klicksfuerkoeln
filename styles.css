@@ -242,7 +242,7 @@ font-weight: 600;
 .hero {
 position: relative;
 overflow: hidden;
-padding-block: clamp(4.5rem, 3rem + 4vw, 7rem) clamp(7rem, 6rem + 6vw, 11rem);
+padding-block: clamp(4.5rem, 3rem + 4vw, 7rem) clamp(9rem, 8rem + 8vw, 14rem);
 background: var(--bg);
 }
 
@@ -250,6 +250,7 @@ background: var(--bg);
 position: relative;
 width: min(100% - (2 * var(--page-pad-x)), var(--container));
 margin-inline: auto;
+padding-bottom: clamp(2rem, 3vw, 4rem);
 }
 
 .eyebrow {
@@ -339,6 +340,23 @@ fill: none;
 
 .hg-stroke-fill {
 fill: rgba(215, 108, 47, 0.18);
+}
+
+.hg-bulb {
+fill: transparent;
+transition: fill 0.4s ease, opacity 0.4s ease;
+opacity: 0.4;
+}
+
+.hg-bulb.is-on {
+fill: rgba(215, 108, 47, 0.25);
+opacity: 1;
+}
+
+
+.hg-bulb.is-on {
+fill: rgba(215, 108, 47, 0.25);
+filter: drop-shadow(0 0 6px rgba(215,108,47,0.4));
 }
 
 .hero h1,
