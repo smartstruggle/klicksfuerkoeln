@@ -223,12 +223,12 @@ console.log("rightItems:", rightItems.length);
 leftItems.forEach((item, index) => {
 setTimeout(() => {
 item.classList.add("js-enter-ready");
-}, 120 + index * 90);
+}, 180 + index * 140);
 });
 
 rightItems.forEach((item, index) => {
 setTimeout(() => {
 item.classList.add("js-enter-ready");
-}, 260 + index * 100);
+}, 420 + index * 160);
 });
 });
