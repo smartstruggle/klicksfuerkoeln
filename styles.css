@@ -1117,7 +1117,9 @@ font-family: "Inter", sans-serif;
 font-weight: 700;
 font-size: clamp(5.4rem, 7.2vw, 8.4rem);
 line-height: 0.88;
-letter-spacing: -0.06em;
+letter-spacing: -0.05em;
+
+white-space: nowrap; /* 🔥 verhindert Umbruch */
 }
 
 /* Abstand zwischen den beiden Zeilen */
