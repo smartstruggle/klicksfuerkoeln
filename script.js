@@ -63,6 +63,31 @@ cookieBanner.hidden = true;
 });
 }
 
+/* Floating Button*/
+const floatingBtn = document.querySelector(".floating-project-btn");
+const siteFooter = document.querySelector(".site-footer");
+
+if (floatingBtn && siteFooter) {
+const observer = new IntersectionObserver(
+(entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+floatingBtn.classList.add("is-hidden");
+} else {
+floatingBtn.classList.remove("is-hidden");
+}
+});
+},
+{
+root: null,
+threshold: 0.1,
+}
+);
+
+observer.observe(siteFooter);
+}
+
+
 /* Formular-Senden */
 async function handleFormSubmit(formElement, statusElement) {
 formElement.addEventListener("submit", async (e) => {
