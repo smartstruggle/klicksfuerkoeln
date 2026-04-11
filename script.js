@@ -306,9 +306,39 @@ duration: 0.45,
 ease: "back.out(1.5)"
 }, "-=0.05")
 .to(".hero-graphic", {
-opacity: 0.12,
+opacity: 0.5,
 duration: 0.5,
 ease: "power1.out"
 }, "+=0.1");
 });
+
+function startBulbLoop() {
+const bulbs = document.querySelectorAll(".hg-bulb");
+
+if (!bulbs.length) return;
+
+let step = 0;
+
+setInterval(() => {
+bulbs.forEach((b, i) => {
+if (i <= step) {
+b.classList.add("is-on");
+} else {
+b.classList.remove("is-on");
+}
+});
+
+step++;
+
+if (step >= bulbs.length) {
+setTimeout(() => {
+bulbs.forEach(b => b.classList.remove("is-on"));
+step = 0;
+}, 600);
+}
+
+}, 500);
+}
+
+window.addEventListener("load", startBulbLoop);
 
