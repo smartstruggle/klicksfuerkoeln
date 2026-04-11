@@ -111,7 +111,7 @@ if (embeddedForm && embeddedStatus) {
 handleFormSubmit(embeddedForm, embeddedStatus);
 }
 
-/* Flyer Popup nur mobil + nur bei ?flyer=1 */
+/* Flyer Popup */
 function isMobileDevice() {
 return window.innerWidth <= 860;
 }
@@ -124,6 +124,8 @@ return params.get("flyer") === "1";
 const flyerPopup = document.getElementById("flyer-popup");
 const flyerPopupClose = document.getElementById("flyer-popup-close");
 const flyerPopupX = document.getElementById("flyer-popup-x");
+const flyerPopupMail = document.getElementById("flyer-popup-mail");
+const flyerOpenContactFirst = document.querySelectorAll("[data-close-flyer-first]");
 
 function openFlyerPopup() {
 if (!flyerPopup) return;
@@ -146,6 +148,17 @@ flyerPopupClose.addEventListener("click", closeFlyerPopup);
 if (flyerPopupX) {
 flyerPopupX.addEventListener("click", closeFlyerPopup);
 }
+
+if (flyerPopupMail) {
+flyerPopupMail.addEventListener("click", closeFlyerPopup);
+}
+
+flyerOpenContactFirst.forEach((button) => {
+button.addEventListener("click", () => {
+closeFlyerPopup();
+setTimeout(() => openModal(), 120);
+});
+});
 
 window.addEventListener("load", () => {
 if (isMobileDevice() && shouldShowFlyerPopup()) {
