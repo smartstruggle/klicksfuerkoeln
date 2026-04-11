@@ -1068,3 +1068,40 @@ max-width: none;
 margin-top: 0.28em;
 }
 }
+
+.hero-title-anim,
+.services-anim,
+.floating-project-btn {
+will-change: transform, opacity;
+}
+
+.js-enter-left,
+.js-enter-right {
+opacity: 0;
+}
+
+.js-enter-left {
+transform: translateX(-1.5rem);
+}
+
+.js-enter-right {
+transform: translateX(1.5rem);
+}
+
+.js-enter-ready {
+opacity: 1;
+transform: translateX(0);
+transition:
+opacity 560ms cubic-bezier(.22,.61,.36,1),
+transform 560ms cubic-bezier(.22,.61,.36,1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+.js-enter-left,
+.js-enter-right,
+.js-enter-ready {
+opacity: 1 !important;
+transform: none !important;
+transition: none !important;
+}
+}
