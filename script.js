@@ -237,3 +237,78 @@ duration: 0.9
 
 });
 
+
+
+window.addEventListener("load", () => {
+if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+const tlGraphic = gsap.timeline({ delay: 0.9 });
+
+gsap.set([".hg-line-1", ".hg-line-2", ".hg-line-3"], {
+drawSVG: "0% 0%"
+});
+
+gsap.set([".hg-bulb-1", ".hg-bulb-2", ".hg-bulb-3"], {
+opacity: 0,
+scale: 0.85,
+transformOrigin: "50% 50%"
+});
+
+gsap.set(".hg-cursor", {
+x: 18,
+y: 12,
+opacity: 0
+});
+
+tlGraphic
+.to(".hg-cursor", {
+opacity: 1,
+x: 0,
+y: 0,
+duration: 0.45,
+ease: "power2.out"
+})
+.to(".hg-power", {
+scale: 0.94,
+transformOrigin: "430px 210px",
+duration: 0.08,
+yoyo: true,
+repeat: 1
+}, "-=0.08")
+.fromTo(".hg-line-1",
+{ strokeDasharray: 200, strokeDashoffset: 200 },
+{ strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }
+)
+.to(".hg-bulb-1", {
+opacity: 1,
+scale: 1,
+duration: 0.2,
+ease: "back.out(1.5)"
+}, "-=0.05")
+.fromTo(".hg-line-2",
+{ strokeDasharray: 220, strokeDashoffset: 220 },
+{ strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }
+)
+.to(".hg-bulb-2", {
+opacity: 1,
+scale: 1,
+duration: 0.2,
+ease: "back.out(1.5)"
+}, "-=0.05")
+.fromTo(".hg-line-3",
+{ strokeDasharray: 220, strokeDashoffset: 220 },
+{ strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }
+)
+.to(".hg-bulb-3", {
+opacity: 1,
+scale: 1,
+duration: 0.2,
+ease: "back.out(1.5)"
+}, "-=0.05")
+.to(".hero-graphic", {
+opacity: 0.12,
+duration: 0.5,
+ease: "power1.out"
+}, "+=0.1");
+});
+
