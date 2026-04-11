@@ -3,154 +3,107 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Datenschutzerklärung – Klicks für Köln</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Datenschutz – Klicks für Köln</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
+rel="stylesheet"
+/>
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<header class="site-header legal-header">
+<div class="header-inner">
+<a href="index.html" class="brand">Klicks für Köln</a>
 
-<nav class="top-nav">
-<a href="index.html">Start</a>
-<a href="index.html#angebot">Angebot</a>
-<a href="index.html#portfolio">Portfolio</a>
-<button class="nav-contact-trigger" type="button" data-open-contact>Kontakt</button>
+<nav class="desktop-nav" aria-label="Hauptnavigation">
+<a href="index.html#services">Services</a>
+<a href="index.html#process">Arbeitsweise</a>
+<a href="index.html#about">Über mich</a>
+<a href="index.html#projects">Projekte</a>
+<a href="index.html#contact" class="header-cta-link">Kontakt</a>
 </nav>
 
+<button
+class="menu-toggle"
+type="button"
+aria-expanded="false"
+aria-controls="mobile-menu"
+aria-label="Menü öffnen"
+>
+<span></span>
+<span></span>
+<span></span>
+</button>
+</div>
+
+<div class="mobile-menu" id="mobile-menu">
+<nav class="mobile-nav" aria-label="Mobile Navigation">
+<a href="index.html#services">Services</a>
+<a href="index.html#process">Arbeitsweise</a>
+<a href="index.html#about">Über mich</a>
+<a href="index.html#projects">Projekte</a>
+<a href="index.html#contact" class="mobile-contact-link">Kontakt</a>
+</nav>
+</div>
+</header>
+
 <main class="legal-page">
-<section class="legal-card">
-<p class="eyebrow">Klicks für Köln</p>
-<h1>Datenschutzerklärung</h1>
+<div class="container legal-wrap">
+<p class="section-kicker">Klicks für Köln</p>
+<h1>Datenschutz</h1>
 
-<h2>Kontaktformular</h2>
+<div class="legal-content">
 <p>
-Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Formular
-inklusive der von Ihnen dort angegebenen Kontaktdaten zum Zweck der Bearbeitung Ihrer Anfrage
-und für den Fall von Anschlussfragen bei uns gespeichert.
+Wenn du über das Kontaktformular eine Anfrage sendest, werden die von dir
+eingegebenen Daten ausschließlich zur Bearbeitung deiner Anfrage verwendet.
 </p>
 
 <p>
-Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+Die Angaben aus dem Formular (Name, E-Mail-Adresse, Nachricht) werden nur
+so lange gespeichert, wie es für die Bearbeitung deiner Anfrage erforderlich ist.
 </p>
 
 <p>
-Die Verarbeitung der eingegebenen Daten erfolgt ausschließlich zum Zweck der Bearbeitung Ihrer Anfrage.
+Spätestens drei Monate nach Abschluss der Kommunikation werden diese Daten
+gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.
 </p>
 
 <p>
-Ihre im Zusammenhang mit einer Anfrage übermittelten Daten werden spätestens drei Monate nach
-abgeschlossener Bearbeitung Ihrer Anfrage gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten
-entgegenstehen.
+Du kannst jederzeit Auskunft über deine gespeicherten Daten verlangen oder
+deren Löschung beantragen.
 </p>
 
-<h2>Empfänger der Daten</h2>
 <p>
-Für die technische Bereitstellung des Kontaktformulars und die Übermittlung von Nachrichten können
-externe technische Dienstleister eingesetzt werden.
+Für Anfragen zum Datenschutz kannst du an
+info@klicksfuerkoeln.de schreiben.
 </p>
-
-<h2>Ihre Rechte</h2>
-<p>
-Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf Auskunft über
-die bei uns gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger sowie den Zweck
-der Datenverarbeitung und gegebenenfalls ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten.
-</p>
-</section>
+</div>
+</div>
 </main>
 
-<!-- Kontakt Modal -->
-<div class="modal-overlay" id="contactModal" aria-hidden="true">
-<div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
-<button class="modal-close" id="closeContactModal" type="button" aria-label="Fenster schließen">×</button>
+<footer class="site-footer">
+<div class="footer-inner">
+<a
+class="footer-social"
+href="https://www.instagram.com/klicksfuerkoeln/"
+target="_blank"
+rel="noopener noreferrer"
+>
+Instagram
+</a>
 
-<div class="modal-header">
-<p class="modal-kicker">Klicks für Köln</p>
-<h2 id="contactTitle">Kontaktformular für Anfragen</h2>
-</div>
+<p class="footer-copy">© 2026 Klicks für Köln</p>
 
-<form class="contact-form" action="https://formspree.io/f/DEINE_FORM_ID" method="POST">
-<input type="hidden" name="_subject" value="Neue Anfrage über klicksfuerkoeln.de" />
-<input type="hidden" name="_language" value="de" />
-
-<div class="form-section-title">Kontaktdaten</div>
-
-<div class="form-grid two-cols">
-<div class="form-field">
-<label for="firstname">Vorname</label>
-<input id="firstname" name="Vorname" type="text" placeholder="Vorname – optionale Angabe" />
-</div>
-
-<div class="form-field">
-<label for="lastname">Nachname</label>
-<input id="lastname" name="Nachname" type="text" placeholder="Nachname – optionale Angabe" />
+<div class="footer-links">
+<a href="impressum.html">Impressum</a>
+<span>|</span>
+<a href="datenschutz.html">Datenschutz</a>
 </div>
 </div>
+</footer>
 
-<div class="form-grid">
-<div class="form-field">
-<label for="email">E-Mail-Adresse</label>
-<input id="email" name="E-Mail" type="email" placeholder="deine@email.de" required />
-</div>
-</div>
-
-<div class="form-section-title">Nachricht</div>
-
-<div class="form-grid">
-<div class="form-field">
-<label for="subject">Betreff</label>
-<input id="subject" name="Betreff" type="text" placeholder="Worum geht es?" required />
-</div>
-</div>
-
-<div class="form-grid">
-<div class="form-field">
-<label for="message">Nachricht</label>
-<textarea id="message" name="Nachricht" placeholder="Erzähl kurz, worum es geht." required></textarea>
-</div>
-</div>
-
-<p class="privacy-note">
-Bitte beachten Sie unsere
-<a href="datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>.
-</p>
-
-<button class="submit-btn" type="submit">Nachricht senden</button>
-</form>
-</div>
-</div>
-
-<script>
-const contactModal = document.getElementById('contactModal');
-const closeContactModal = document.getElementById('closeContactModal');
-const allContactTriggers = document.querySelectorAll('[data-open-contact]');
-
-function openModal() {
-contactModal.classList.add('is-open');
-contactModal.setAttribute('aria-hidden', 'false');
-document.body.classList.add('modal-open');
-}
-
-function closeModal() {
-contactModal.classList.remove('is-open');
-contactModal.setAttribute('aria-hidden', 'true');
-document.body.classList.remove('modal-open');
-}
-
-allContactTriggers.forEach(trigger => {
-trigger.addEventListener('click', openModal);
-});
-
-closeContactModal?.addEventListener('click', closeModal);
-
-contactModal?.addEventListener('click', (e) => {
-if (e.target === contactModal) closeModal();
-});
-
-document.addEventListener('keydown', (e) => {
-if (e.key === 'Escape') closeModal();
-});
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
