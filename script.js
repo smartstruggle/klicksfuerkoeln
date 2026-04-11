@@ -195,3 +195,12 @@ openFlyerPopup();
 }, 500);
 }
 });
+
+
+formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
+setTimeout(() => {
+contactModal.classList.remove("is-open");
+document.body.classList.remove("modal-open");
+form.reset();
+formStatus.textContent = "";
+}, 1400);
