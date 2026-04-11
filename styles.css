@@ -477,26 +477,36 @@ font-size: var(--text-md);
 }
 
 .about-statement {
-padding-block: clamp(6rem, 10vw, 12rem);
+padding-block: clamp(6rem, 10vw, 10rem);
 }
 
-.about-statement .container {
+/*.about-statement .container {
 max-width: none;
-}
+}*/
 
 .about-statement h2 {
-width: 100%;
+max-width: 18ch;
+margin: 0;
 
 font-family: "Inter", sans-serif;
 font-weight: 700;
 
-font-size: clamp(3.8rem, 6.5vw, 8rem);
-line-height: 0.9;
-letter-spacing: -0.045em;
+font-size: clamp(3rem, 5.5vw, 6rem); /* 🔥 kleiner */
+line-height: 0.95;
+letter-spacing: -0.04em;
 
 text-wrap: balance;
 }
 
+.about-subtext {
+margin-top: clamp(1.5rem, 2vw, 2.5rem);
+
+max-width: 40rem;
+
+font-size: var(--text-md);
+line-height: 1.8;
+color: var(--text-soft);
+}
 
 /* Projects */
 
