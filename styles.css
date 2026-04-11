@@ -1088,4 +1088,54 @@ animation: pulseRing 1.8s ease-out 0.55s infinite;
 }
 
 
+/* =========================
+HERO STEP 1
+========================= */
+
+@media (min-width: 860px) {
+.hero {
+padding: 86px 0 42px;
+}
+
+.hero-single {
+max-width: 100%;
+margin: 0;
+padding-left: 28px;
+padding-right: 28px;
+align-items: stretch;
+}
+
+.hero .eyebrow {
+width: 100%;
+max-width: none;
+margin: 0 0 18px;
+text-align: left;
+font-size: 0.78rem;
+letter-spacing: 0.16em;
+}
+
+.hero h1 {
+width: 100%;
+max-width: none;
+margin: 0;
+text-align: left;
+font-family: "Inter", sans-serif;
+font-weight: 700;
+font-size: clamp(5.4rem, 7.2vw, 8.4rem);
+line-height: 0.9;
+letter-spacing: -0.06em;
+text-wrap: nowrap;
+}
+
+/* falls Browser text-wrap nicht sauber interpretiert */
+.hero h1 br {
+display: block;
+content: "";
+margin-top: 0.18em;
+}
+
+.hero-visual {
+display: none !important;
+}
+}
 
