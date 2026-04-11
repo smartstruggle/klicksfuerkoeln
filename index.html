@@ -4,177 +4,423 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Klicks für Köln</title>
+<meta
+name="description"
+content="Klicks für Köln – Webdesign für Köln. Klar, schön, verständlich."
+/>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
+rel="stylesheet"
+/>
 
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<header class="site-header">
+<div class="header-inner">
+<a href="#top" class="brand">Klicks für Köln</a>
 
-<nav class="top-nav">
-<a href="index.html">Start</a>
-<a href="#angebot">Angebot</a>
-<a href="#portfolio">Portfolio</a>
-<button class="nav-contact-trigger" type="button" data-open-contact>Kontakt</button>
+<nav class="desktop-nav" aria-label="Hauptnavigation">
+<a href="#services">Services</a>
+<a href="#projects">Projekte</a>
+<a href="#process">Arbeitsweise</a>
+<a href="#about">Über mich</a>
+<button type="button" class="nav-contact-btn" data-open-contact>
+Kontakt
+</button>
 </nav>
 
-<main class="hero">
-<section class="hero-copy">
-<p class="eyebrow">WEBSITES FÜRS VEEDEL</p>
-<h1>Klicks für Köln</h1>
-<p class="claim">Köln. Hat Klick gemacht.</p>
+<button
+class="menu-toggle"
+type="button"
+aria-expanded="false"
+aria-controls="mobile-menu"
+aria-label="Menü öffnen"
+>
+<span></span>
+<span></span>
+<span></span>
+</button>
+</div>
 
-<p class="intro">
-Klare, schöne Websites für kleine Läden in Köln –
-einfach, freundlich und mit Gefühl gestaltet.
+<div class="mobile-menu" id="mobile-menu">
+<nav class="mobile-nav" aria-label="Mobile Navigation">
+<a href="#services">Services</a>
+<a href="#projects">Projekte</a>
+<a href="#process">Arbeitsweise</a>
+<a href="#about">Über mich</a>
+<button type="button" class="mobile-contact-btn" data-open-contact>
+Kontakt
+</button>
+</nav>
+</div>
+</header>
+
+<main id="top">
+<section class="hero">
+<div class="container hero-grid">
+<div class="hero-copy">
+<p class="eyebrow">Webdesign für Köln</p>
+<h1>Klar. Schön. Verständlich.</h1>
+
+<p class="hero-text">
+Websites für kleine Unternehmen, Läden und Projekte – ruhig,
+hochwertig und so aufgebaut, dass dein Auftritt klarer,
+verständlicher und professioneller wirkt.
 </p>
 
 <div class="hero-actions">
-<button class="btn btn-primary" type="button" data-open-contact>Kontakt aufnehmen</button>
-<a href="#portfolio" class="btn btn-secondary">Portfolio ansehen</a>
+<button type="button" class="btn btn-primary" data-open-contact>
+Projekt anfragen
+</button>
+
+<a class="text-link" href="#projects">Projekte ansehen</a>
+</div>
+</div>
+
+<div class="hero-visual" aria-hidden="true">
+<img src="Erleuchtung.png" alt="" />
+</div>
 </div>
 </section>
 
-<section class="hero-visual" aria-label="Erleuchtung Navigation">
-<img src="Erleuchtung.png" alt="Verbindung aus Lampen und Klick" class="lamp-image" />
+<section class="section services" id="services">
+<div class="container">
+<div class="section-head">
+<p class="section-kicker">Services</p>
+<h2>Was ich anbiete</h2>
+</div>
 
-<a href="#angebot" class="lamp-tag lamp-tag-1">Angebot</a>
-<a href="#portfolio" class="lamp-tag lamp-tag-2">Portfolio</a>
-<button class="lamp-tag lamp-tag-3" type="button" data-open-contact>Kontakt</button>
+<div class="card-grid">
+<article class="info-card">
+<h3>Landingpages</h3>
+<p>
+Für neue Angebote, Aktionen oder einen klaren ersten digitalen
+Auftritt.
+</p>
+</article>
+
+<article class="info-card">
+<h3>Websites für kleine Unternehmen</h3>
+<p>
+Strukturierte Websites, die Vertrauen schaffen und schnell zeigen,
+worum es geht.
+</p>
+</article>
+
+<article class="info-card">
+<h3>UI / UX Design</h3>
+<p>
+Klare Nutzerführung, gute Lesbarkeit und ein stimmiger digitaler
+Eindruck.
+</p>
+</article>
+
+<article class="info-card">
+<h3>Pflege &amp; Updates</h3>
+<p>
+Auf Wunsch begleite ich auch nach dem Launch bei Änderungen,
+kleinen Anpassungen und Weiterentwicklung.
+</p>
+</article>
+</div>
+</div>
+</section>
+
+<section class="section projects" id="projects">
+<div class="container">
+<div class="section-head">
+<p class="section-kicker">Projekte</p>
+<h2>Ausgewählte Arbeiten</h2>
+<p class="section-text">
+Ein Blick auf Seiten, die Klarheit, Persönlichkeit und Funktion
+verbinden.
+</p>
+</div>
+
+<div class="project-list">
+<article class="project-card">
+<h3>Klicks für Köln</h3>
+<p>
+Eine Webdesign-Marke mit lokalem Bezug, ruhiger Gestaltung und
+Fokus auf kleine Businesses.
+</p>
+<a
+href="https://www.klicksfuerkoeln.de"
+target="_blank"
+rel="noopener noreferrer"
+>
+Website ansehen
+</a>
+</article>
+</div>
+</div>
+</section>
+
+<section class="section process" id="process">
+<div class="container">
+<div class="section-head">
+<p class="section-kicker">Arbeitsweise</p>
+<h2>Von der Idee zur Website</h2>
+</div>
+
+<div class="process-list">
+<article class="process-item">
+<span class="process-number">01</span>
+<div>
+<h3>Zuhören &amp; verstehen</h3>
+<p>
+Ich stelle Fragen, höre genau hin und arbeite heraus, was deine
+Website wirklich zeigen und leisten soll.
+</p>
+</div>
+</article>
+
+<article class="process-item">
+<span class="process-number">02</span>
+<div>
+<h3>Gestalten &amp; strukturieren</h3>
+<p>
+Ich übersetze deine Idee in Design, Sprache und Aufbau – klar,
+stimmig und verständlich.
+</p>
+</div>
+</article>
+
+<article class="process-item">
+<span class="process-number">03</span>
+<div>
+<h3>Veröffentlichen &amp; weiterdenken</h3>
+<p>
+Nach dem Launch unterstütze ich auf Wunsch weiter bei Updates,
+Anpassungen und nächsten Schritten.
+</p>
+</div>
+</article>
+</div>
+</div>
+</section>
+
+<section class="section about" id="about">
+<div class="container about-copy">
+<p class="section-kicker">Über mich</p>
+<h2>Gute Websites machen Ideen klarer sichtbar.</h2>
+
+<p>
+Ich gestalte Websites für Menschen, Marken und kleine Unternehmen,
+die online professioneller auftreten und leichter verstanden werden
+möchten.
+</p>
+
+<p>
+Mir geht es nicht nur um „schön“, sondern um Klarheit, Struktur und
+einen Auftritt, der Vertrauen schafft und sich stimmig anfühlt.
+</p>
+</div>
+</section>
+
+<section class="section contact-section" id="contact">
+<div class="container contact-box">
+<div class="contact-copy">
+<p class="section-kicker">Kontakt</p>
+<h2>Projekt anfragen</h2>
+<p>
+Wenn du über eine neue Website nachdenkst, kannst du mir hier direkt
+schreiben.
+</p>
+</div>
+
+<button type="button" class="btn btn-primary" data-open-contact>
+Kontakt aufnehmen
+</button>
+</div>
 </section>
 </main>
 
-<section class="info-strip">
-<div class="info-card" id="angebot">
-<h2>Angebot</h2>
-<p>
-Mini-Websites und Landingpages für kleine Läden,
-Studios und lokale Businesses in Köln.
-</p>
-</div>
-
-<div class="info-card" id="portfolio">
-<h2>Portfolio</h2>
-<p>
-Ein Blick auf Seiten, die warm, klar und direkt verständlich wirken –
-ohne unnötigen Schnickschnack.
-</p>
-</div>
-
-<div class="info-card" id="kontakt-info">
-<h2>Kontakt</h2>
-<p>
-Du hast eine Idee oder brauchst einen neuen Auftritt?
-<button class="text-link-button" type="button" data-open-contact>Kontaktformular öffnen</button>
-</p>
-</div>
-</section>
-
 <footer class="site-footer">
+<div class="footer-inner">
+<a
+class="footer-social"
+href="https://www.instagram.com/klicksfuerkoeln/"
+target="_blank"
+rel="noopener noreferrer"
+>
+Instagram
+</a>
+
+<p class="footer-copy">© 2026 Klicks für Köln</p>
+
+<div class="footer-links">
 <a href="impressum.html">Impressum</a>
+<span>|</span>
 <a href="datenschutz.html">Datenschutz</a>
-<button class="footer-contact-trigger" type="button" data-open-contact>Kontakt</button>
+</div>
+</div>
 </footer>
 
-<!-- Kontakt Modal -->
-<div class="modal-overlay" id="contactModal" aria-hidden="true">
-<div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
-<button class="modal-close" id="closeContactModal" type="button" aria-label="Fenster schließen">×</button>
+<!-- Kontaktmodal -->
+<div class="contact-modal" id="contact-modal" aria-hidden="true">
+<div class="contact-backdrop" data-close-contact></div>
 
-<div class="modal-header">
-<p class="modal-kicker">Klicks für Köln</p>
-<h2 id="contactTitle">Kontaktformular für Anfragen</h2>
-</div>
-
-<form
-class="contact-form"
-action="https://formspree.io/f/DEINE_FORM_ID"
-method="POST"
+<div
+class="contact-dialog"
+role="dialog"
+aria-modal="true"
+aria-labelledby="contact-title"
 >
-<input type="hidden" name="_subject" value="Neue Anfrage über klicksfuerkoeln.de" />
-<input type="hidden" name="_language" value="de" />
+<button
+class="contact-close"
+type="button"
+aria-label="Schließen"
+data-close-contact
+>
+×
+</button>
 
-<div class="form-section-title">Kontaktdaten</div>
+<p class="contact-kicker">Kontakt</p>
+<h2 id="contact-title">Beginn ein neues Projekt mit Klicks für Köln.</h2>
 
-<div class="form-grid two-cols">
-<div class="form-field">
-<label for="firstname">Vorname</label>
-<input id="firstname" name="Vorname" type="text" placeholder="Vorname – optionale Angabe" />
-</div>
+<form id="contactForm" class="contact-form">
+<label class="line-field">
+<span>Dein Name <span class="required">*</span></span>
+<input type="text" name="name" required />
+</label>
 
-<div class="form-field">
-<label for="lastname">Nachname</label>
-<input id="lastname" name="Nachname" type="text" placeholder="Nachname – optionale Angabe" />
-</div>
-</div>
+<label class="line-field">
+<span>Deine E-Mail-Adresse <span class="required">*</span></span>
+<input type="email" name="email" required />
+</label>
 
-<div class="form-grid">
-<div class="form-field">
-<label for="email">E-Mail-Adresse</label>
-<input id="email" name="E-Mail" type="email" placeholder="deine@email.de" required />
-</div>
-</div>
+<label class="line-field textarea-field">
+<span>Erzähl uns von deinem Projekt <span class="required">*</span></span>
+<textarea name="message" rows="5" required></textarea>
+</label>
 
-<div class="form-section-title">Nachricht</div>
-
-<div class="form-grid">
-<div class="form-field">
-<label for="subject">Betreff</label>
-<input id="subject" name="Betreff" type="text" placeholder="Worum geht es?" required />
-</div>
-</div>
-
-<div class="form-grid">
-<div class="form-field">
-<label for="message">Nachricht</label>
-<textarea id="message" name="Nachricht" placeholder="Erzähl kurz, worum es geht." required></textarea>
-</div>
-</div>
-
-<p class="privacy-note">
-Bitte beachten Sie unsere
-<a href="datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a>.
+<p class="form-privacy">
+Mit dem Absenden stimmst du der Verarbeitung deiner Angaben gemäß
+unserer <a href="datenschutz.html">Datenschutzerklärung</a> zu.
 </p>
 
-<button class="submit-btn" type="submit">Nachricht senden</button>
+<button type="submit" class="btn btn-primary submit-btn">
+Nachricht senden
+</button>
+
+<p class="form-status" id="form-status" aria-live="polite"></p>
 </form>
 </div>
 </div>
 
+<!-- Cookie Hinweis -->
+<div class="cookie-banner" id="cookie-banner" hidden>
+<p>
+We use cookies to enhance your experience. By clicking accept or continuing
+to browse, you agree to our
+<a href="datenschutz.html">Privacy Policy</a>.
+</p>
+<button type="button" class="cookie-accept" id="cookie-accept">
+Accept
+</button>
+</div>
+
 <script>
-const contactModal = document.getElementById('contactModal');
-const closeContactModal = document.getElementById('closeContactModal');
-const allContactTriggers = document.querySelectorAll('[data-open-contact]');
+const menuToggle = document.querySelector(".menu-toggle");
+const mobileMenu = document.querySelector(".mobile-menu");
+
+if (menuToggle) {
+menuToggle.addEventListener("click", () => {
+const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+menuToggle.setAttribute("aria-expanded", String(!expanded));
+mobileMenu.classList.toggle("is-open");
+});
+}
+
+document.querySelectorAll(".mobile-nav a, .mobile-contact-btn").forEach((item) => {
+item.addEventListener("click", () => {
+mobileMenu.classList.remove("is-open");
+menuToggle.setAttribute("aria-expanded", "false");
+});
+});
+
+const contactModal = document.getElementById("contact-modal");
+const openButtons = document.querySelectorAll("[data-open-contact]");
+const closeButtons = document.querySelectorAll("[data-close-contact]");
 
 function openModal() {
-contactModal.classList.add('is-open');
-contactModal.setAttribute('aria-hidden', 'false');
-document.body.classList.add('modal-open');
+contactModal.classList.add("is-open");
+contactModal.setAttribute("aria-hidden", "false");
+document.body.classList.add("modal-open");
 }
 
 function closeModal() {
-contactModal.classList.remove('is-open');
-contactModal.setAttribute('aria-hidden', 'true');
-document.body.classList.remove('modal-open');
+contactModal.classList.remove("is-open");
+contactModal.setAttribute("aria-hidden", "true");
+document.body.classList.remove("modal-open");
 }
 
-allContactTriggers.forEach(trigger => {
-trigger.addEventListener('click', openModal);
+openButtons.forEach((button) => {
+button.addEventListener("click", openModal);
 });
 
-closeContactModal?.addEventListener('click', closeModal);
-
-contactModal?.addEventListener('click', (e) => {
-if (e.target === contactModal) closeModal();
+closeButtons.forEach((button) => {
+button.addEventListener("click", closeModal);
 });
 
-document.addEventListener('keydown', (e) => {
-if (e.key === 'Escape') closeModal();
+document.addEventListener("keydown", (event) => {
+if (event.key === "Escape") closeModal();
+});
+
+// Cookie Banner
+const cookieBanner = document.getElementById("cookie-banner");
+const cookieAccept = document.getElementById("cookie-accept");
+const cookieAccepted = localStorage.getItem("kfk-cookie-accepted");
+
+if (!cookieAccepted) {
+cookieBanner.hidden = false;
+}
+
+cookieAccept.addEventListener("click", () => {
+localStorage.setItem("kfk-cookie-accepted", "true");
+cookieBanner.hidden = true;
+});
+
+// Formular-Frontend
+const form = document.getElementById("contactForm");
+const status = document.getElementById("form-status");
+
+form.addEventListener("submit", async (e) => {
+e.preventDefault();
+
+status.textContent = "Nachricht wird gesendet …";
+
+const formData = {
+name: form.name.value.trim(),
+email: form.email.value.trim(),
+message: form.message.value.trim()
+};
+
+try {
+const response = await fetch("/api/contact", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify(formData)
+});
+
+if (!response.ok) {
+throw new Error("Fehler beim Senden");
+}
+
+form.reset();
+status.textContent = "Danke – deine Nachricht wurde gesendet.";
+} catch (error) {
+status.textContent =
+"Das Senden hat gerade nicht funktioniert. Bitte versuche es nochmal.";
+}
 });
 </script>
-
 </body>
 </html>
-
