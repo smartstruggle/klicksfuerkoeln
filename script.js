@@ -203,32 +203,37 @@ setTimeout(() => openModal(), 120);
 });
 
 window.addEventListener("load", () => {
-if (isMobileDevice() && shouldShowFlyerPopup()) {
-setTimeout(() => {
-openFlyerPopup();
-}, 500);
-}
+
+const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+// 👉 Brand (Klicks für Köln)
+tl.from(".eyebrow", {
+x: -60,
+opacity: 0,
+duration: 0.7
+})
+
+// 👉 Hero Headline
+.from(".hero h1", {
+x: -100,
+opacity: 0,
+duration: 1.2,
+ease: "back.out(1.2)"
+}, "-=0.4")
+
+// 👉 Services ruhiger
+.from(".services-anim", {
+y: 30,
+opacity: 0,
+duration: 0.8
+}, "-=0.6")
+
+// 👉 Button von rechts
+.from(".floating-project-btn", {
+x: 80,
+opacity: 0,
+duration: 0.9
+}, "-=0.6");
+
 });
 
-
-window.addEventListener("load", () => {
-console.log("Entrance animation loaded");
-
-const leftItems = document.querySelectorAll(".js-enter-left");
-const rightItems = document.querySelectorAll(".js-enter-right");
-
-console.log("leftItems:", leftItems.length);
-console.log("rightItems:", rightItems.length);
-
-leftItems.forEach((item, index) => {
-setTimeout(() => {
-item.classList.add("js-enter-ready");
-}, 180 + index * 140);
-});
-
-rightItems.forEach((item, index) => {
-setTimeout(() => {
-item.classList.add("js-enter-ready");
-}, 420 + index * 160);
-});
-});
