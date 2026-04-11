@@ -123,6 +123,20 @@ console.error(error);
 statusElement.textContent =
 error.message || "Das Senden hat gerade nicht funktioniert.";
 }
+
+const formStatus = document.querySelector(".form-status");
+
+if (formStatus) {
+formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
+}
+
+formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
+setTimeout(() => {
+contactModal.classList.remove("is-open");
+document.body.classList.remove("modal-open");
+form.reset();
+formStatus.textContent = "";
+}, 1400);  
 });
 }
 
@@ -195,20 +209,6 @@ openFlyerPopup();
 }, 500);
 }
 });
-
-const formStatus = document.querySelector(".form-status");
-
-if (formStatus) {
-formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
-}
-
-formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
-setTimeout(() => {
-contactModal.classList.remove("is-open");
-document.body.classList.remove("modal-open");
-form.reset();
-formStatus.textContent = "";
-}, 1400);
 
 
 window.addEventListener("load", () => {
