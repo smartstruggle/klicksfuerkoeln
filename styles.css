@@ -476,6 +476,28 @@ line-height: 1.84;
 font-size: var(--text-md);
 }
 
+.about-statement {
+padding-block: clamp(6rem, 10vw, 12rem);
+}
+
+.about-statement .container {
+max-width: none;
+}
+
+.about-statement h2 {
+width: 100%;
+
+font-family: "Inter", sans-serif;
+font-weight: 700;
+
+font-size: clamp(3.8rem, 6.5vw, 8rem);
+line-height: 0.9;
+letter-spacing: -0.045em;
+
+text-wrap: balance;
+}
+
+
 /* Projects */
 
 .project-list {
