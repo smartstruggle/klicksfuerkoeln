@@ -196,6 +196,11 @@ openFlyerPopup();
 }
 });
 
+const formStatus = document.querySelector(".form-status");
+
+if (formStatus) {
+formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
+}
 
 formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
 setTimeout(() => {
