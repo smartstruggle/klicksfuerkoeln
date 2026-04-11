@@ -1094,37 +1094,42 @@ HERO STEP 1
 
 @media (min-width: 860px) {
 .hero {
-padding: 86px 0 42px;
+padding: 110px 0 120px; /* mehr Luft nach unten */
 }
 
 .hero-single {
 max-width: 100%;
 margin: 0;
-padding-left: 28px;
+padding-left: 80px; /* ← SHIFT NACH RECHTS */
 padding-right: 28px;
 align-items: stretch;
 }
 
 .hero .eyebrow {
-width: 100%;
-max-width: none;
-margin: 0 0 18px;
-text-align: left;
+margin: 0 0 20px;
 font-size: 0.78rem;
 letter-spacing: 0.16em;
 }
 
 .hero h1 {
-width: 100%;
-max-width: none;
 margin: 0;
-text-align: left;
 font-family: "Inter", sans-serif;
 font-weight: 700;
 font-size: clamp(5.4rem, 7.2vw, 8.4rem);
-line-height: 0.9;
+line-height: 0.88;
 letter-spacing: -0.06em;
-text-wrap: nowrap;
+}
+
+/* Abstand zwischen den beiden Zeilen */
+.hero h1 br {
+display: block;
+content: "";
+margin-top: 0.35em; /* ← MEHR ABSTAND zwischen den Zeilen */
+}
+
+.hero-visual {
+display: none !important;
+}
 }
 
 /* falls Browser text-wrap nicht sauber interpretiert */
