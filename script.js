@@ -67,6 +67,7 @@ cookieBanner.hidden = true;
 async function handleFormSubmit(formElement, statusElement) {
 formElement.addEventListener("submit", async (e) => {
 e.preventDefault();
+
 statusElement.textContent = "Nachricht wird gesendet …";
 
 const formData = {
@@ -84,15 +85,18 @@ headers: {
 body: JSON.stringify(formData)
 });
 
+const data = await response.json();
+
 if (!response.ok) {
-throw new Error("Fehler beim Senden");
+throw new Error(data.message || "E-Mail konnte nicht gesendet werden.");
 }
 
 formElement.reset();
 statusElement.textContent = "Danke – deine Nachricht wurde gesendet.";
 } catch (error) {
+console.error(error);
 statusElement.textContent =
-"Das Senden hat gerade nicht funktioniert. Bitte versuche es nochmal.";
+error.message || "Das Senden hat gerade nicht funktioniert.";
 }
 });
 }
@@ -110,7 +114,6 @@ const embeddedStatus = document.getElementById("embedded-form-status");
 if (embeddedForm && embeddedStatus) {
 handleFormSubmit(embeddedForm, embeddedStatus);
 }
-
 /* Flyer Popup */
 function isMobileDevice() {
 return window.innerWidth <= 860;
