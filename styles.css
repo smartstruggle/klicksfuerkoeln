@@ -902,3 +902,190 @@ font-size: 1.03rem;
 line-height: 1.85;
 color: var(--text-soft);
 }
+
+/* =========================
+DESKTOP FEINSCHLIFF
+========================= */
+
+@media (min-width: 860px) {
+/* Header stärker ausreizen */
+.header-inner {
+padding: 0 34px 0 28px;
+}
+
+.brand {
+font-family: "Inter", sans-serif;
+font-size: 2rem;
+font-weight: 700;
+letter-spacing: 0.01em;
+color: var(--white-soft);
+}
+
+.desktop-nav {
+gap: 40px;
+}
+
+.desktop-nav a {
+font-size: 0.96rem;
+letter-spacing: 0.01em;
+}
+
+.header-cta,
+.header-cta-link {
+min-height: 42px;
+padding: 0 18px;
+font-size: 0.94rem;
+}
+
+/* Hero größer, mittiger, typografischer */
+.hero {
+padding: 86px 0 56px;
+position: relative;
+overflow: hidden;
+}
+
+.hero-single {
+position: relative;
+max-width: 1220px;
+margin: 0 auto;
+padding: 0 28px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.hero .eyebrow {
+width: 100%;
+max-width: 980px;
+margin: 0 0 18px;
+text-align: left;
+letter-spacing: 0.14em;
+font-size: 0.8rem;
+}
+
+.hero h1 {
+width: 100%;
+max-width: 980px;
+margin: 0 auto;
+text-align: left;
+font-family: "Inter", sans-serif;
+font-weight: 700;
+font-size: clamp(5.2rem, 8vw, 8.8rem);
+line-height: 0.92;
+letter-spacing: -0.055em;
+text-wrap: balance;
+position: relative;
+z-index: 2;
+}
+
+/* Bild rausnehmen */
+.hero-visual {
+display: none !important;
+}
+}
+
+
+
+
+@media (min-width: 860px) {
+.services {
+padding-top: 90px;
+}
+
+.services-layout {
+max-width: 1220px;
+margin: 0 auto;
+padding: 0 28px;
+grid-template-columns: 1.05fr 0.95fr;
+gap: 72px;
+align-items: center;
+}
+
+.services-left .section-kicker {
+margin-bottom: 14px;
+}
+
+.services-left h2 {
+margin-bottom: 30px;
+font-family: "Inter", sans-serif;
+font-weight: 700;
+font-size: clamp(3.2rem, 5vw, 4.4rem);
+line-height: 0.95;
+letter-spacing: -0.05em;
+}
+
+.services-list {
+gap: 10px;
+}
+
+.service-link {
+font-family: "Inter", sans-serif;
+font-size: clamp(2.2rem, 3.4vw, 4rem);
+font-weight: 600;
+line-height: 0.98;
+letter-spacing: -0.045em;
+color: rgba(23, 23, 23, 0.42);
+}
+
+.service-link:hover {
+color: var(--green-900);
+}
+
+.service-link.is-active {
+color: var(--green-900);
+}
+
+.services-brand {
+font-size: 1.08rem;
+line-height: 1.82;
+max-width: 34rem;
+}
+
+.services-description {
+font-size: 1.08rem;
+line-height: 1.82;
+max-width: 34rem;
+}
+}
+
+@media (min-width: 860px) {
+.process-center,
+.about-copy,
+.embedded-contact-grid {
+max-width: 1120px;
+margin: 0 auto;
+padding: 0 28px;
+}
+
+.section-head--center h2 {
+max-width: 12ch;
+margin-left: auto;
+margin-right: auto;
+}
+
+.about h2 {
+max-width: 14ch;
+}
+}
+
+
+
+.floating-project-btn {
+min-height: 64px;
+padding: 0 24px;
+font-size: 1rem;
+right: 22px;
+bottom: 22px;
+box-shadow: 0 18px 36px rgba(214, 109, 48, 0.26);
+}
+
+.floating-project-btn::before {
+animation: pulseRing 1.8s ease-out infinite;
+}
+
+.floating-project-btn::after {
+animation: pulseRing 1.8s ease-out 0.55s infinite;
+}
+
+
+
