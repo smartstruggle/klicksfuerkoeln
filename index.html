@@ -16,7 +16,6 @@ href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family
 rel="stylesheet"
 />
 
-
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -62,46 +61,47 @@ Kontakt
 
 <main id="top">
 <section class="hero">
-<div class="container hero-grid">
-<div class="hero-copy">
+<div class="container hero-single">
 <p class="eyebrow">Klicks für Köln</p>
 <h1>Webdesign im Herzen von Köln</h1>
 
-<p class="hero-text">
-Websites für kleine Läden, Studios und Marken, die klarer,
-hochwertiger und sichtbarer auftreten wollen.
-</p>
-</div>
-
-<div class="hero-visual" aria-hidden="true">
+<div class="hero-visual hero-visual--center" aria-hidden="true">
 <img src="Erleuchtung.png" alt="" />
 </div>
 </div>
 </section>
 
 <section class="section services" id="services">
-<div class="container">
-<div class="section-head">
+<div class="container services-layout">
+<div class="services-left">
 <p class="section-kicker">Services</p>
-<h2>Was ich anbiete</h2>
+<h2>Webdesign</h2>
+
+<div class="services-list" role="list">
+<button type="button" class="service-link is-active">Landingpages</button>
+<button type="button" class="service-link">Websites für kleine Unternehmen</button>
+<button type="button" class="service-link">UI / UX Design</button>
+<button type="button" class="service-link">Betreuung &amp; Weiterentwicklung</button>
+</div>
 </div>
 
-<div class="service-shell">
-<div class="service-main">Webdesign</div>
+<div class="services-right">
+<p class="services-brand">
+Klicks für Köln — eine Webdesign-Marke mit lokalem Bezug, ruhiger
+Gestaltung und Fokus auf kleine Businesses.
+</p>
 
-<div class="service-tags">
-<span>Landingpages</span>
-<span>Websites für kleine Unternehmen</span>
-<span>UI / UX Design</span>
-<span>Betreuung &amp; Weiterentwicklung</span>
-</div>
+<p class="services-description">
+Ich entwickle Websites für kleine Läden, Studios und Marken, die
+klarer, hochwertiger und sichtbarer auftreten wollen.
+</p>
 </div>
 </div>
 </section>
 
 <section class="section process" id="process">
-<div class="container">
-<div class="section-head">
+<div class="container process-center">
+<div class="section-head section-head--center">
 <p class="section-kicker">Arbeitsweise</p>
 <h2>Von der Idee zur Website</h2>
 </div>
@@ -165,19 +165,12 @@ einen Auftritt, der Vertrauen schafft und sich stimmig anfühlt.
 <div class="container">
 <div class="section-head">
 <p class="section-kicker">Projekte</p>
-<h2>Ausgewählte Arbeiten</h2>
-<p class="section-text">
-Ein Blick auf Seiten, die Klarheit, Persönlichkeit und Funktion verbinden.
-</p>
+<h2>Portfolio im Aufbau</h2>
 </div>
 
 <div class="project-list">
 <article class="project-card">
 <h3>Klicks für Köln</h3>
-<p>
-Eine Webdesign-Marke mit lokalem Bezug, ruhiger Gestaltung und Fokus
-auf kleine Businesses.
-</p>
 <a
 href="https://www.klicksfuerkoeln.de"
 target="_blank"
@@ -331,11 +324,20 @@ Portfolioaufbau. Von der Idee über die Umsetzung bis zum Follow-up im
 ersten Monat nach Release begleiten wir ausgewählte Projekte kostenlos.
 </p>
 
-<button type="button" class="btn btn-orange" data-open-contact>
+<button
+type="button"
+class="btn btn-orange"
+data-open-contact
+data-close-flyer-first
+>
 Unverbindlich anfragen
 </button>
 
-<a href="mailto:info@klicksfuerkoeln.de" class="flyer-popup__mail">
+<a
+href="mailto:info@klicksfuerkoeln.de"
+class="flyer-popup__mail"
+id="flyer-popup-mail"
+>
 info@klicksfuerkoeln.de
 </a>
 </div>
