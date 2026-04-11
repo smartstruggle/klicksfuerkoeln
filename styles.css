@@ -311,6 +311,53 @@ line-height: 1.02;
 letter-spacing: -0.03em;
 }
 
+.hero-graphic {
+position: absolute;
+right: clamp(1rem, 4vw, 4rem);
+top: clamp(8rem, 18vw, 12rem);
+width: clamp(14rem, 30vw, 28rem);
+pointer-events: none;
+z-index: 1;
+opacity: 0.16;
+}
+
+.hero-graphic-svg {
+width: 100%;
+height: auto;
+overflow: visible;
+}
+
+.hg-stroke,
+.hg-line,
+.hg-stroke-fill {
+stroke: rgba(215, 108, 47, 0.9);
+stroke-width: 2;
+stroke-linecap: round;
+stroke-linejoin: round;
+fill: none;
+}
+
+.hg-stroke-fill {
+fill: rgba(215, 108, 47, 0.18);
+}
+
+.hero h1,
+.eyebrow {
+position: relative;
+z-index: 2;
+}
+
+@media (max-width: 48rem) {
+.hero-graphic {
+width: clamp(10rem, 34vw, 14rem);
+right: 0.75rem;
+top: auto;
+bottom: 1rem;
+opacity: 0.12;
+}
+}
+
+
 /* Services */
 
 .services-layout {
