@@ -337,7 +337,7 @@ step = 0;
 }, 600);
 }
 
-}, 500);
+}, 700);
 }
 
 window.addEventListener("load", startBulbLoop);
