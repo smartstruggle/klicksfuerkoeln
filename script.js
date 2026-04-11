@@ -204,3 +204,26 @@ document.body.classList.remove("modal-open");
 form.reset();
 formStatus.textContent = "";
 }, 1400);
+
+
+window.addEventListener("load", () => {
+console.log("Entrance animation loaded");
+
+const leftItems = document.querySelectorAll(".js-enter-left");
+const rightItems = document.querySelectorAll(".js-enter-right");
+
+console.log("leftItems:", leftItems.length);
+console.log("rightItems:", rightItems.length);
+
+leftItems.forEach((item, index) => {
+setTimeout(() => {
+item.classList.add("js-enter-ready");
+}, 120 + index * 90);
+});
+
+rightItems.forEach((item, index) => {
+setTimeout(() => {
+item.classList.add("js-enter-ready");
+}, 260 + index * 100);
+});
+});
