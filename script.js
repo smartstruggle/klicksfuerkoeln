@@ -282,7 +282,7 @@ repeat: 1
 .to(".hg-bulb-1", {
 opacity: 1,
 scale: 1,
-duration: 0.2,
+duration: 0.45,
 ease: "back.out(1.5)"
 }, "-=0.05")
 .fromTo(".hg-line-2",
@@ -292,7 +292,7 @@ ease: "back.out(1.5)"
 .to(".hg-bulb-2", {
 opacity: 1,
 scale: 1,
-duration: 0.2,
+duration: 0.45,
 ease: "back.out(1.5)"
 }, "-=0.05")
 .fromTo(".hg-line-3",
@@ -302,7 +302,7 @@ ease: "back.out(1.5)"
 .to(".hg-bulb-3", {
 opacity: 1,
 scale: 1,
-duration: 0.2,
+duration: 0.45,
 ease: "back.out(1.5)"
 }, "-=0.05")
 .to(".hero-graphic", {
