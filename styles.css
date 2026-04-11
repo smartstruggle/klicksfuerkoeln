@@ -264,16 +264,17 @@ color: var(--green-500);
 margin: 0;
 font-family: "Inter", sans-serif;
 font-weight: 700;
-font-size: var(--hero-xl);
-line-height: 0.9;
-letter-spacing: -0.055em;
+font-size: clamp(3rem, 10vw, 4.8rem);
+line-height: 0.92;
+letter-spacing: -0.045em;
 white-space: normal;
-max-width: 10ch;
+max-width: 9ch;
 }
 
 .hero h1 br {
 display: block;
-margin-top: 0.35em;
+content: "";
+margin-top: 0.14em;
 }
 
 .hero-visual {
@@ -723,6 +724,12 @@ animation: pulseRing 1.8s ease-out infinite;
 animation: pulseRing 1.8s ease-out 0.55s infinite;
 }
 
+.floating-project-btn.is-hidden {
+opacity: 0;
+pointer-events: none;
+transform: translateY(12px);
+}
+
 @keyframes pulseProjectBtn {
 0%, 100% {
 transform: scale(1);
@@ -972,7 +979,7 @@ color: var(--text-soft);
 .desktop-nav {
 display: flex;
 }
-
+  
 .menu-toggle,
 .mobile-menu {
 display: none !important;
@@ -1015,6 +1022,30 @@ justify-self: end;
 }
 }
 
+
+@media (max-width: 48rem) {
+.section {
+padding-block: clamp(3.5rem, 8vw, 5rem);
+}
+
+.hero {
+padding-block: clamp(3.75rem, 8vw, 5.5rem);
+}
+
+.services-layout,
+.embedded-contact-grid,
+.process-list,
+.project-list {
+gap: 1.5rem;
+}
+
+.about-statement {
+padding-block: clamp(4rem, 8vw, 5.5rem);
+}
+
+}
+
+
 @media (min-width: 64rem) {
 .section-head--center h2 {
 max-width: 12ch;
@@ -1022,3 +1053,18 @@ margin-inline: auto;
 }
 }
 
+
+/*DESKTOP*/
+@media (min-width: 860px) {
+.hero h1 {
+font-size: clamp(5rem, 7vw, 8.2rem);
+line-height: 0.9;
+letter-spacing: -0.05em;
+white-space: nowrap;
+max-width: none;
+}
+
+.hero h1 br {
+margin-top: 0.28em;
+}
+}
