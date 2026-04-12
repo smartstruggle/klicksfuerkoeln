@@ -70,28 +70,24 @@ von Köln
 <div class="hero-graphic" aria-hidden="true">
 <svg class="hero-graphic-svg" viewBox="0 0 520 260" fill="none">
 
-<g class="hg-system">
-<!-- Power + Cursor -->
-<g class="hg-power-system">
+<!-- Power Button -->
 <g class="hg-power">
 <circle cx="430" cy="210" r="22" class="hg-stroke" />
 <path d="M430 196 V210" class="hg-stroke" />
 <path d="M419 206 A12 12 0 1 0 441 206" class="hg-stroke" />
 </g>
 
+<!-- Cursor -->
 <g class="hg-cursor">
 <path
 d="M455 220 L455 244 L462 236 L470 252 L476 249 L468 233 L480 233 Z"
 class="hg-stroke-fill"
 />
 </g>
-</g>
 
-<!-- Verbindungs-System -->
-<g class="hg-path-system">
 <!-- Segment 1 -->
 <path
-d="M408 194 C380 176, 348 160, 314 146"
+d="M408 194 C382 178, 350 162, 314 146"
 class="hg-line hg-line-1"
 />
 
@@ -110,12 +106,12 @@ class="hg-stroke"
 
 <!-- Segment 2 -->
 <path
-d="M286 132 C250 116, 214 102, 174 88"
+d="M286 132 C252 116, 218 102, 182 88"
 class="hg-line hg-line-2"
 />
 
 <!-- Bulb 2 -->
-<g class="hg-bulb hg-bulb-2" transform="translate(160 82)">
+<g class="hg-bulb hg-bulb-2" transform="translate(168 82)">
 <path
 d="M0 -10 C-8 -10 -14 -4 -14 4 C-14 11 -10 15 -7 18 C-5 20 -4 22 -4 24 H4 C4 22 5 20 7 18 C10 15 14 11 14 4 C14 -4 8 -10 0 -10 Z"
 class="hg-bulb-fill"
@@ -127,46 +123,45 @@ class="hg-stroke"
 <path d="M-5 28 H5" class="hg-stroke" />
 </g>
 
-<!-- Segment 3: endet logisch an der Dom-Basis -->
+<!-- Segment 3: endet exakt an der rechten Dom-Basis -->
 <path
-d="M146 74 C118 63, 90 52, 74 44"
+d="M154 74 C132 66, 114 58, 102 54"
 class="hg-line hg-line-3"
 />
 
-<!-- Dom: gleiche Systemlogik, keine freien Außen-Transforms -->
-<g class="hg-dom hg-dom-3" transform="translate(8 -58) scale(1.45)">
-<!-- linke Turm-Outline -->
-<path class="hg-dom-line" d="M22 108 L22 58" />
-<path class="hg-dom-line" d="M22 58 L34 -8" />
-<path class="hg-dom-line" d="M34 -8 L46 58" />
-<path class="hg-dom-line" d="M46 58 L46 108" />
+<!-- Dom statt Bulb 3 -->
+<g class="hg-dom hg-dom-3">
+<!-- Basis: rechte Außenkante ist bewusst bei x=102 / y=54 -->
+<path class="hg-dom-line" d="M38 54 L102 54" />
 
-<!-- rechte Turm-Outline -->
-<path class="hg-dom-line" d="M68 108 L68 58" />
-<path class="hg-dom-line" d="M68 58 L80 -8" />
-<path class="hg-dom-line" d="M80 -8 L92 58" />
-<path class="hg-dom-line" d="M92 58 L92 108" />
+<!-- linker Turm -->
+<path class="hg-dom-line" d="M54 54 L54 24" />
+<path class="hg-dom-line" d="M54 24 L62 2" />
+<path class="hg-dom-line" d="M62 2 L70 24" />
+<path class="hg-dom-line" d="M70 24 L70 54" />
+
+<!-- rechter Turm -->
+<path class="hg-dom-line" d="M76 54 L76 24" />
+<path class="hg-dom-line" d="M76 24 L84 2" />
+<path class="hg-dom-line" d="M84 2 L92 24" />
+<path class="hg-dom-line" d="M92 24 L92 54" />
 
 <!-- Kreuze -->
-<path class="hg-dom-line" d="M34 -14 L34 -4" />
-<path class="hg-dom-line" d="M29 -9 L39 -9" />
-<path class="hg-dom-line" d="M80 -14 L80 -4" />
-<path class="hg-dom-line" d="M75 -9 L85 -9" />
+<path class="hg-dom-line" d="M62 -2 L62 6" />
+<path class="hg-dom-line" d="M58 2 L66 2" />
+<path class="hg-dom-line" d="M84 -2 L84 6" />
+<path class="hg-dom-line" d="M80 2 L88 2" />
 
 <!-- Mittelteil nur angedeutet -->
-<path class="hg-dom-line" d="M46 108 Q57 90 68 108" />
-<path class="hg-dom-line" d="M46 58 Q57 44 68 58" />
-
-<!-- Basis -->
-<path class="hg-dom-line" d="M16 108 L98 108" />
+<path class="hg-dom-line" d="M70 54 Q77 42 84 54" />
+<path class="hg-dom-line" d="M70 24 Q77 16 84 24" />
 
 <!-- Füllflächen -->
-<path class="hg-dom-fill" d="M27 104 L27 62 Q34 42 41 62 L41 104 Z" />
-<path class="hg-dom-fill" d="M73 104 L73 62 Q80 42 87 62 L87 104 Z" />
-<path class="hg-dom-fill" d="M48 104 Q57 88 66 104 Z" />
+<path class="hg-dom-fill" d="M57 52 L57 28 Q62 16 67 28 L67 52 Z" />
+<path class="hg-dom-fill" d="M79 52 L79 28 Q84 16 89 28 L89 52 Z" />
+<path class="hg-dom-fill" d="M71 52 Q77 44 83 52 Z" />
 </g>
-</g>
-</g>
+
 </svg>
 </div>
 </section>
