@@ -383,7 +383,14 @@ opacity: 1,
 scale: 1,
 duration: 0.5,
 ease: "back.out(1.2)",
-onStart: () => document.querySelector(".hg-dom-3")?.classList.add("is-on")
+onStart: () => {
+const dom = document.querySelector(".hg-dom-3");
+if (dom) {
+setTimeout(() => {
+dom.classList.add("is-on");
+}, 120); // kleine Verzögerung = schöner Effekt
+}
+}
 }, "-=0.05")
 .to(".hero-graphic", {
 opacity: 0.65,
