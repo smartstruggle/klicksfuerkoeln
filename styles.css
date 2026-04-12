@@ -241,7 +241,7 @@ font-weight: 600;
 
 .hero {
 position: relative;
-overflow: hidden;
+overflow: visible;
 padding-block: clamp(4.5rem, 3rem + 4vw, 7rem) clamp(9rem, 8rem + 8vw, 14rem);
 background: var(--bg);
 }
@@ -250,7 +250,7 @@ background: var(--bg);
 position: relative;
 width: min(100% - (2 * var(--page-pad-x)), var(--container));
 margin-inline: auto;
-padding-bottom: clamp(2rem, 3vw, 4rem);
+padding-bottom: clamp(3rem, 5vw, 6rem);
 }
 
 .eyebrow {
@@ -316,6 +316,8 @@ line-height: 1.02;
 letter-spacing: -0.03em;
 }
 
+/* Hero graphic */
+
 .hero-graphic {
 position: absolute;
 right: 0;
@@ -330,28 +332,17 @@ opacity: 0.75;
 width: 100%;
 height: auto;
 overflow: visible;
+display: block;
 }
 
-
-
-@media (max-width: 48rem) {
-.hero-graphic {
-position: relative;
-right: auto;
-top: auto;
-width: 100%;
-margin-top: 1.5rem;
-opacity: 0.85;
-}
-}
-
-
+/* Graphic strokes */
 
 .hg-stroke,
 .hg-line,
-.hg-stroke-fill {
+.hg-stroke-fill,
+.hg-dom-line {
 stroke: var(--orange);
-stroke-width: 0,75;
+stroke-width: 0.75;
 stroke-linecap: round;
 stroke-linejoin: round;
 fill: none;
@@ -384,14 +375,6 @@ opacity: 0.8;
 transition: opacity 0.45s ease, filter 0.55s ease;
 }
 
-.hg-dom-line {
-stroke: var(--orange);
-stroke-width: 3.5;
-stroke-linecap: round;
-stroke-linejoin: round;
-fill: none;
-}
-
 .hg-dom-fill {
 fill: var(--orange);
 opacity: 0;
@@ -406,9 +389,6 @@ filter: drop-shadow(0 0 10px rgba(214, 109, 48, 0.32));
 .hg-dom.is-on .hg-dom-fill {
 opacity: 1;
 }
-.hero-graphic {
-opacity: 0.75;
-}
 
 .hero h1,
 .eyebrow {
@@ -416,16 +396,18 @@ position: relative;
 z-index: 2;
 }
 
+/* Mobile */
 
 @media (max-width: 48rem) {
 .hero-graphic {
 position: relative;
-width: min(70%, 16rem);
-margin: 1.5rem 0 0 auto;
 right: auto;
 top: auto;
-bottom: auto;
-opacity: 0.7;
+width: 100%;
+max-width: 100%;
+margin-top: 1.5rem;
+margin-inline: auto;
+opacity: 0.85;
 }
 
 .hero-single {
@@ -436,6 +418,7 @@ display: block;
 max-width: none;
 }
 }
+
 
 
 /* Services */
