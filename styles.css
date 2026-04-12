@@ -357,6 +357,26 @@ opacity: 1;
 filter: drop-shadow(0 0 10px rgba(215,108,47,0.55));
 }
 
+.hg-dom {
+opacity: 0.35;
+transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+.hg-dom-line {
+stroke: var(--orange);
+stroke-width: 2.6;
+stroke-linecap: round;
+stroke-linejoin: round;
+fill: none;
+}
+
+.hg-dom.is-on {
+opacity: 1;
+filter: drop-shadow(0 0 8px rgba(215, 108, 47, 0.28));
+}
+
+
+
 .hero-graphic {
 opacity: 0.75;
 }
