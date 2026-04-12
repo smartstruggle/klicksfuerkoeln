@@ -380,15 +380,14 @@ ease: "power2.out"
 })
 .to(".hg-dom-3", {
 opacity: 1,
-scale: 1,
-duration: 0.5,
+duration: 0.6,
 ease: "back.out(1.2)",
 onStart: () => {
 const dom = document.querySelector(".hg-dom-3");
 if (dom) {
 setTimeout(() => {
 dom.classList.add("is-on");
-}, 120); // kleine Verzögerung = schöner Effekt
+}, 180); // kleine Verzögerung = schöner Effekt
 }
 }
 }, "-=0.05")
