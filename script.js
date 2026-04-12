@@ -82,30 +82,22 @@ Floating Button beim Footer ausblenden
 const floatingBtn = document.querySelector(".floating-project-btn");
 const siteFooter = document.querySelector(".site-footer");
 
-console.log("floatingBtn:", floatingBtn);
-console.log("siteFooter:", siteFooter);
+function updateFloatingButtonVisibility() {
+if (!floatingBtn || !siteFooter) return;
 
-if (floatingBtn && siteFooter) {
-const observer = new IntersectionObserver(
-(entries) => {
-entries.forEach((entry) => {
-console.log("Footer sichtbar?", entry.isIntersecting);
+const footerTop = siteFooter.getBoundingClientRect().top;
+const windowHeight = window.innerHeight;
 
-if (entry.isIntersecting) {
+if (footerTop < windowHeight - 80) {
 floatingBtn.classList.add("is-hidden");
 } else {
 floatingBtn.classList.remove("is-hidden");
 }
-});
-},
-{
-root: null,
-threshold: 0.1
 }
-);
 
-observer.observe(siteFooter);
-}
+window.addEventListener("scroll", updateFloatingButtonVisibility);
+window.addEventListener("resize", updateFloatingButtonVisibility);
+window.addEventListener("load", updateFloatingButtonVisibility);
 
 /* =========================================
 Formular-Senden
