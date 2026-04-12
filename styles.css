@@ -364,7 +364,7 @@ transition: opacity 0.35s ease, filter 0.35s ease;
 
 .hg-dom-line {
 stroke: var(--orange);
-stroke-width: 2.6;
+stroke-width: 3,5;
 stroke-linecap: round;
 stroke-linejoin: round;
 fill: none;
@@ -377,11 +377,11 @@ transition: fill 0.35s ease;
 
 .hg-dom.is-on {
 opacity: 1;
-filter: drop-shadow(0 0 4px rgba(214, 109, 48, 0.16));
+filter: drop-shadow(0 0 10px rgba(214,109,48,0.45));
 }
 
 .hg-dom.is-on .hg-dom-fill {
-fill: rgba(214, 109, 48, 0.16);
+fill: var(--orange); /* statt rgba → FULL POWER */
 }
 
 
