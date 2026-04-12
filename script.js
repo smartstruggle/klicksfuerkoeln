@@ -82,10 +82,15 @@ Floating Button beim Footer ausblenden
 const floatingBtn = document.querySelector(".floating-project-btn");
 const siteFooter = document.querySelector(".site-footer");
 
+console.log("floatingBtn:", floatingBtn);
+console.log("siteFooter:", siteFooter);
+
 if (floatingBtn && siteFooter) {
 const observer = new IntersectionObserver(
 (entries) => {
 entries.forEach((entry) => {
+console.log("Footer sichtbar?", entry.isIntersecting);
+
 if (entry.isIntersecting) {
 floatingBtn.classList.add("is-hidden");
 } else {
@@ -101,7 +106,6 @@ threshold: 0.1
 
 observer.observe(siteFooter);
 }
-
 
 /* =========================================
 Formular-Senden
