@@ -337,7 +337,7 @@ overflow: visible;
 .hg-line,
 .hg-stroke-fill {
 stroke: var(--orange);
-stroke-width: 2.6;
+stroke-width: 3,5;
 stroke-linecap: round;
 stroke-linejoin: round;
 fill: none;
@@ -352,7 +352,7 @@ opacity: 0.8;
 }
 
 .hg-bulb.is-on {
-fill: rgba(215, 108, 47, 0.55);
+fill: var(--orange);
 opacity: 1;
 filter: drop-shadow(0 0 10px rgba(215,108,47,0.55));
 }
