@@ -82,15 +82,14 @@ Floating Button beim Footer ausblenden
 ========================================= */
 const floatingBtn = document.querySelector(".floating-project-btn");
 const siteFooter = document.querySelector(".site-footer");
-let floatingVisibilityEnabled = false;
 
 function updateFloatingButtonVisibility() {
-if (!floatingBtn || !siteFooter || !floatingVisibilityEnabled) return;
+if (!floatingBtn || !siteFooter) return;
 
-const footerTop = siteFooter.getBoundingClientRect().top;
-const windowHeight = window.innerHeight;
+const footerRect = siteFooter.getBoundingClientRect();
+const triggerPoint = window.innerHeight - 80;
 
-if (footerTop < windowHeight - 80) {
+if (footerRect.top <= triggerPoint) {
 floatingBtn.classList.add("is-hidden");
 } else {
 floatingBtn.classList.remove("is-hidden");
@@ -100,8 +99,15 @@ floatingBtn.classList.remove("is-hidden");
 window.addEventListener("scroll", updateFloatingButtonVisibility);
 window.addEventListener("resize", updateFloatingButtonVisibility);
 
+window.addEventListener("load", () => {
+if (!floatingBtn) return;
 
+floatingBtn.classList.remove("is-hidden");
 
+setTimeout(() => {
+updateFloatingButtonVisibility();
+}, 1200);
+});
 /* =========================================
 Formular-Senden
 ========================================= */
