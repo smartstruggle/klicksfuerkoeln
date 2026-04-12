@@ -260,6 +260,18 @@ y: 12,
 opacity: 0
 });
 
+gsap.set([".hg-bulb-1", ".hg-bulb-2", ".hg-dom-3"], {
+opacity: 0,
+scale: 0.85,
+transformOrigin: "50% 50%"
+});
+
+gsap.set(".hg-cursor", {
+x: 18,
+y: 12,
+opacity: 0
+});
+
 tlGraphic
 .to(".hg-cursor", {
 opacity: 1,
@@ -283,7 +295,8 @@ repeat: 1
 opacity: 1,
 scale: 1,
 duration: 0.45,
-ease: "back.out(1.5)"
+ease: "back.out(1.5)",
+onStart: () => document.querySelector(".hg-bulb-1")?.classList.add("is-on")
 }, "-=0.05")
 .fromTo(".hg-line-2",
 { strokeDasharray: 220, strokeDashoffset: 220 },
@@ -293,52 +306,22 @@ ease: "back.out(1.5)"
 opacity: 1,
 scale: 1,
 duration: 0.45,
-ease: "back.out(1.5)"
+ease: "back.out(1.5)",
+onStart: () => document.querySelector(".hg-bulb-2")?.classList.add("is-on")
 }, "-=0.05")
 .fromTo(".hg-line-3",
 { strokeDasharray: 220, strokeDashoffset: 220 },
 { strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }
 )
-.to(".hg-bulb-3", {
+.to(".hg-dom-3", {
 opacity: 1,
 scale: 1,
-duration: 0.45,
-ease: "back.out(1.5)"
+duration: 0.5,
+ease: "back.out(1.2)",
+onStart: () => document.querySelector(".hg-dom-3")?.classList.add("is-on")
 }, "-=0.05")
 .to(".hero-graphic", {
-opacity: 0.5,
+opacity: 0.65,
 duration: 0.5,
 ease: "power1.out"
 }, "+=0.1");
-});
-
-function startBulbLoop() {
-const bulbs = document.querySelectorAll(".hg-bulb");
-
-if (!bulbs.length) return;
-
-let step = 0;
-
-setInterval(() => {
-bulbs.forEach((b, i) => {
-if (i <= step) {
-b.classList.add("is-on");
-} else {
-b.classList.remove("is-on");
-}
-});
-
-step++;
-
-if (step >= bulbs.length) {
-setTimeout(() => {
-bulbs.forEach(b => b.classList.remove("is-on"));
-step = 0;
-}, 600);
-}
-
-}, 700);
-}
-
-window.addEventListener("load", startBulbLoop);
-
