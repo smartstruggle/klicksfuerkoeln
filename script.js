@@ -76,6 +76,7 @@ cookieBanner.hidden = true;
 }
 
 
+
 /* =========================================
 Floating Button beim Footer ausblenden
 ========================================= */
@@ -98,6 +99,8 @@ floatingBtn.classList.remove("is-hidden");
 
 window.addEventListener("scroll", updateFloatingButtonVisibility);
 window.addEventListener("resize", updateFloatingButtonVisibility);
+
+
 
 /* =========================================
 Formular-Senden
@@ -275,16 +278,26 @@ y: 30,
 opacity: 0,
 duration: 0.8
 }, "-=0.6")
-.from(".floating-project-btn", {
+.fromTo(".floating-project-btn",
+{
 x: 80,
-opacity: 0,
+opacity: 0
+},
+{
+x: 0,
+opacity: 1,
 duration: 0.9,
+onStart: () => {
+floatingBtn?.classList.remove("is-hidden");
+},
 onComplete: () => {
 floatingVisibilityEnabled = true;
 updateFloatingButtonVisibility();
 }
-}, "-=0.6");
-  
+},
+"-=0.6"
+);
+
 /* ---------- Hero-Grafik Intro ---------- */
 const tlGraphic = gsap.timeline({ delay: 0.9 });
 
