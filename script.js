@@ -78,36 +78,46 @@ cookieBanner.hidden = true;
 
 
 /* =========================================
-Floating Button beim Footer ausblenden
+Smarte Footer-Erkennung (Intersection Observer)
 ========================================= */
 const floatingBtn = document.querySelector(".floating-project-btn");
 const siteFooter = document.querySelector(".site-footer");
 
-function updateFloatingButtonVisibility() {
-if (!floatingBtn || !siteFooter) return;
-
-const footerRect = siteFooter.getBoundingClientRect();
-const triggerPoint = window.innerHeight - 80;
-
-if (footerRect.top <= triggerPoint) {
-floatingBtn.classList.add("is-hidden");
-} else {
-floatingBtn.classList.remove("is-hidden");
-}
-}
-
-window.addEventListener("scroll", updateFloatingButtonVisibility);
-window.addEventListener("resize", updateFloatingButtonVisibility);
-
-window.addEventListener("load", () => {
-if (!floatingBtn) return;
-
-floatingBtn.classList.remove("is-hidden");
-
-setTimeout(() => {
-updateFloatingButtonVisibility();
-}, 1200);
+// Die Logik, die prüft, ob der Footer sichtbar wird
+const footerObserver = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+// Wenn der Footer den Sichtbereich berührt: Ausblenden
+gsap.to(floatingBtn, {
+opacity: 0,
+y: 20,
+duration: 0.4,
+pointerEvents: 'none',
+overwrite: 'auto'
 });
+} else {
+// Wenn wir wieder nach oben scrollen: Einblenden
+// Aber nur, wenn die Start-Animation (dein Master-Code) schon durch ist
+if (typeof floatingVisibilityEnabled !== 'undefined' && floatingVisibilityEnabled) {
+gsap.to(floatingBtn, {
+opacity: 1,
+y: 0,
+duration: 0.4,
+pointerEvents: 'all',
+overwrite: 'auto'
+});
+}
+}
+});
+}, {
+rootMargin: '0px 0px -20px 0px', // Erscheint/Verschwindet 20px vor Kontakt
+threshold: 0
+});
+
+if (siteFooter && floatingBtn) {
+footerObserver.observe(siteFooter);
+}
+
 /* =========================================
 Formular-Senden
 ========================================= */
