@@ -1,7 +1,10 @@
+/* =========================================
+Mobile Menu
+========================================= */
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileMenu = document.querySelector(".mobile-menu");
 
-if (menuToggle) {
+if (menuToggle && mobileMenu) {
 menuToggle.addEventListener("click", () => {
 const expanded = menuToggle.getAttribute("aria-expanded") === "true";
 menuToggle.setAttribute("aria-expanded", String(!expanded));
@@ -16,7 +19,10 @@ if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
 });
 });
 
-/* Kontakt-Modal */
+
+/* =========================================
+Kontakt-Modal
+========================================= */
 const contactModal = document.getElementById("contact-modal");
 const openButtons = document.querySelectorAll("[data-open-contact]");
 const closeButtons = document.querySelectorAll("[data-close-contact]");
@@ -44,10 +50,16 @@ button.addEventListener("click", closeModal);
 });
 
 document.addEventListener("keydown", (event) => {
-if (event.key === "Escape") closeModal();
+if (event.key === "Escape") {
+closeModal();
+closeFlyerPopup();
+}
 });
 
-/* Cookie Banner */
+
+/* =========================================
+Cookie Banner
+========================================= */
 const cookieBanner = document.getElementById("cookie-banner");
 const cookieAccept = document.getElementById("cookie-accept");
 const cookieAccepted = localStorage.getItem("kfk-cookie-accepted");
@@ -63,7 +75,10 @@ cookieBanner.hidden = true;
 });
 }
 
-/* Floating Button*/
+
+/* =========================================
+Floating Button beim Footer ausblenden
+========================================= */
 const floatingBtn = document.querySelector(".floating-project-btn");
 const siteFooter = document.querySelector(".site-footer");
 
@@ -80,7 +95,7 @@ floatingBtn.classList.remove("is-hidden");
 },
 {
 root: null,
-threshold: 0.1,
+threshold: 0.1
 }
 );
 
@@ -88,8 +103,12 @@ observer.observe(siteFooter);
 }
 
 
-/* Formular-Senden */
+/* =========================================
+Formular-Senden
+========================================= */
 async function handleFormSubmit(formElement, statusElement) {
+if (!formElement || !statusElement) return;
+
 formElement.addEventListener("submit", async (e) => {
 e.preventDefault();
 
@@ -116,27 +135,22 @@ if (!response.ok) {
 throw new Error(data.message || "E-Mail konnte nicht gesendet werden.");
 }
 
-formElement.reset();
 statusElement.textContent = "Danke – deine Nachricht wurde gesendet.";
+formElement.reset();
+
+// Nur beim Modal-Formular automatisch schließen
+if (formElement.id === "contactForm") {
+setTimeout(() => {
+closeModal();
+statusElement.textContent = "";
+}, 1400);
+}
+
 } catch (error) {
 console.error(error);
 statusElement.textContent =
 error.message || "Das Senden hat gerade nicht funktioniert.";
 }
-
-const formStatus = document.querySelector(".form-status");
-
-if (formStatus) {
-formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
-}
-
-formStatus.textContent = "Danke, deine Nachricht wurde gesendet.";
-setTimeout(() => {
-contactModal.classList.remove("is-open");
-document.body.classList.remove("modal-open");
-form.reset();
-formStatus.textContent = "";
-}, 1400);  
 });
 }
 
@@ -153,21 +167,19 @@ const embeddedStatus = document.getElementById("embedded-form-status");
 if (embeddedForm && embeddedStatus) {
 handleFormSubmit(embeddedForm, embeddedStatus);
 }
-/* Flyer Popup */
-function isMobileDevice() {
-return window.innerWidth <= 860;
-}
 
-function shouldShowFlyerPopup() {
-const params = new URLSearchParams(window.location.search);
-return params.get("flyer") === "1";
-}
 
+/* =========================================
+Flyer Popup
+========================================= */
 const flyerPopup = document.getElementById("flyer-popup");
 const flyerPopupClose = document.getElementById("flyer-popup-close");
 const flyerPopupX = document.getElementById("flyer-popup-x");
 const flyerPopupMail = document.getElementById("flyer-popup-mail");
 const flyerOpenContactFirst = document.querySelectorAll("[data-close-flyer-first]");
+
+const urlParams = new URLSearchParams(window.location.search);
+const isFlyerVisit = urlParams.get("flyer") === "1";
 
 function openFlyerPopup() {
 if (!flyerPopup) return;
@@ -181,6 +193,11 @@ if (!flyerPopup) return;
 flyerPopup.classList.remove("is-open");
 flyerPopup.setAttribute("aria-hidden", "true");
 document.body.classList.remove("modal-open");
+
+// Beim Flyer-Besuch startet das Intro erst NACH dem Schließen
+if (isFlyerVisit) {
+startIntroAnimations();
+}
 }
 
 if (flyerPopupClose) {
@@ -202,63 +219,74 @@ setTimeout(() => openModal(), 120);
 });
 });
 
-window.addEventListener("load", () => {
 
+/* =========================================
+GSAP Intro + Hero-Grafik
+========================================= */
+let introHasStarted = false;
+
+function startIntroAnimations() {
+if (introHasStarted) return;
+introHasStarted = true;
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (prefersReducedMotion) {
+gsap.set([".eyebrow", ".hero h1", ".services-anim", ".floating-project-btn"], {
+opacity: 1,
+x: 0,
+y: 0
+});
+
+gsap.set([".hg-bulb-1", ".hg-bulb-2", ".hg-dom-3"], {
+opacity: 1,
+scale: 1
+});
+
+gsap.set(".hg-cursor", {
+opacity: 1,
+x: 0,
+y: 0
+});
+
+gsap.set([".hg-line-1", ".hg-line-2", ".hg-line-3"], {
+strokeDasharray: 220,
+strokeDashoffset: 0
+});
+
+document.querySelector(".hg-bulb-1")?.classList.add("is-on");
+document.querySelector(".hg-bulb-2")?.classList.add("is-on");
+document.querySelector(".hg-dom-3")?.classList.add("is-on");
+return;
+}
+
+/* ---------- Text / Content Intro ---------- */
 const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-// 👉 Brand (Klicks für Köln)
 tl.from(".eyebrow", {
 x: -60,
 opacity: 0,
 duration: 0.7
 })
-
-// 👉 Hero Headline
 .from(".hero h1", {
 x: -100,
 opacity: 0,
 duration: 1.2,
 ease: "back.out(1.2)"
 }, "-=0.4")
-
-// 👉 Services ruhiger
 .from(".services-anim", {
 y: 30,
 opacity: 0,
 duration: 0.8
 }, "-=0.6")
-
-// 👉 Button von rechts
 .from(".floating-project-btn", {
 x: 80,
 opacity: 0,
 duration: 0.9
 }, "-=0.6");
 
-});
-
-
-
-window.addEventListener("load", () => {
-if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
+/* ---------- Hero-Grafik Intro ---------- */
 const tlGraphic = gsap.timeline({ delay: 0.9 });
-
-gsap.set([".hg-line-1", ".hg-line-2", ".hg-line-3"], {
-drawSVG: "0% 0%"
-});
-
-gsap.set([".hg-bulb-1", ".hg-bulb-2", ".hg-bulb-3"], {
-opacity: 0,
-scale: 0.85,
-transformOrigin: "50% 50%"
-});
-
-gsap.set(".hg-cursor", {
-x: 18,
-y: 12,
-opacity: 0
-});
 
 gsap.set([".hg-bulb-1", ".hg-bulb-2", ".hg-dom-3"], {
 opacity: 0,
@@ -270,6 +298,11 @@ gsap.set(".hg-cursor", {
 x: 18,
 y: 12,
 opacity: 0
+});
+
+gsap.set([".hg-line-1", ".hg-line-2", ".hg-line-3"], {
+strokeDasharray: 220,
+strokeDashoffset: 220
 });
 
 tlGraphic
@@ -287,10 +320,11 @@ duration: 0.08,
 yoyo: true,
 repeat: 1
 }, "-=0.08")
-.fromTo(".hg-line-1",
-{ strokeDasharray: 200, strokeDashoffset: 200 },
-{ strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }
-)
+.to(".hg-line-1", {
+strokeDashoffset: 0,
+duration: 0.28,
+ease: "power2.out"
+})
 .to(".hg-bulb-1", {
 opacity: 1,
 scale: 1,
@@ -298,10 +332,11 @@ duration: 0.45,
 ease: "back.out(1.5)",
 onStart: () => document.querySelector(".hg-bulb-1")?.classList.add("is-on")
 }, "-=0.05")
-.fromTo(".hg-line-2",
-{ strokeDasharray: 220, strokeDashoffset: 220 },
-{ strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }
-)
+.to(".hg-line-2", {
+strokeDashoffset: 0,
+duration: 0.28,
+ease: "power2.out"
+})
 .to(".hg-bulb-2", {
 opacity: 1,
 scale: 1,
@@ -309,10 +344,11 @@ duration: 0.45,
 ease: "back.out(1.5)",
 onStart: () => document.querySelector(".hg-bulb-2")?.classList.add("is-on")
 }, "-=0.05")
-.fromTo(".hg-line-3",
-{ strokeDasharray: 220, strokeDashoffset: 220 },
-{ strokeDashoffset: 0, duration: 0.28, ease: "power2.out" }
-)
+.to(".hg-line-3", {
+strokeDashoffset: 0,
+duration: 0.28,
+ease: "power2.out"
+})
 .to(".hg-dom-3", {
 opacity: 1,
 scale: 1,
@@ -325,3 +361,16 @@ opacity: 0.65,
 duration: 0.5,
 ease: "power1.out"
 }, "+=0.1");
+}
+
+
+/* =========================================
+Startlogik beim Laden
+========================================= */
+window.addEventListener("load", () => {
+if (isFlyerVisit) {
+openFlyerPopup();
+} else {
+startIntroAnimations();
+}
+});
