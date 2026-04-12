@@ -81,9 +81,10 @@ Floating Button beim Footer ausblenden
 ========================================= */
 const floatingBtn = document.querySelector(".floating-project-btn");
 const siteFooter = document.querySelector(".site-footer");
+let floatingVisibilityEnabled = false;
 
 function updateFloatingButtonVisibility() {
-if (!floatingBtn || !siteFooter) return;
+if (!floatingBtn || !siteFooter || !floatingVisibilityEnabled) return;
 
 const footerTop = siteFooter.getBoundingClientRect().top;
 const windowHeight = window.innerHeight;
@@ -97,7 +98,6 @@ floatingBtn.classList.remove("is-hidden");
 
 window.addEventListener("scroll", updateFloatingButtonVisibility);
 window.addEventListener("resize", updateFloatingButtonVisibility);
-window.addEventListener("load", updateFloatingButtonVisibility);
 
 /* =========================================
 Formular-Senden
@@ -278,9 +278,13 @@ duration: 0.8
 .from(".floating-project-btn", {
 x: 80,
 opacity: 0,
-duration: 0.9
+duration: 0.9,
+onComplete: () => {
+floatingVisibilityEnabled = true;
+updateFloatingButtonVisibility();
+}
 }, "-=0.6");
-
+  
 /* ---------- Hero-Grafik Intro ---------- */
 const tlGraphic = gsap.timeline({ delay: 0.9 });
 
