@@ -69,80 +69,123 @@ von Köln
 
 <div class="hero-graphic" aria-hidden="true">
 <svg class="hero-graphic-svg" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-<style>
-/* Beibehaltung der alten Klassen für GSAP */
-.hg-stroke { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.hg-stroke-fill { fill: currentColor; stroke: none; }
-.hg-bulb-fill { fill: currentColor; stroke: none; }
-.hg-dom-line { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.hg-dom-fill { fill: currentColor; stroke: none; }
-.hg-line { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-
-/* Um sicherzustellen, dass die Strichstärken beim Skalieren nicht zu dünn werden */
-@media (max-width: 600px) {
-.hg-stroke, .hg-dom-line, .hg-line { stroke-width: 1; }
-}
-</style>
-
+<!-- Power Button -->
 <g class="hg-power">
-<circle cx="180" cy="80" r="9" class="hg-stroke" />
-<path d="M180 77 V81" class="hg-stroke" />
-<path d="M174.5 80 A5.5 5.5 0 1 0 185.5 80" class="hg-stroke" />
+<circle cx="176" cy="78" r="7.5" class="hg-stroke" />
+<path d="M176 73 V78" class="hg-stroke" />
+<path d="M171 77 A5 5 0 1 0 181 77" class="hg-stroke" />
 </g>
 
+<!-- Cursor -->
 <g class="hg-cursor">
 <path
-d="M188 84 L188 100 L195 93 L200 103 L205 101 L200 91 L210 91 Z"
+d="M185 80 L185 93 L190 88 L196 98 L200 96 L194 86 L204 86 Z"
 class="hg-stroke-fill"
 />
 </g>
 
+<!-- Segment 1 -->
 <path
-d="M171 78.5 C160 72, 150 66, 142 61"
+d="M168 75 C154 68, 144 62, 132 56"
 class="hg-line hg-line-1"
 />
 
-<g class="hg-bulb hg-bulb-1" transform="translate(138 56)">
+<!-- Bulb 1 -->
+<g class="hg-bulb hg-bulb-1" transform="translate(128 54)">
 <path
-d="M0 -3 C-3.5 -3 -6 0 -6 3 C-6 6 -3 8 -1 10 L-1 12 H1 L1 10 C3 8 6 6 6 3 C6 0 3.5 -3 0 -3 Z"
+d="M0 -4.2
+C-3.2 -4.2 -5.2 -1.6 -5.2 1.5
+C-5.2 4.1 -3.7 5.8 -2.5 7.0
+C-1.7 7.8 -1.4 8.5 -1.4 9.3
+H1.4
+C1.4 8.5 1.7 7.8 2.5 7.0
+C3.7 5.8 5.2 4.1 5.2 1.5
+C5.2 -1.6 3.2 -4.2 0 -4.2 Z"
 class="hg-bulb-fill"
 />
-<path d="M-2 13 H2" class="hg-stroke" style="stroke-width: 1.5;" />
-<path d="M-2 15 H2" class="hg-stroke" style="stroke-width: 1.5;" />
+<path
+d="M0 -4.2
+C-3.2 -4.2 -5.2 -1.6 -5.2 1.5
+C-5.2 4.1 -3.7 5.8 -2.5 7.0
+C-1.7 7.8 -1.4 8.5 -1.4 9.3
+H1.4
+C1.4 8.5 1.7 7.8 2.5 7.0
+C3.7 5.8 5.2 4.1 5.2 1.5
+C5.2 -1.6 3.2 -4.2 0 -4.2 Z"
+class="hg-stroke"
+/>
+<path d="M-2 10.6 H2" class="hg-stroke" />
 </g>
 
+<!-- Segment 2 -->
 <path
-d="M134 54 C124 49, 110 43, 100 37"
+d="M124 52 C110 45, 98 39, 84 32"
 class="hg-line hg-line-2"
 />
 
-<g class="hg-bulb hg-bulb-2" transform="translate(96 34)">
+<!-- Bulb 2 -->
+<g class="hg-bulb hg-bulb-2" transform="translate(80 30)">
 <path
-d="M0 -3 C-3.5 -3 -6 0 -6 3 C-6 6 -3 8 -1 10 L-1 12 H1 L1 10 C3 8 6 6 6 3 C6 0 3.5 -3 0 -3 Z"
+d="M0 -4.2
+C-3.2 -4.2 -5.2 -1.6 -5.2 1.5
+C-5.2 4.1 -3.7 5.8 -2.5 7.0
+C-1.7 7.8 -1.4 8.5 -1.4 9.3
+H1.4
+C1.4 8.5 1.7 7.8 2.5 7.0
+C3.7 5.8 5.2 4.1 5.2 1.5
+C5.2 -1.6 3.2 -4.2 0 -4.2 Z"
 class="hg-bulb-fill"
 />
-<path d="M-2 13 H2" class="hg-stroke" style="stroke-width: 1.5;" />
-<path d="M-2 15 H2" class="hg-stroke" style="stroke-width: 1.5;" />
+<path
+d="M0 -4.2
+C-3.2 -4.2 -5.2 -1.6 -5.2 1.5
+C-5.2 4.1 -3.7 5.8 -2.5 7.0
+C-1.7 7.8 -1.4 8.5 -1.4 9.3
+H1.4
+C1.4 8.5 1.7 7.8 2.5 7.0
+C3.7 5.8 5.2 4.1 5.2 1.5
+C5.2 -1.6 3.2 -4.2 0 -4.2 Z"
+class="hg-stroke"
+/>
+<path d="M-2 10.6 H2" class="hg-stroke" />
 </g>
 
+<!-- Segment 3 -->
 <path
-d="M92 32.5 C80 27, 68 22, 58 20"
+d="M76 28 C66 24, 58 21, 50 19"
 class="hg-line hg-line-3"
 />
 
+<!-- Dom statt Bulb 3 -->
 <g class="hg-dom hg-dom-3">
+<!-- Basis: rechte Kante dockt an Segment 3 an -->
+<path class="hg-dom-line" d="M28 19 L50 19" />
 
-<path class="hg-dom-line" d="M38 20 L58 20"/>
+<!-- linker Turm -->
+<path class="hg-dom-line" d="M33 19 L33 7" />
+<path class="hg-dom-line" d="M33 7 L38 -7" />
+<path class="hg-dom-line" d="M38 -7 L43 7" />
+<path class="hg-dom-line" d="M43 7 L43 19" />
 
-<path d="M38 20 L58 20 L58 10 Q58 5 53 0 L48 5 L43 0 Q38 5 38 10 Z" class="hg-dom-fill" />
+<!-- rechter Turm -->
+<path class="hg-dom-line" d="M39 19 L39 7" />
+<path class="hg-dom-line" d="M39 7 L44 -7" />
+<path class="hg-dom-line" d="M44 -7 L49 7" />
+<path class="hg-dom-line" d="M49 7 L49 19" />
 
-<path d="M42.5 20 L42.5 13 Q45 10.5 47.5 13 L47.5 20 Z M48.5 20 L48.5 13 Q51 10.5 53.5 13 L53.5 20 Z" fill="none" class="hg-dom-line" style="color: white; stroke-width: 1.5;" />
+<!-- Kreuze -->
+<path class="hg-dom-line" d="M38 -10 L38 -4" />
+<path class="hg-dom-line" d="M35 -7 L41 -7" />
+<path class="hg-dom-line" d="M44 -10 L44 -4" />
+<path class="hg-dom-line" d="M41 -7 L47 -7" />
 
-<path d="M48 2 V6 M46 4 H50 M53 2 V6 M51 4 H55" class="hg-dom-line" style="color: white; stroke-width: 1;" />
+<!-- Mitte minimal -->
+<path class="hg-dom-line" d="M41 19 Q44 14 47 19" />
 
+<!-- Füllflächen -->
+<path class="hg-dom-fill" d="M34.5 18 L34.5 8.5 Q38 3 41.5 8.5 L41.5 18 Z" />
+<path class="hg-dom-fill" d="M40.5 18 L40.5 8.5 Q44 3 47.5 8.5 L47.5 18 Z" />
 </g>
-
 </svg>
 </div>
 
