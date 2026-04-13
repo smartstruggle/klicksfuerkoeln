@@ -236,53 +236,67 @@ setTimeout(() => openModal(), 120);
 
 
 
-
-
+// Wir warten, bis das Dokument bereit ist
 document.addEventListener("DOMContentLoaded", () => {
 
-// 1. VORBEREITUNG (Nullzustand)
+// 1. VORBEREITUNG (Nullzustand - Alles bereitlegen, aber unsichtbar machen)
 // Wir nutzen deine exakten IDs mit "-Mobil"
-gsap.set("#dom-mobil", { opacity: 0, scale: 0.8, transformOrigin: "center bottom" });
-gsap.set("#leucht-O-mobil", { opacity: 0.2 });
-// Leitung verstecken
-gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
-gsap.set("#cursor-mobil", { x: 30, y: 30, opacity: 0 });
+gsap.set("#Dom-Mobil", { opacity: 0, scale: 0.8, transformOrigin: "center bottom" });
+gsap.set("#Leucht-O-Mobil", { opacity: 0.2 });
+
+// Leitung verstecken (Hier eventuell den Wert 2000 an die tatsächliche Länge anpassen)
+gsap.set("#Leitung-Mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
+
+// Cursor Startposition (leicht außerhalb des Buttons)
+gsap.set("#Cursor-Mobil", { x: 40, y: 40, opacity: 0 });
 
 const tl = gsap.timeline({
-defaults: { ease: "power2.out" }
+defaults: { ease: "power2.inOut" } // Eine weichere Standard-Beschleunigung
 });
 
-// SCHRITT 1: Der schnelle Klick (0.6s insgesamt)
-tl.to("#cursor-mobil", { opacity: 1, x: 0, y: 0, duration: 0.4 })
-.to("#powerbutton-mobil", { scale: 0.9, duration: 0.1 })
-.to("#powerbutton-mobil", { scale: 1, duration: 0.1 })
-.to("#cursor-mobil", { opacity: 0, duration: 0.2 }, "+=0.1");
+// --- SCHRITT 1: Der bewusste Klick ---
+// Cursor erscheint und fährt ZÜGIG, aber lesbar zum Button (0.8s)
+tl.to("#Cursor-Mobil", { opacity: 1, x: 0, y: 0, duration: 0.8 })
 
-// SCHRITT 2: Die Leitung schießt hoch (Nur 1.2s - das muss zackig gehen!)
-tl.to("#leitung-mobil", {
+// Kurze Verweilzeit, damit man sieht, WO er ist (0.2s Pause)
+.to({}, { duration: 0.2 })
+
+// Der Klick: Button drückt sich ein (etwas langsamer: 0.2s)
+.to("#Power-Button-Mobil", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
+
+// Button kommt wieder hoch (0.2s)
+.to("#Power-Button-Mobil", { scale: 1, duration: 0.2 })
+
+// HINWEIS: KEINE Animation zum Verschwinden des Cursors. Er bleibt!
+
+// --- SCHRITT 2: Die Logik-Kette (Stromfluss) ---
+// Nach dem Klick startet die Leitung. Wir geben ihr 1.8s Zeit für den Weg.
+// Das ist ein gutes Tempo: Man sieht es wachsen, aber es dauert nicht ewig.
+tl.to("#Leitung-Mobil", {
 strokeDashoffset: 0,
-duration: 1.2,
-ease: "power1.inOut"
-}, "-=0.2");
+duration: 1.8,
+ease: "none" // Konstante Geschwindigkeit für das "Wachsen"
+}, "+=0.1"); // Startet 0.1s nach dem Klick
 
-// SCHRITT 3: Das Ö und der Dom kommen fast gleichzeitig (Der "Aha"-Effekt)
-// Das Ö leuchtet auf, kurz bevor die Leitung ganz oben ist
-tl.to("#leucht-O-mobil", {
-opacity: 1,
-filter: "drop-shadow(0 0 20px rgba(253, 144, 21, 0.9))",
-duration: 0.4
-}, "-=0.4");
-
-// Der Dom ploppt zügig auf
-tl.to("#dom-mobil", {
+// SCHRITT 3: Der Dom ploppt auf
+// Das passiert EXAKT, wenn die Leitung oben ankommt (am Ende der 1.8s Leitung-Duration).
+tl.to("#Dom-Mobil", {
 opacity: 1,
 scale: 1,
-duration: 0.8,
-ease: "back.out(1.5)"
-}, "-=0.3");
+duration: 1.0, // Schönes, wertiges Aufploppen
+ease: "back.out(1.6)" // Mit einem kleinen, sympathischen "Federeffekt"
 });
 
-
+// SCHRITT 4: Das Finale - Das Öl geht an
+// Wir lassen dem Strom einen Wimpernschlag Zeit, vom Dom zum Ö zu fließen (0.2s Pause).
+// Dann leuchtet das Ö auf.
+tl.to("#Leucht-O-Mobil", {
+opacity: 1,
+filter: "drop-shadow(0 0 25px rgba(253, 144, 21, 0.9))", // Schöner, warmer Glow
+duration: 0.6, // Sanftes Einschalten
+ease: "sine.out" // Ganz weicher Übergang
+}, "+=0.2"); // 0.2s Pause nach dem Dom-Plopp
+});
 
 
 
