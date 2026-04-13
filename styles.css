@@ -350,7 +350,26 @@ stroke-width: 3; /* Oder was du in Figma eingestellt hast */
 fill: none;
 }
 
+/* Grundzustand: Desktop aus, Mobil an */
+.desktop-only {
+display: none;
+}
 
+.mobile-only {
+display: block;
+width: 100%;
+height: auto;
+}
+
+/* Ab Tablet-Breite: Mobil aus, Desktop an */
+@media (min-width: 768px) {
+.mobile-only {
+display: none;
+}
+.desktop-only {
+display: block;
+}
+}
 
 
 
