@@ -393,3 +393,79 @@ openFlyerPopup();
 startIntroAnimations();
 }
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+// Wir definieren zwei Sets an IDs, damit nichts schiefgeht
+const ids = {
+desktop: {
+cursor: "#cursor",
+button: "#powerbutton",
+dom: "#dom",
+leitung: "#leitung",
+o: "#leucht-o"
+},
+mobil: {
+cursor: "#cursor-mobil",
+button: "#powerbutton-mobil",
+dom: "#dom-mobil",
+leitung: "#leitung-mobil",
+o: "#leucht-o-mobil"
+}
+};
+
+// FUNKTION: Animation für ein Set starten
+function setupAnimation(elements) {
+const btn = document.querySelector(elements.button);
+if (!btn) return; // Wenn der Button nicht da ist (z.B. Desktop-Version auf Mobil versteckt), Abbruch.
+
+const tl = gsap.timeline({
+defaults: { ease: "power2.inOut" },
+onComplete: () => enableInteractivity(elements)
+});
+
+// 1. AUFBAU (Entrance)
+tl.to(elements.cursor, { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
+.to(elements.button, { scale: 0.88, duration: 0.2, transformOrigin: "center" })
+.to(elements.button, { scale: 1, duration: 0.2 })
+.to(elements.leitung, { strokeDashoffset: 0, duration: 1.8 }, "+=0.1")
+.to(elements.dom, { autoAlpha: 1, scale: 1, duration: 1.0, ease: "back.out(1.6)", transformOrigin: "center bottom" })
+.to(elements.o, { autoAlpha: 1, duration: 0.7 });
+}
+
+// FUNKTION: Interaktion scharf schalten
+function enableInteractivity(elements) {
+const powerBtn = document.querySelector(elements.button);
+const domEl = document.querySelector(elements.dom);
+
+powerBtn.style.cursor = "pointer";
+
+// Sanftes Atmen/Pulsieren als Hinweis
+gsap.to(powerBtn, {
+scale: 1.08,
+duration: 0.8,
+repeat: -1,
+yoyo: true,
+ease: "sine.inOut",
+transformOrigin: "center"
+});
+
+// Klick-Event
+powerBtn.addEventListener("click", () => {
+const actionTl = gsap.timeline();
+actionTl
+.to(powerBtn, { scale: 0.9, duration: 0.1 })
+.to(powerBtn, { scale: 1, duration: 0.1 })
+.to(domEl, { scale: 1.3, duration: 0.4, ease: "back.out(1.7)" }, "-=0.1")
+.to(domEl, { scale: 0, opacity: 0, duration: 0.5, ease: "power2.in" }, "+=0.5")
+.to(domEl, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.2)" }, "+=1.0");
+});
+}
+
+// BEIDE WELTEN STARTEN
+// GSAP prüft durch das "if(!btn)" intern, welche Version gerade aktiv/sichtbar ist.
+setupAnimation(ids.desktop);
+setupAnimation(ids.mobil);
+});
+
