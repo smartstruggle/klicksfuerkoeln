@@ -312,56 +312,77 @@ line-height: 1.02;
 letter-spacing: -0.03em;
 }
 
-/* Das neue Layout für dein Figma-Gesamtkunstwerk */
+/* --- Hero Graphic Container --- */
 .hero-graphic {
 width: 100%;
 max-width: 1400px;
 margin: 0 auto;
 
-/* Hier begrenzen wir den Platz nach unten radikal */
-max-height: 500px;
-overflow: visible; /* Schneidet unsichtbare Ränder ab */
+/* Platz nach oben auf Mobil minimieren */
+padding-top: 10px !important;
+
+/* Verhindert, dass die Grafik zu viel Platz nach unten einnimmt */
+max-height: 550px;
+overflow: visible;
 
 display: flex;
 justify-content: center;
-align-items: flex-start; /* Schiebt die Grafik nach oben */
+align-items: flex-start;
 }
 
+/* --- SVG Grund-Styles --- */
 .hero-graphic-svg {
 width: 100%;
 height: auto;
-/* Falls immer noch zu viel Platz: Schieb die nachfolgende Section hoch */
+/* Schiebt den nachfolgenden Content (Services) näher an die Grafik */
+margin-bottom: -50px;
+}
+
+/* --- Spezifische Mobil-Anpassung --- */
+.mobile-only {
+display: block;
+/* Damit die Grafik auf dem Handy nicht zu breit wird und man alles sieht */
+max-width: 310px;
+margin: 0 auto;
+}
+
+/* --- Desktop/Mobil Weiche --- */
+.desktop-only {
+display: none !important;
+}
+
+/* Ab Tablet-Breite (768px) schalten wir um */
+@media (min-width: 768px) {
+.hero-graphic {
+padding-top: 50px !important;
+max-height: 700px;
+}
+
+.mobile-only {
+display: none !important;
+}
+
+.desktop-only {
+display: block !important;
+max-width: 1200px; /* Optional: Begrenzt die Desktop-Grafik für bessere Schärfe */
+}
+
+.hero-graphic-svg {
 margin-bottom: -100px;
 }
+}
 
-/* Die alten Graphic Strokes können wir für die neuen IDs nutzen */
+/* --- Deine Pfad-Styles (für die Animation vorbereitet) --- */
+/* Hier nutzen wir direkt die neuen IDs für Mobil und Desktop */
 #leitung,
+#leitung-mobil,
 #line-horizontal,
-#line-vertikal {
-stroke: #FD9015; /* Deine Farbe aus Figma */
-stroke-width: 3; /* Oder was du in Figma eingestellt hast */
+#line-horizontal-mobil,
+#line-vertikal,
+#line-vertikal-mobil {
+stroke: var(--orange); /* Nutzt deine zentrale Farbe */
+stroke-width: 3;
 fill: none;
-}
-
-/* Grundzustand: Desktop aus, Mobil an */
-.desktop-only {
-display: none;
-}
-
-.mobile-only {
-display: block;
-width: 100%;
-height: auto;
-}
-
-/* Ab Tablet-Breite: Mobil aus, Desktop an */
-@media (min-width: 768px) {
-.mobile-only {
-display: none;
-}
-.desktop-only {
-display: block;
-}
 }
 
 
