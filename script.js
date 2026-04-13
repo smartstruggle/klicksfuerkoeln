@@ -242,27 +242,14 @@ function startIntroAnimations() {
 if (introHasStarted) return;
 introHasStarted = true;
 
-// 1. DER NULLZUSTAND (Alles vorbereiten)
-// Ö ist da, aber "tot" (schwarz/dunkel)
-gsap.set("#leucht-o", { opacity: 0.2, filter: "blur(2px)" });
-
-// Filamente glimmen nur ganz leicht (Standby)
+// 1. DER NULLZUSTAND
+gsap.set("#leucht-o", { opacity: 0.2 });
 gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.98 });
-
-// Birnen-Glow ist komplett aus
 gsap.set(["#birne-links", "#birne-rechts"], { opacity: 0 });
-
-// Dom ist unsichtbar und klein (Startpunkt: Ö-Punkte)
-gsap.set("#dom", {
-opacity: 0,
-scale: 0,
-transformOrigin: "center bottom"
-});
-
-// Cursor Startposition
+gsap.set("#dom", { opacity: 0, scale: 0, transformOrigin: "center bottom" });
 gsap.set("#cursor", { x: 40, y: 30, opacity: 0 });
 
-// Leitung komplett versteckt (rechts startend)
+// Leitung verstecken (Start rechts)
 gsap.set("#leitung", { strokeDasharray: 2500, strokeDashoffset: -2500 });
 
 /* ---------- DIE TIMELINE ---------- */
@@ -270,73 +257,70 @@ const masterTL = gsap.timeline({
 defaults: { ease: "power2.inOut" }
 });
 
-// SCHRITT 1: Der Cursor-Klick
+// SCHRITT 1: Cursor & Klick
 masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 .to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
 .to("#powerbutton", { scale: 1, duration: 0.2 })
-.to("#cursor", { opacity: 0, x: 10, y: 10, duration: 0.5 }, "+=0.5"); // Cursor zieht sich dezent zurück
+.to("#cursor", { opacity: 0, duration: 0.5 }, "+=0.2");
 
-// SCHRITT 2: Die Leitung (Die "Zündschnur")
-// Wir nehmen uns 6 Sekunden Zeit für die gesamte Strecke
-masterTL.to("#leitung", {
+// SCHRITT 2: Die Leitung startet (Dauer auf 4s erhöht für mehr Realismus)
+// Wir setzen hier einen Marker "leitungStart"
+masterTL.addLabel("leitungStart")
+.to("#leitung", {
 strokeDashoffset: 0,
-duration: 1.5,
+duration: 4,
 ease: "none"
-}, "-=0.5");
+}, "leitungStart");
 
-// SCHRITT 3: Birne RECHTS (Trigger nach ca. 1.5s Leitungsfahrt)
+// SCHRITT 3: Birne RECHTS (Trigger nach ca. 20% der Leitungsfahrt)
+// "<" bedeutet: Beziehe dich auf den Start der vorherigen Animation (Leitung)
 masterTL.to("#filament-rechts", {
 opacity: 1,
 scale: 1.02,
-duration: 0.5,
-ease: "power1.in"
-}, "-=4.5") // Exakt wenn die Leitung dort ankommt
+duration: 0.3
+}, "leitungStart+=0.8") // 0.8s nach Start der Leitung
 .to("#birne-rechts", {
 opacity: 1,
-duration: 0.5, // Langsames "Heißlaufen" des Glases
-ease: "sine.out"
-}, "-=4.0");
+duration: 0.8
+}, "<");
 
-// SCHRITT 4: Birne LINKS (Trigger nach ca. 4s Leitungsfahrt)
+// SCHRITT 4: Birne LINKS (Trigger nach ca. 70% der Leitungsfahrt)
 masterTL.to("#filament-links", {
 opacity: 1,
 scale: 1.02,
-duration: 0.5
-}, "-=2.0")
+duration: 0.3
+}, "leitungStart+=2.8") // 2.8s nach Start der Leitung
 .to("#birne-links", {
 opacity: 1,
-duration: 2.5
-}, "-=1.5");
+duration: 0.8
+}, "<");
 
-// SCHRITT 5: Das Ö (Trigger am Ende der Leitung)
+// SCHRITT 5: Das Ö (Exakt am Ende der 4s Leitung)
 masterTL.to("#leucht-o", {
 opacity: 1,
-filter: "drop-shadow(0 0 30px rgba(253, 144, 21, 0.8)) blur(0px)",
-duration: 0.75
-}, "-=0.2");
+filter: "drop-shadow(0 0 30px rgba(253, 144, 21, 0.8))",
+duration: 0.6
+}, "leitungStart+=4");
 
-// SCHRITT 6: Der Dom-Plopp (Wächst aus dem Ö)
+// SCHRITT 6: Der Dom-Plopp
 masterTL.to("#dom", {
 opacity: 1,
 scale: 1,
-duration: 1.8,
+duration: 1.2,
 ease: "back.out(1.2)"
-}, "+=0.1")
+}, "+=0.2");
 
-// SCHRITT 7: Dom-Finale (Blinken/Verschwinden)
-.to("#dom", {
+// SCHRITT 7: Dom-Finale (Bleibt stehen)
+masterTL.to("#dom", {
 opacity: 0,
-scale: 0.95,
-duration: 2,
-delay: 4 // Er bleibt 4 Sekunden stolz stehen
+duration: 1,
+delay: 5
 });
 }
 
-// Start-Event
 window.addEventListener("load", () => {
 setTimeout(startIntroAnimations, 800);
 });
-
 
 
 /* =========================================
