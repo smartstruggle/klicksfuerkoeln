@@ -237,7 +237,7 @@ setTimeout(() => openModal(), 120);
 
 document.addEventListener("DOMContentLoaded", () => {
 
-// 1. VORBEREITUNG (Startzustand)
+// 1. SETUP (Alles auf Null)
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
@@ -245,14 +245,14 @@ visibility: "visible"
 
 gsap.set("#dom-mobil", { scale: 0.8, transformOrigin: "center bottom" });
 gsap.set("#leucht-o-mobil", { opacity: 0.2 });
-gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000, opacity: 1 });
+gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
 gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
-// 2. ENTRANCE-TIMELINE
+// 2. ENTRANCE TIMELINE
 const tl = gsap.timeline({
 delay: 0.5,
 defaults: { ease: "power2.inOut" },
-// Nach der Animation wird die Interaktion gestartet
+// Wenn fertig, wird die Interaktion scharf geschaltet
 onComplete: initMobilInteractions
 });
 
@@ -268,7 +268,7 @@ filter: "drop-shadow(0 0 25px rgba(253, 144, 21, 0.9))",
 duration: 0.7
 }, "+=0.3");
 
-// 3. INTERAKTIONS-FUNKTION (Pulsieren & Wachsen)
+// 3. INTERAKTIONS-FUNKTION
 function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
@@ -276,7 +276,11 @@ const cursor = document.querySelector("#cursor-mobil");
 
 if (!btn || !dom) return;
 
-// A) HINWEIS: Button atmet, Cursor wackelt
+// Macht den Button für das System als "Klickbar" erkennbar
+btn.style.pointerEvents = "auto";
+btn.style.cursor = "pointer";
+
+// A) DER LOCKRUF (Pulsieren & Cursor-Wackeln)
 const hintTl = gsap.timeline({ repeat: -1 });
 hintTl.to(btn, { scale: 1.1, duration: 0.8, yoyo: true, ease: "sine.inOut", transformOrigin: "center" })
 .to(cursor, { x: "+=3", y: "-=2", duration: 0.2, yoyo: true, repeat: 3 }, 0);
@@ -288,44 +292,50 @@ let pressTimer;
 const growDom = () => {
 if (growthLevel < 3) {
 growthLevel++;
-let targetScale = 1 + (growthLevel * 0.2);
+let targetScale = 1 + (growthLevel * 0.25); // Stufen: 1.25, 1.5, 1.75
 gsap.to(dom, {
 scale: targetScale,
-duration: 0.4,
-ease: "back.out(1.7)",
+duration: 0.3,
+ease: "back.out(2)",
 transformOrigin: "center bottom"
 });
 
 if (growthLevel === 3) {
-gsap.to(dom, { filter: "brightness(1.3) drop-shadow(0 0 15px #fd9015)", duration: 0.3 });
+gsap.to(dom, { filter: "brightness(1.4) drop-shadow(0 0 20px #fd9015)", duration: 0.2 });
 }
 }
 };
 
-// C) EVENTS FÜR TOUCH
-btn.addEventListener("touchstart", (e) => {
-e.preventDefault();
-hintTl.pause();
-growDom();
-pressTimer = setInterval(growDom, 500);
-});
-
-btn.addEventListener("touchend", () => {
+const resetDom = () => {
 clearInterval(pressTimer);
-
-// Dom verschwindet nach 0.8s und kommt dann zurück
+// Kleiner Moment Pause auf der Endstufe (0.7s)
 gsap.to(dom, {
 scale: 0,
 opacity: 0,
-duration: 0.5,
-delay: 0.8,
+duration: 0.4,
+delay: 0.7,
 onComplete: () => {
 growthLevel = 0;
 gsap.set(dom, { scale: 1, opacity: 1, filter: "none" });
-hintTl.play();
+hintTl.play(); // Lockruf wieder an
 }
 });
+};
+
+// C) EVENTS (Touch & Maus für Tests am PC)
+// Wir nutzen 'pointerdown' - das funktioniert für Finger UND Maus gleichermaßen!
+btn.addEventListener("pointerdown", (e) => {
+hintTl.pause();
+growDom();
+pressTimer = setInterval(growDom, 450); // Alle 450ms eine Stufe
 });
+
+// Wenn der Finger/Maus loslässt oder das Element verlässt
+btn.addEventListener("pointerup", resetDom);
+btn.addEventListener("pointerleave", resetDom);
+
+// Verhindert, dass das Handy beim langen Drücken ein Menü öffnet
+btn.addEventListener("contextmenu", (e) => e.preventDefault());
 }
 });
 
