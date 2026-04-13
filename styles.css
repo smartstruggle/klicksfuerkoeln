@@ -433,7 +433,13 @@ stroke-linecap: round;
 }
 
 
-
+/* Alles auf klein geschrieben korrigiert */
+#dom-mobil,
+#leucht-o-mobil,
+#leitung-mobil,
+#cursor-mobil {
+visibility: hidden;
+}
 
 
 
