@@ -242,21 +242,22 @@ function startIntroAnimations() {
 if (introHasStarted) return;
 introHasStarted = true;
 
+// A. SETUP (Alles im "Aus"-Zustand vorbereiten)
+// Wir setzen die Birnen auf 0, die Filamente auf ein gaaanz schwaches Glimmen
+gsap.set(["#birne-links", "#birne-rechts", "#leucht-o", "#dom"], { opacity: 0 });
+gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.95 });
+
+gsap.set("#cursor", { x: 50, y: 30, opacity: 0 });
+
+// Leitung vorbereiten: Wir nutzen 2000, um sicherzugehen, dass sie komplett weg ist
+gsap.set("#leitung", {
+strokeDasharray: 2000,
+strokeDashoffset: -2000 // Das sorgt oft für den Start am Button (rechts)
+});
+
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-// 1. Initialisierung (Alles unsichtbar machen)
-gsap.set(["#birne-links", "#birne-rechts", "#leucht-o", "#dom"], {
-opacity: 0,
-scale: 0.85,
-transformOrigin: "50% 50%"
-});
-gsap.set("#cursor", { x: 18, y: 12, opacity: 0 });
-gsap.set("#leitung", { strokeDasharray: 2000, strokeDashoffset: 2000 }); // Höherer Wert zur Sicherheit
-
 if (prefersReducedMotion) {
-gsap.set([".eyebrow", ".hero h1", ".services-anim", ".floating-project-btn", "#birne-links", "#birne-rechts", "#leucht-o", "#dom", "#cursor"], {
-opacity: 1, x: 0, y: 0, scale: 1
-});
+gsap.set([".eyebrow", ".hero h1", ".services-anim", "#birne-links", "#birne-rechts", "#leucht-o"], { opacity: 1 });
 gsap.set("#leitung", { strokeDashoffset: 0 });
 return;
 }
@@ -264,37 +265,46 @@ return;
 /* ---------- Die kombinierte Timeline ---------- */
 const mainTL = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-// TEIL A: Text & Button
+// 1. Zuerst kommt dein Text (wie vorher)
 mainTL.from(".eyebrow", { x: -60, opacity: 0, duration: 0.7 })
 .from(".hero h1", { x: -100, opacity: 0, duration: 1.2, ease: "back.out(1.2)" }, "-=0.4")
 .from(".services-anim", { y: 30, opacity: 0, duration: 0.8 }, "-=0.6")
-.fromTo(".floating-project-btn", { x: 80, opacity: 0 }, {
-x: 0, opacity: 1, duration: 0.9,
-onStart: () => document.querySelector(".floating-project-btn")?.classList.remove("is-hidden")
-}, "-=0.6")
 
-// TEIL B: Die Grafik-Animation (Startet direkt im Anschluss)
-.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.45 }, "-=0.2")
-.to("#powerbutton", {
-scale: 0.94,
-transformOrigin: "center center",
-duration: 0.08,
-yoyo: true,
-repeat: 1
-}, "-=0.08")
-.to("#leitung", { strokeDashoffset: 0, duration: 1, ease: "power2.inOut" })
-.to("#birne-links", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, "-=0.4")
-.to("#birne-rechts", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, "-=0.3")
+// 2. JETZT DIE GRAFIK-LOGIK
+// Cursor fliegt zum Powerbutton
+.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power2.out" }, "-=0.2")
+
+// Realistischer Klick-Effekt
+.to("#powerbutton", { scale: 0.9, duration: 0.15, transformOrigin: "center center" })
+.to("#powerbutton", { scale: 1, duration: 0.15 })
+
+// Leitung wächst langsam vom Button aus nach links
+.to("#leitung", {
+strokeDashoffset: 0,
+duration: 3,
+ease: "none"
+})
+
+// Effekt Birne RECHTS (während die Leitung noch läuft)
+.to("#filament-rechts", { opacity: 1, scale: 1, duration: 0.6 }, "-=2.4")
+.to("#birne-rechts", { opacity: 1, duration: 0.8 }, "-=2.0")
+
+// Effekt Birne LINKS (später, wenn die Leitung weiter links ist)
+.to("#filament-links", { opacity: 1, scale: 1, duration: 0.6 }, "-=1.2")
+.to("#birne-links", { opacity: 1, duration: 0.8 }, "-=0.8")
+
+// Das Finale: Ö leuchtet und Dom blinkt
 .to("#leucht-o", {
-opacity: 1, scale: 1, duration: 0.5,
-filter: "drop-shadow(0 0 15px rgba(253, 144, 21, 0.6))"
-}, "-=0.2")
-.to("#dom", { opacity: 1, duration: 0.6, ease: "back.out(1.2)" }, "-=0.1");
+opacity: 1,
+filter: "drop-shadow(0 0 20px rgba(253, 144, 21, 0.8))",
+duration: 0.8
+})
+.to("#dom", { opacity: 1, duration: 0.4 })
+.to("#dom", { opacity: 0, duration: 0.8, delay: 0.4 });
 }
 
-// DER ZÜNDER: Ersetze dein altes window.addEventListener("load") am Ende des Scripts hiermit:
+// Ganz wichtig: Der Aufruf beim Laden der Seite
 window.addEventListener("load", () => {
-// Kurze Verzögerung, damit der Browser alles gerendert hat
 setTimeout(startIntroAnimations, 500);
 });
 
