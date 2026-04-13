@@ -314,90 +314,55 @@ updateFloatingButtonVisibility();
 "-=0.6"
 );
 
-/* ---------- Hero-Grafik Intro ---------- */
-const tlGraphic = gsap.timeline({ delay: 0.9 });
+// 1. Initialisierung: Alles ist am Anfang "aus"
+gsap.set(["#leitung", "#birne-links", "#birne-rechts", "#leucht-o", "#dom"], { opacity: 0 });
+// Falls die Leitung gezeichnet werden soll, setzen wir sie auf 0 Länge
+gsap.set("#leitung", { drawSVG: "0%" });
 
-gsap.set([".hg-bulb-1", ".hg-bulb-2", ".hg-dom-3"], {
-opacity: 0,
-scale: 0.85,
-transformOrigin: "50% 50%"
-});
+const powerBtn = document.querySelector("#powerbutton");
 
-gsap.set(".hg-cursor", {
-x: 18,
-y: 12,
-opacity: 0
-});
+powerBtn.addEventListener("click", () => {
+const tl = gsap.timeline();
 
-gsap.set([".hg-line-1", ".hg-line-2", ".hg-line-3"], {
-strokeDasharray: 220,
-strokeDashoffset: 220
-});
-
-tlGraphic
-.to(".hg-cursor", {
-opacity: 1,
-x: 0,
-y: 0,
-duration: 0.45,
-ease: "power2.out"
-})
-.to(".hg-power", {
-scale: 0.94,
-transformOrigin: "430px 210px",
-duration: 0.08,
+tl.to("#powerbutton", {
+scale: 0.9,
+duration: 0.1,
 yoyo: true,
-repeat: 1
-}, "-=0.08")
-.to(".hg-line-1", {
-strokeDashoffset: 0,
-duration: 0.28,
-ease: "power2.out"
+repeat: 1,
+ease: "power1.inOut"
 })
-.to(".hg-bulb-1", {
+// 2. Die Leitung "legen" (ausfahren)
+.to("#leitung", {
 opacity: 1,
-scale: 1,
-duration: 0.45,
-ease: "back.out(1.5)",
-onStart: () => document.querySelector(".hg-bulb-1")?.classList.add("is-on")
-}, "-=0.05")
-.to(".hg-line-2", {
-strokeDashoffset: 0,
-duration: 0.28,
-ease: "power2.out"
+drawSVG: "100%",
+duration: 1.5,
+ease: "none"
 })
-.to(".hg-bulb-2", {
+// 3. Die erste Lampe geht an
+.to("#birne-links", {
 opacity: 1,
-scale: 1,
-duration: 0.45,
-ease: "back.out(1.5)",
-onStart: () => document.querySelector(".hg-bulb-2")?.classList.add("is-on")
-}, "-=0.05")
-.to(".hg-line-3", {
-strokeDashoffset: 0,
-duration: 0.28,
-ease: "power2.out"
+duration: 0.3,
+ease: "expo.out"
 })
-.to(".hg-dom-3", {
+// 4. Die zweite Lampe geht an
+.to("#birne-rechts", {
 opacity: 1,
-duration: 0.6,
-ease: "back.out(1.2)",
-onStart: () => {
-const dom = document.querySelector(".hg-dom-3");
-if (dom) {
-setTimeout(() => {
-dom.classList.add("is-on");
-}, 180); // kleine Verzögerung = schöner Effekt
-}
-}
-}, "-=0.05")
-.to(".hero-graphic", {
-opacity: 0.65,
-duration: 0.5,
-ease: "power1.out"
-}, "+=0.1");
-}
-
+duration: 0.3,
+ease: "expo.out"
+}, "+=0.2") // Kleine Verzögerung
+// 5. Das "Ö" (Leucht-O) flammt auf
+.to("#leucht-o", {
+opacity: 1,
+filter: "drop-shadow(0 0 15px rgba(253, 144, 21, 0.8))",
+duration: 0.5
+})
+// 6. Der Dom leuchtet zum Schluss auf
+.to("#dom", {
+opacity: 1,
+duration: 0.8,
+ease: "power2.in"
+});
+});
 
 /* =========================================
 Startlogik beim Laden
