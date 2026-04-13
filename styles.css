@@ -237,34 +237,34 @@ color: var(--orange) !important;
 font-weight: 600;
 }
 
-/* Hero */
+/* ==========================================================================
+HERO SECTION & GRAPHIC (Master-Code)
+========================================================================== */
 
 .hero {
 position: relative;
 overflow: visible;
-padding-block: clamp(4.5rem, 3rem + 4vw, 7rem) clamp(9rem, 8rem + 8vw, 14rem);
 background: var(--bg);
+/* Mobil: Oben kompakter Abstand, unten fast null für die Grafik */
+padding-block: 2rem 0.5rem;
 }
 
 .hero-single {
 position: relative;
 width: min(100% - (2 * var(--page-pad-x)), var(--container));
 margin-inline: auto;
-padding-bottom: 0 !important; /* Entfernt den unteren Puffer der Section */
+padding-bottom: 0 !important;
 margin-bottom: 0 !important;
 }
 
-}
-
-
 .hero h1 {
-margin: 0;
+margin: 0 auto;
 font-family: "Inter", sans-serif;
 font-weight: 700;
 font-size: clamp(3rem, 10vw, 4.8rem);
 line-height: 0.92;
 letter-spacing: -0.045em;
-white-space: normal;
+text-align: center; /* Harmonisch zur zentrierten Grafik auf Mobil */
 max-width: 9ch;
 }
 
@@ -274,27 +274,86 @@ content: "";
 margin-top: 0.14em;
 }
 
-.hero-visual {
-display: none;
+/* --- Responsive Anpassungen ab Tablet/Desktop (768px) --- */
+@media (min-width: 768px) {
+.hero {
+/* Dein ursprüngliches Fluid-Spacing für Desktop */
+padding-block: clamp(4.5rem, 3rem + 4vw, 7rem) clamp(9rem, 8rem + 8vw, 14rem);
 }
 
-/* Sections */
+.hero h1 {
+text-align: left; /* Klassischer Desktop-Look */
+margin: 0;
+}
+}
+
+/* ==========================================================================
+HERO GRAPHIC CONTAINER (Das Herzstück)
+========================================================================== */
+
+.hero-graphic {
+width: 100%;
+max-width: 1400px;
+margin: 0 auto;
+padding-top: 0 !important;
+max-height: 500px;
+overflow: visible;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+}
+
+.hero-graphic-svg {
+width: 100%;
+height: auto;
+}
+
+/* Sichtbarkeit steuern */
+.mobile-only {
+display: block;
+max-width: 290px; /* Kompakt für Mobilgeräte */
+margin: 0 auto;
+}
+
+.desktop-only {
+display: none !important;
+}
+
+@media (min-width: 768px) {
+.mobile-only {
+display: none !important;
+}
+.desktop-only {
+display: block !important;
+max-width: 1200px;
+}
+.hero-graphic {
+padding-top: 50px !important;
+max-height: 700px;
+}
+}
+
+/* ==========================================================================
+SECTION 2 (SERVICES) & ÜBERGÄNGE
+========================================================================== */
 
 .section {
 padding-block: var(--space-6);
 }
 
 .services {
+/* Zieht die Sektion auf Mobil näher an die Grafik ran */
+margin-top: 1rem !important;
+}
+
+@media (min-width: 768px) {
+.services {
 margin-top: clamp(4rem, 6vw, 6rem);
 }
-
-.section-head {
-margin-bottom: var(--space-4);
 }
 
-.section-head--center {
-text-align: center;
-}
+.section-head { margin-bottom: var(--space-4); }
+.section-head--center { text-align: center; }
 
 .section-kicker {
 margin: 0 0 0.75rem;
@@ -312,78 +371,34 @@ line-height: 1.02;
 letter-spacing: -0.03em;
 }
 
-/* --- Hero Graphic Container --- */
-.hero-graphic {
-width: 100%;
-max-width: 1400px;
-margin: 0 auto;
+/* ==========================================================================
+PFAD-STYLES (IDs für Animation)
+========================================================================== */
 
-/* Platz nach oben auf Mobil minimieren */
-padding-top: 10px !important;
-
-/* Verhindert, dass die Grafik zu viel Platz nach unten einnimmt */
-max-height: 550px;
-overflow: visible;
-
-display: flex;
-justify-content: center;
-align-items: flex-start;
-}
-
-/* --- SVG Grund-Styles --- */
-.hero-graphic-svg {
-width: 100%;
-height: auto;
-/* Schiebt den nachfolgenden Content (Services) näher an die Grafik */
-margin-bottom: -50px;
-}
-
-/* --- Spezifische Mobil-Anpassung --- */
-.mobile-only {
-display: block;
-/* Damit die Grafik auf dem Handy nicht zu breit wird und man alles sieht */
-max-width: 310px;
-margin: 0 auto;
-}
-
-/* --- Desktop/Mobil Weiche --- */
-.desktop-only {
-display: none !important;
-}
-
-/* Ab Tablet-Breite (768px) schalten wir um */
-@media (min-width: 768px) {
-.hero-graphic {
-padding-top: 50px !important;
-max-height: 700px;
-}
-
-.mobile-only {
-display: none !important;
-}
-
-.desktop-only {
-display: block !important;
-max-width: 1200px; /* Optional: Begrenzt die Desktop-Grafik für bessere Schärfe */
-}
-
-.hero-graphic-svg {
-margin-bottom: -100px;
-}
-}
-
-/* --- Deine Pfad-Styles (für die Animation vorbereitet) --- */
-/* Hier nutzen wir direkt die neuen IDs für Mobil und Desktop */
-#leitung,
-#leitung-mobil,
-#line-horizontal,
-#line-horizontal-mobil,
-#line-vertikal,
-#line-vertikal-mobil {
-stroke: var(--orange); /* Nutzt deine zentrale Farbe */
+/* Linien & Konturen */
+#leitung, #leitung-mobil,
+#line-horizontal, #line-horizontal-mobil,
+#line-vertikal, #line-vertikal-mobil,
+#filament-links, #filament-rechts {
+stroke: var(--orange);
 stroke-width: 3;
 fill: none;
+stroke-linecap: round;
 }
+
+/* Flächen & Massive Füllungen */
+#dom, #dom-mobil,
+#spitzen, #spitzen-mobil,
+#basis, #basis-mobil,
+#powerbutton, #powerbutton-mobil,
+#fassung-links, #fassung-rechts,
+#cursor, #cursor-mobil,
+#leucht-o, #leucht-o-mobil {
+fill: var(--orange);
+stroke: none;
+}
+
+
 
 
 
