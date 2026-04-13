@@ -250,7 +250,10 @@ background: var(--bg);
 position: relative;
 width: min(100% - (2 * var(--page-pad-x)), var(--container));
 margin-inline: auto;
-padding-bottom: clamp(3rem, 5vw, 6rem);
+padding-bottom: 0 !important; /* Entfernt den unteren Puffer der Section */
+margin-bottom: 0 !important;
+}
+
 }
 
 .eyebrow {
@@ -324,7 +327,7 @@ margin: 0 auto;
 
 /* Hier begrenzen wir den Platz nach unten radikal */
 max-height: 500px;
-overflow: hidden; /* Schneidet unsichtbare Ränder ab */
+overflow: visible; /* Schneidet unsichtbare Ränder ab */
 
 display: flex;
 justify-content: center;
