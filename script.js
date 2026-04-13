@@ -237,7 +237,7 @@ setTimeout(() => openModal(), 120);
 
 document.addEventListener("DOMContentLoaded", () => {
 
-// 1. VORBEREITUNG (Alles auf Startposition)
+// 1. VORBEREITUNG (Startzustand)
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
@@ -248,11 +248,11 @@ gsap.set("#leucht-o-mobil", { opacity: 0.2 });
 gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000, opacity: 1 });
 gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
-// 2. DIE ENTRANCE-TIMELINE
+// 2. ENTRANCE-TIMELINE
 const tl = gsap.timeline({
 delay: 0.5,
 defaults: { ease: "power2.inOut" },
-// WICHTIG: Sobald die Animation fertig ist, wird die Interaktion scharf geschaltet
+// Nach der Animation wird die Interaktion gestartet
 onComplete: initMobilInteractions
 });
 
@@ -268,7 +268,7 @@ filter: "drop-shadow(0 0 25px rgba(253, 144, 21, 0.9))",
 duration: 0.7
 }, "+=0.3");
 
-// 3. DIE INTERAKTIONS-FUNKTION (Wird erst nach der Timeline aktiv)
+// 3. INTERAKTIONS-FUNKTION (Pulsieren & Wachsen)
 function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
@@ -276,19 +276,19 @@ const cursor = document.querySelector("#cursor-mobil");
 
 if (!btn || !dom) return;
 
-// A) DER LOCKRUF: Button atmet, Cursor wackelt ganz dezent
+// A) HINWEIS: Button atmet, Cursor wackelt
 const hintTl = gsap.timeline({ repeat: -1 });
-hintTl.to(btn, { scale: 1.08, duration: 0.8, yoyo: true, ease: "sine.inOut", transformOrigin: "center" })
+hintTl.to(btn, { scale: 1.1, duration: 0.8, yoyo: true, ease: "sine.inOut", transformOrigin: "center" })
 .to(cursor, { x: "+=3", y: "-=2", duration: 0.2, yoyo: true, repeat: 3 }, 0);
 
-// B) DIE WACHSTUMS-LOGIK
+// B) WACHSTUMS-LOGIK
 let growthLevel = 0;
 let pressTimer;
 
 const growDom = () => {
 if (growthLevel < 3) {
 growthLevel++;
-let targetScale = 1 + (growthLevel * 0.2); // Stufen: 1.2, 1.4, 1.6
+let targetScale = 1 + (growthLevel * 0.2);
 gsap.to(dom, {
 scale: targetScale,
 duration: 0.4,
@@ -296,40 +296,38 @@ ease: "back.out(1.7)",
 transformOrigin: "center bottom"
 });
 
-// Extra-Glow auf maximaler Stufe
 if (growthLevel === 3) {
 gsap.to(dom, { filter: "brightness(1.3) drop-shadow(0 0 15px #fd9015)", duration: 0.3 });
 }
 }
 };
 
-// C) TOUCH-EVENTS
+// C) EVENTS FÜR TOUCH
 btn.addEventListener("touchstart", (e) => {
-e.preventDefault(); // Verhindert Scrollen beim Drücken
-hintTl.pause(); // Stop das Pulsieren während der Aktion
-growDom(); // Erste Stufe sofort
-pressTimer = setInterval(growDom, 500); // Dann alle 0.5s eine Stufe weiter
+e.preventDefault();
+hintTl.pause();
+growDom();
+pressTimer = setInterval(growDom, 500);
 });
 
 btn.addEventListener("touchend", () => {
-clearInterval(pressTimer); // Timer stoppen
+clearInterval(pressTimer);
 
-// Nach kurzem Bewundern (0.8s) schrumpft der Dom und resettet
+// Dom verschwindet nach 0.8s und kommt dann zurück
 gsap.to(dom, {
 scale: 0,
 opacity: 0,
 duration: 0.5,
 delay: 0.8,
 onComplete: () => {
-growthLevel = 0; // Reset Stufe
-gsap.set(dom, { scale: 1, opacity: 1, filter: "none" }); // Kommt normal wieder
-hintTl.play(); // Lockruf geht wieder an
+growthLevel = 0;
+gsap.set(dom, { scale: 1, opacity: 1, filter: "none" });
+hintTl.play();
 }
 });
 });
 }
 });
-
 
 
 
