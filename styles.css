@@ -377,9 +377,7 @@ PFAD-STYLES (IDs für Animation)
 
 /* --- 1. Die Fassungen & Basis (Dunkler Ton: #D26D14) --- */
 #fassung-links,
-#fassung-rechts,
-#basis,
-#basis-mobil {
+#fassung-rechts {
 fill: #D26D14 !important;
 stroke: none;
 }
@@ -408,6 +406,8 @@ stroke: none;
 /* Hier stellen wir sicher, dass der Dom komplett orange ist */
 #spitzen,
 #spitzen-mobil,
+#basis,
+#basis-mobil
 #dom,
 #dom-mobil,
 #powerbutton,
