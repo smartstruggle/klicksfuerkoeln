@@ -271,7 +271,7 @@ defaults: { ease: "power2.inOut" }
 });
 
 // SCHRITT 1: Der Cursor-Klick
-masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 1.5 })
+masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 1.0 })
 .to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
 .to("#powerbutton", { scale: 1, duration: 0.2 })
 .to("#cursor", { opacity: 0, x: 10, y: 10, duration: 0.8 }, "+=0.5"); // Cursor zieht sich dezent zurück
@@ -280,7 +280,7 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 1.5 })
 // Wir nehmen uns 6 Sekunden Zeit für die gesamte Strecke
 masterTL.to("#leitung", {
 strokeDashoffset: 0,
-duration: 6,
+duration: 3,
 ease: "none"
 }, "-=0.5");
 
@@ -288,7 +288,7 @@ ease: "none"
 masterTL.to("#filament-rechts", {
 opacity: 1,
 scale: 1.02,
-duration: 1,
+duration: 0.5,
 ease: "power1.in"
 }, "-=4.5") // Exakt wenn die Leitung dort ankommt
 .to("#birne-rechts", {
@@ -301,7 +301,7 @@ ease: "sine.out"
 masterTL.to("#filament-links", {
 opacity: 1,
 scale: 1.02,
-duration: 1
+duration: 0.5
 }, "-=2.0")
 .to("#birne-links", {
 opacity: 1,
@@ -312,7 +312,7 @@ duration: 2.5
 masterTL.to("#leucht-o", {
 opacity: 1,
 filter: "drop-shadow(0 0 30px rgba(253, 144, 21, 0.8)) blur(0px)",
-duration: 1.5
+duration: 0.75
 }, "-=0.2");
 
 // SCHRITT 6: Der Dom-Plopp (Wächst aus dem Ö)
