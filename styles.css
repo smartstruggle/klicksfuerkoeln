@@ -323,7 +323,7 @@ right: auto;
 top: 0;
 width: 100%; /* Volle Breite nutzen */
 max-width: 1400px; /* Hier darf es so groß werden wie in Figma */
-margin: 2rem auto 0 auto; /* Zentriert es und gibt oben etwas Luft */
+margin-bottom: 0; /* Zentriert es und gibt oben etwas Luft */
 opacity: 1; /* Wir wollen die volle Farbenpracht */
 pointer-events: all; /* Wichtig, damit wir den Powerbutton später klicken können! */
 z-index: 1;
