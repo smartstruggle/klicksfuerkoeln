@@ -245,8 +245,8 @@ HERO SECTION & GRAPHIC (Master-Code)
 position: relative;
 overflow: visible;
 background: var(--bg);
-/* Mobil: Oben kompakter Abstand, unten fast null für die Grafik */
-padding-block: 2rem 0.5rem;
+/* Oben fast auf Null (0.5rem), unten kompakt */
+padding-block: 0.5rem 0.5rem !important;
 }
 
 .hero-single {
@@ -293,11 +293,10 @@ HERO GRAPHIC CONTAINER (Das Herzstück)
 
 .hero-graphic {
 width: 100%;
-max-width: 1400px;
 margin: 0 auto;
 padding-top: 0 !important;
-max-height: 500px;
-overflow: visible;
+margin-top: -15px !important; /* Zieht das SVG näher an die Headline */
+max-height: 460px;
 display: flex;
 justify-content: center;
 align-items: flex-start;
@@ -311,7 +310,7 @@ height: auto;
 /* Sichtbarkeit steuern */
 .mobile-only {
 display: block;
-max-width: 290px; /* Kompakt für Mobilgeräte */
+max-width: 270px; /* Ein klein wenig schmaler macht die ganze Einheit "höher" */
 margin: 0 auto;
 }
 
