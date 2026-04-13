@@ -316,108 +316,35 @@ line-height: 1.02;
 letter-spacing: -0.03em;
 }
 
-/* Hero graphic */
-
+/* Das neue Layout für dein Figma-Gesamtkunstwerk */
 .hero-graphic {
-position: absolute;
-right: 0;
-top: clamp(7rem, 16vw, 11rem);
-width: clamp(18rem, 38vw, 34rem);
-pointer-events: none;
+position: relative; /* Nicht mehr absolute rechts kleben */
+right: auto;
+top: 0;
+width: 100%; /* Volle Breite nutzen */
+max-width: 1400px; /* Hier darf es so groß werden wie in Figma */
+margin: 2rem auto 0 auto; /* Zentriert es und gibt oben etwas Luft */
+opacity: 1; /* Wir wollen die volle Farbenpracht */
+pointer-events: all; /* Wichtig, damit wir den Powerbutton später klicken können! */
 z-index: 1;
-opacity: 0.75;
 }
 
 .hero-graphic-svg {
 width: 100%;
 height: auto;
-overflow: visible;
 display: block;
 }
 
-/* Graphic strokes */
-
-.hg-stroke,
-.hg-line,
-.hg-stroke-fill,
-.hg-dom-line {
-stroke: var(--orange);
-stroke-width: 0.75;
-stroke-linecap: round;
-stroke-linejoin: round;
+/* Die alten Graphic Strokes können wir für die neuen IDs nutzen */
+#leitung,
+#line-horizontal,
+#line-vertikal {
+stroke: #FD9015; /* Deine Farbe aus Figma */
+stroke-width: 3; /* Oder was du in Figma eingestellt hast */
 fill: none;
 }
 
-.hg-stroke-fill {
-fill: rgba(215, 108, 47, 0.28);
-}
 
-.hg-bulb {
-opacity: 0.8;
-}
-
-.hg-bulb-fill {
-fill: transparent;
-transition: fill 0.35s ease, opacity 0.35s ease, filter 0.35s ease;
-}
-
-.hg-bulb.is-on {
-opacity: 1;
-filter: drop-shadow(0 0 10px rgba(215, 108, 47, 0.38));
-}
-
-.hg-bulb.is-on .hg-bulb-fill {
-fill: var(--orange);
-}
-
-.hg-dom {
-opacity: 0.8;
-transition: opacity 0.45s ease, filter 0.55s ease;
-}
-
-.hg-dom-fill {
-fill: var(--orange);
-opacity: 0;
-transition: opacity 0.55s ease;
-}
-
-.hg-dom.is-on {
-opacity: 1;
-filter: drop-shadow(0 0 10px rgba(214, 109, 48, 0.32));
-}
-
-.hg-dom.is-on .hg-dom-fill {
-opacity: 1;
-}
-
-.hero h1,
-.eyebrow {
-position: relative;
-z-index: 2;
-}
-
-/* Mobile */
-
-@media (max-width: 48rem) {
-.hero-graphic {
-position: relative;
-right: auto;
-top: auto;
-width: 100%;
-max-width: 100%;
-margin-top: 1.5rem;
-margin-inline: auto;
-opacity: 0.85;
-}
-
-.hero-single {
-display: block;
-}
-
-.hero h1 {
-max-width: none;
-}
-}
 
 
 
