@@ -313,56 +313,88 @@ updateFloatingButtonVisibility();
 },
 "-=0.6"
 );
+/* ---------- Hero-Grafik Intro NEU ---------- */
+// Wir starten, wenn das Fenster geladen ist
+window.addEventListener("load", () => {
+const tlGraphic = gsap.timeline({ delay: 0.9 });
 
-// 1. Initialisierung: Alles ist am Anfang "aus"
-gsap.set(["#leitung", "#birne-links", "#birne-rechts", "#leucht-o", "#dom"], { opacity: 0 });
-// Falls die Leitung gezeichnet werden soll, setzen wir sie auf 0 Länge
-gsap.set("#leitung", { drawSVG: "0%" });
+// 1. Initialisierung: Alles auf Anfang (IDs aus Figma)
+gsap.set(["#birne-links", "#birne-rechts", "#leucht-o", "#dom"], {
+opacity: 0,
+scale: 0.85,
+transformOrigin: "50% 50%"
+});
 
-const powerBtn = document.querySelector("#powerbutton");
+gsap.set("#cursor", {
+x: 18,
+y: 12,
+opacity: 0
+});
 
-powerBtn.addEventListener("click", () => {
-const tl = gsap.timeline();
+// Leitungen vorbereiten (Prüfe in Figma, ob es eine oder drei IDs sind)
+// Wenn du nur eine ID #leitung hast, nehmen wir die:
+gsap.set("#leitung", {
+strokeDasharray: 1000, // Höherer Wert, da die neue Leitung länger ist
+strokeDashoffset: 1000
+});
 
-tl.to("#powerbutton", {
-scale: 0.9,
-duration: 0.1,
-yoyo: true,
-repeat: 1,
-ease: "power1.inOut"
-})
-// 2. Die Leitung "legen" (ausfahren)
-.to("#leitung", {
+// 2. Die Timeline-Animation
+tlGraphic
+.to("#cursor", {
 opacity: 1,
-drawSVG: "100%",
-duration: 1.5,
-ease: "none"
+x: 0,
+y: 0,
+duration: 0.45,
+ease: "power2.out"
 })
-// 3. Die erste Lampe geht an
+.to("#powerbutton", {
+scale: 0.94,
+transformOrigin: "center center", // Sicherer als feste Pixelwerte
+duration: 0.08,
+yoyo: true,
+repeat: 1
+}, "-=0.08")
+
+// Leitung wird gezeichnet
+.to("#leitung", {
+strokeDashoffset: 0,
+duration: 0.8,
+ease: "power2.out"
+})
+
+// Birne Links
 .to("#birne-links", {
 opacity: 1,
-duration: 0.3,
-ease: "expo.out"
-})
-// 4. Die zweite Lampe geht an
+scale: 1,
+duration: 0.45,
+ease: "back.out(1.5)"
+}, "-=0.2")
+
+// Birne Rechts
 .to("#birne-rechts", {
 opacity: 1,
-duration: 0.3,
-ease: "expo.out"
-}, "+=0.2") // Kleine Verzögerung
-// 5. Das "Ö" (Leucht-O) flammt auf
+scale: 1,
+duration: 0.45,
+ease: "back.out(1.5)"
+}, "-=0.2")
+
+// Das Leucht-Ö (dein neues Highlight)
 .to("#leucht-o", {
 opacity: 1,
-filter: "drop-shadow(0 0 15px rgba(253, 144, 21, 0.8))",
-duration: 0.5
-})
-// 6. Der Dom leuchtet zum Schluss auf
+scale: 1,
+duration: 0.5,
+ease: "back.out(1.5)",
+filter: "drop-shadow(0 0 15px rgba(253, 144, 21, 0.6))"
+}, "-=0.1")
+
+// Der Dom zum Finale
 .to("#dom", {
 opacity: 1,
-duration: 0.8,
-ease: "power2.in"
+duration: 0.6,
+ease: "back.out(1.2)"
+}, "-=0.1");
 });
-});
+
 
 /* =========================================
 Startlogik beim Laden
