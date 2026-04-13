@@ -375,28 +375,63 @@ letter-spacing: -0.03em;
 PFAD-STYLES (IDs für Animation)
 ========================================================================== */
 
-/* Linien & Konturen */
-#leitung, #leitung-mobil,
-#line-horizontal, #line-horizontal-mobil,
-#line-vertikal, #line-vertikal-mobil,
-#filament-links, #filament-rechts {
-stroke: var(--orange);
-stroke-width: 3;
+/* --- 1. Die Fassungen & Basis (Dunkler Ton: #D26D14) --- */
+#fassung-links,
+#fassung-rechts,
+#basis,
+#basis-mobil {
+fill: #D26D14 !important;
+stroke: none;
+}
+
+/* --- 2. Die Filamente (Helles Leuchten: #F4DE85) --- */
+#filament-links,
+#filament-rechts,
+#filament-mobil {
+stroke: #F4DE85 !important;
+stroke-width: 2.5;
 fill: none;
 stroke-linecap: round;
 }
 
-/* Flächen & Massive Füllungen */
-#dom, #dom-mobil,
-#spitzen, #spitzen-mobil,
-#basis, #basis-mobil,
-#powerbutton, #powerbutton-mobil,
-#fassung-links, #fassung-rechts,
-#cursor, #cursor-mobil,
-#leucht-o, #leucht-o-mobil {
-fill: var(--orange);
+/* --- 3. Die Bulb & das Leucht-O (Dein Standard-Orange) --- */
+/* Die Bulb ist der Glaskörper, der soll im kräftigen Orange strahlen */
+#bulb,
+#bulb-mobil,
+#leucht-o,
+#leucht-o-mobil {
+fill: var(--orange) !important;
 stroke: none;
 }
+
+/* --- 4. Der Dom (Spitzen + Basis) & Restliche Elemente --- */
+/* Hier stellen wir sicher, dass der Dom komplett orange ist */
+#spitzen,
+#spitzen-mobil,
+#dom,
+#dom-mobil,
+#powerbutton,
+#powerbutton-mobil,
+#cursor,
+#cursor-mobil,
+#group-1 { /* Deine Gruppe für die Desktop-Elemente */
+fill: var(--orange) !important;
+stroke: none;
+}
+
+/* --- 5. Alle Leitungen & Pfade (Nur Kontur, keine Füllung) --- */
+#leitung,
+#leitung-mobil,
+#line-horizontal,
+#line-horizontal-mobil,
+#line-vertikal,
+#line-vertikal-mobil {
+fill: none !important;
+stroke: var(--orange) !important;
+stroke-width: 3;
+stroke-linecap: round;
+}
+
 
 
 
