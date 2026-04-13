@@ -271,10 +271,10 @@ defaults: { ease: "power2.inOut" }
 });
 
 // SCHRITT 1: Der Cursor-Klick
-masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 1.0 })
+masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 .to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
 .to("#powerbutton", { scale: 1, duration: 0.2 })
-.to("#cursor", { opacity: 0, x: 10, y: 10, duration: 0.8 }, "+=0.5"); // Cursor zieht sich dezent zurück
+.to("#cursor", { opacity: 0, x: 10, y: 10, duration: 0.5 }, "+=0.5"); // Cursor zieht sich dezent zurück
 
 // SCHRITT 2: Die Leitung (Die "Zündschnur")
 // Wir nehmen uns 6 Sekunden Zeit für die gesamte Strecke
@@ -293,7 +293,7 @@ ease: "power1.in"
 }, "-=4.5") // Exakt wenn die Leitung dort ankommt
 .to("#birne-rechts", {
 opacity: 1,
-duration: 2.5, // Langsames "Heißlaufen" des Glases
+duration: 0.5, // Langsames "Heißlaufen" des Glases
 ease: "sine.out"
 }, "-=4.0");
 
