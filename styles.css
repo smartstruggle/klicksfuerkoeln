@@ -262,10 +262,11 @@ margin: 0 auto;
 font-family: "Inter", sans-serif;
 font-weight: 700;
 font-size: clamp(3rem, 10vw, 4.8rem);
-line-height: 0.92;
-letter-spacing: -0.045em;
+line-height: 1.02 !important;
+letter-spacing: 0,02em !important;
 text-align: center; /* Harmonisch zur zentrierten Grafik auf Mobil */
 max-width: 9ch;
+text-transform: none;
 }
 
 .hero h1 br {
