@@ -280,7 +280,7 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 // Wir nehmen uns 6 Sekunden Zeit für die gesamte Strecke
 masterTL.to("#leitung", {
 strokeDashoffset: 0,
-duration: 3,
+duration: 1.5,
 ease: "none"
 }, "-=0.5");
 
