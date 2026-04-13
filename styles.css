@@ -246,7 +246,7 @@ position: relative;
 overflow: visible;
 background: var(--bg);
 /* Oben fast auf Null (0.5rem), unten kompakt */
-padding-block: 0.5rem 0.5rem !important;
+padding-block: 1.5rem 0.5rem !important;
 }
 
 .hero-single {
