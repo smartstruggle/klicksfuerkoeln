@@ -235,78 +235,108 @@ setTimeout(() => openModal(), 120);
 });
 
 
-/* ---------- GSAP Intro + Hero-Grafik FUSION ---------- */
+/* ---------- Hero-Grafik: Kinematische Master-Logik ---------- */
 let introHasStarted = false;
 
 function startIntroAnimations() {
 if (introHasStarted) return;
 introHasStarted = true;
 
-// A. SETUP (Alles im "Aus"-Zustand vorbereiten)
-// Wir setzen die Birnen auf 0, die Filamente auf ein gaaanz schwaches Glimmen
-gsap.set(["#birne-links", "#birne-rechts", "#leucht-o", "#dom"], { opacity: 0 });
-gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.95 });
+// 1. DER NULLZUSTAND (Alles vorbereiten)
+// Ö ist da, aber "tot" (schwarz/dunkel)
+gsap.set("#leucht-o", { opacity: 0.2, filter: "blur(2px)" });
 
-gsap.set("#cursor", { x: 50, y: 30, opacity: 0 });
+// Filamente glimmen nur ganz leicht (Standby)
+gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.98 });
 
-// Leitung vorbereiten: Wir nutzen 2000, um sicherzugehen, dass sie komplett weg ist
-gsap.set("#leitung", {
-strokeDasharray: 2000,
-strokeDashoffset: -2000 // Das sorgt oft für den Start am Button (rechts)
+// Birnen-Glow ist komplett aus
+gsap.set(["#birne-links", "#birne-rechts"], { opacity: 0 });
+
+// Dom ist unsichtbar und klein (Startpunkt: Ö-Punkte)
+gsap.set("#dom", {
+opacity: 0,
+scale: 0,
+transformOrigin: "center bottom"
 });
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-if (prefersReducedMotion) {
-gsap.set([".eyebrow", ".hero h1", ".services-anim", "#birne-links", "#birne-rechts", "#leucht-o"], { opacity: 1 });
-gsap.set("#leitung", { strokeDashoffset: 0 });
-return;
-}
+// Cursor Startposition
+gsap.set("#cursor", { x: 40, y: 30, opacity: 0 });
 
-/* ---------- Die kombinierte Timeline ---------- */
-const mainTL = gsap.timeline({ defaults: { ease: "power3.out" } });
+// Leitung komplett versteckt (rechts startend)
+gsap.set("#leitung", { strokeDasharray: 2500, strokeDashoffset: -2500 });
 
-// 1. Zuerst kommt dein Text (wie vorher)
-mainTL.from(".eyebrow", { x: -60, opacity: 0, duration: 0.7 })
-.from(".hero h1", { x: -100, opacity: 0, duration: 1.2, ease: "back.out(1.2)" }, "-=0.4")
-.from(".services-anim", { y: 30, opacity: 0, duration: 0.8 }, "-=0.6")
+/* ---------- DIE TIMELINE ---------- */
+const masterTL = gsap.timeline({
+defaults: { ease: "power2.inOut" }
+});
 
-// 2. JETZT DIE GRAFIK-LOGIK
-// Cursor fliegt zum Powerbutton
-.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 1.2, ease: "power2.out" }, "-=0.2")
+// SCHRITT 1: Der Cursor-Klick
+masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 1.5 })
+.to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
+.to("#powerbutton", { scale: 1, duration: 0.2 })
+.to("#cursor", { opacity: 0, x: 10, y: 10, duration: 0.8 }, "+=0.5"); // Cursor zieht sich dezent zurück
 
-// Realistischer Klick-Effekt
-.to("#powerbutton", { scale: 0.9, duration: 0.15, transformOrigin: "center center" })
-.to("#powerbutton", { scale: 1, duration: 0.15 })
-
-// Leitung wächst langsam vom Button aus nach links
-.to("#leitung", {
+// SCHRITT 2: Die Leitung (Die "Zündschnur")
+// Wir nehmen uns 6 Sekunden Zeit für die gesamte Strecke
+masterTL.to("#leitung", {
 strokeDashoffset: 0,
-duration: 3,
+duration: 6,
 ease: "none"
-})
+}, "-=0.5");
 
-// Effekt Birne RECHTS (während die Leitung noch läuft)
-.to("#filament-rechts", { opacity: 1, scale: 1, duration: 0.6 }, "-=2.4")
-.to("#birne-rechts", { opacity: 1, duration: 0.8 }, "-=2.0")
-
-// Effekt Birne LINKS (später, wenn die Leitung weiter links ist)
-.to("#filament-links", { opacity: 1, scale: 1, duration: 0.6 }, "-=1.2")
-.to("#birne-links", { opacity: 1, duration: 0.8 }, "-=0.8")
-
-// Das Finale: Ö leuchtet und Dom blinkt
-.to("#leucht-o", {
+// SCHRITT 3: Birne RECHTS (Trigger nach ca. 1.5s Leitungsfahrt)
+masterTL.to("#filament-rechts", {
 opacity: 1,
-filter: "drop-shadow(0 0 20px rgba(253, 144, 21, 0.8))",
-duration: 0.8
-})
-.to("#dom", { opacity: 1, duration: 0.4 })
-.to("#dom", { opacity: 0, duration: 0.8, delay: 0.4 });
+scale: 1.02,
+duration: 1,
+ease: "power1.in"
+}, "-=4.5") // Exakt wenn die Leitung dort ankommt
+.to("#birne-rechts", {
+opacity: 1,
+duration: 2.5, // Langsames "Heißlaufen" des Glases
+ease: "sine.out"
+}, "-=4.0");
+
+// SCHRITT 4: Birne LINKS (Trigger nach ca. 4s Leitungsfahrt)
+masterTL.to("#filament-links", {
+opacity: 1,
+scale: 1.02,
+duration: 1
+}, "-=2.0")
+.to("#birne-links", {
+opacity: 1,
+duration: 2.5
+}, "-=1.5");
+
+// SCHRITT 5: Das Ö (Trigger am Ende der Leitung)
+masterTL.to("#leucht-o", {
+opacity: 1,
+filter: "drop-shadow(0 0 30px rgba(253, 144, 21, 0.8)) blur(0px)",
+duration: 1.5
+}, "-=0.2");
+
+// SCHRITT 6: Der Dom-Plopp (Wächst aus dem Ö)
+masterTL.to("#dom", {
+opacity: 1,
+scale: 1,
+duration: 1.8,
+ease: "back.out(1.2)"
+}, "+=0.1")
+
+// SCHRITT 7: Dom-Finale (Blinken/Verschwinden)
+.to("#dom", {
+opacity: 0,
+scale: 0.95,
+duration: 2,
+delay: 4 // Er bleibt 4 Sekunden stolz stehen
+});
 }
 
-// Ganz wichtig: Der Aufruf beim Laden der Seite
+// Start-Event
 window.addEventListener("load", () => {
-setTimeout(startIntroAnimations, 500);
+setTimeout(startIntroAnimations, 800);
 });
+
 
 
 /* =========================================
