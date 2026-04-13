@@ -318,21 +318,24 @@ letter-spacing: -0.03em;
 
 /* Das neue Layout für dein Figma-Gesamtkunstwerk */
 .hero-graphic {
-position: relative; /* Nicht mehr absolute rechts kleben */
-right: auto;
-top: 0;
-width: 100%; /* Volle Breite nutzen */
-max-width: 1400px; /* Hier darf es so groß werden wie in Figma */
-margin-bottom: 0; /* Zentriert es und gibt oben etwas Luft */
-opacity: 1; /* Wir wollen die volle Farbenpracht */
-pointer-events: all; /* Wichtig, damit wir den Powerbutton später klicken können! */
-z-index: 1;
+width: 100%;
+max-width: 1400px;
+margin: 0 auto;
+
+/* Hier begrenzen wir den Platz nach unten radikal */
+max-height: 500px;
+overflow: hidden; /* Schneidet unsichtbare Ränder ab */
+
+display: flex;
+justify-content: center;
+align-items: flex-start; /* Schiebt die Grafik nach oben */
 }
 
 .hero-graphic-svg {
 width: 100%;
 height: auto;
-display: block;
+/* Falls immer noch zu viel Platz: Schieb die nachfolgende Section hoch */
+margin-bottom: -100px;
 }
 
 /* Die alten Graphic Strokes können wir für die neuen IDs nutzen */
