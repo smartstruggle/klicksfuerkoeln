@@ -235,6 +235,59 @@ setTimeout(() => openModal(), 120);
 });
 
 
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+// 1. VORBEREITUNG (Nullzustand)
+// Wir nutzen deine exakten IDs mit "-Mobil"
+gsap.set("#dom-mobil", { opacity: 0, scale: 0.8, transformOrigin: "center bottom" });
+gsap.set("#leucht-O-mobil", { opacity: 0.2 });
+// Leitung verstecken
+gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
+gsap.set("#cursor-mobil", { x: 30, y: 30, opacity: 0 });
+
+const tl = gsap.timeline({
+defaults: { ease: "power2.out" }
+});
+
+// SCHRITT 1: Der schnelle Klick (0.6s insgesamt)
+tl.to("#cursor-mobil", { opacity: 1, x: 0, y: 0, duration: 0.4 })
+.to("#powerbutton-mobil", { scale: 0.9, duration: 0.1 })
+.to("#powerbutton-mobil", { scale: 1, duration: 0.1 })
+.to("#cursor-mobil", { opacity: 0, duration: 0.2 }, "+=0.1");
+
+// SCHRITT 2: Die Leitung schießt hoch (Nur 1.2s - das muss zackig gehen!)
+tl.to("#leitung-mobil", {
+strokeDashoffset: 0,
+duration: 1.2,
+ease: "power1.inOut"
+}, "-=0.2");
+
+// SCHRITT 3: Das Ö und der Dom kommen fast gleichzeitig (Der "Aha"-Effekt)
+// Das Ö leuchtet auf, kurz bevor die Leitung ganz oben ist
+tl.to("#leucht-O-mobil", {
+opacity: 1,
+filter: "drop-shadow(0 0 20px rgba(253, 144, 21, 0.9))",
+duration: 0.4
+}, "-=0.4");
+
+// Der Dom ploppt zügig auf
+tl.to("#dom-mobil", {
+opacity: 1,
+scale: 1,
+duration: 0.8,
+ease: "back.out(1.5)"
+}, "-=0.3");
+});
+
+
+
+
+
+
+
 /* ---------- Hero-Grafik: Kinematische Master-Logik ---------- */
 let introHasStarted = false;
 
