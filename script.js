@@ -235,9 +235,7 @@ setTimeout(() => openModal(), 120);
 });
 
 
-/* =========================================
-GSAP Intro + Hero-Grafik
-========================================= */
+/* ---------- GSAP Intro + Hero-Grafik FUSION ---------- */
 let introHasStarted = false;
 
 function startIntroAnimations() {
@@ -246,153 +244,58 @@ introHasStarted = true;
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-if (prefersReducedMotion) {
-gsap.set([".eyebrow", ".hero h1", ".services-anim", ".floating-project-btn"], {
-opacity: 1,
-x: 0,
-y: 0
-});
-
-gsap.set([".hg-bulb-1", ".hg-bulb-2", ".hg-dom-3"], {
-opacity: 1,
-scale: 1
-});
-
-gsap.set(".hg-cursor", {
-opacity: 1,
-x: 0,
-y: 0
-});
-
-gsap.set([".hg-line-1", ".hg-line-2", ".hg-line-3"], {
-strokeDasharray: 220,
-strokeDashoffset: 0
-});
-
-document.querySelector(".hg-bulb-1")?.classList.add("is-on");
-document.querySelector(".hg-bulb-2")?.classList.add("is-on");
-document.querySelector(".hg-dom-3")?.classList.add("is-on");
-return;
-}
-
-/* ---------- Text / Content Intro ---------- */
-const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-tl.from(".eyebrow", {
-x: -60,
-opacity: 0,
-duration: 0.7
-})
-.from(".hero h1", {
-x: -100,
-opacity: 0,
-duration: 1.2,
-ease: "back.out(1.2)"
-}, "-=0.4")
-.from(".services-anim", {
-y: 30,
-opacity: 0,
-duration: 0.8
-}, "-=0.6")
-.fromTo(".floating-project-btn",
-{
-x: 80,
-opacity: 0
-},
-{
-x: 0,
-opacity: 1,
-duration: 0.9,
-onStart: () => {
-floatingBtn?.classList.remove("is-hidden");
-},
-onComplete: () => {
-floatingVisibilityEnabled = true;
-updateFloatingButtonVisibility();
-}
-},
-"-=0.6"
-);
-/* ---------- Hero-Grafik Intro NEU ---------- */
-// Wir starten, wenn das Fenster geladen ist
-window.addEventListener("load", () => {
-const tlGraphic = gsap.timeline({ delay: 0.9 });
-
-// 1. Initialisierung: Alles auf Anfang (IDs aus Figma)
+// 1. Initialisierung (Alles unsichtbar machen)
 gsap.set(["#birne-links", "#birne-rechts", "#leucht-o", "#dom"], {
 opacity: 0,
 scale: 0.85,
 transformOrigin: "50% 50%"
 });
+gsap.set("#cursor", { x: 18, y: 12, opacity: 0 });
+gsap.set("#leitung", { strokeDasharray: 2000, strokeDashoffset: 2000 }); // Höherer Wert zur Sicherheit
 
-gsap.set("#cursor", {
-x: 18,
-y: 12,
-opacity: 0
+if (prefersReducedMotion) {
+gsap.set([".eyebrow", ".hero h1", ".services-anim", ".floating-project-btn", "#birne-links", "#birne-rechts", "#leucht-o", "#dom", "#cursor"], {
+opacity: 1, x: 0, y: 0, scale: 1
 });
+gsap.set("#leitung", { strokeDashoffset: 0 });
+return;
+}
 
-// Leitungen vorbereiten (Prüfe in Figma, ob es eine oder drei IDs sind)
-// Wenn du nur eine ID #leitung hast, nehmen wir die:
-gsap.set("#leitung", {
-strokeDasharray: 1000, // Höherer Wert, da die neue Leitung länger ist
-strokeDashoffset: 1000
-});
+/* ---------- Die kombinierte Timeline ---------- */
+const mainTL = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-// 2. Die Timeline-Animation
-tlGraphic
-.to("#cursor", {
-opacity: 1,
-x: 0,
-y: 0,
-duration: 0.45,
-ease: "power2.out"
-})
+// TEIL A: Text & Button
+mainTL.from(".eyebrow", { x: -60, opacity: 0, duration: 0.7 })
+.from(".hero h1", { x: -100, opacity: 0, duration: 1.2, ease: "back.out(1.2)" }, "-=0.4")
+.from(".services-anim", { y: 30, opacity: 0, duration: 0.8 }, "-=0.6")
+.fromTo(".floating-project-btn", { x: 80, opacity: 0 }, {
+x: 0, opacity: 1, duration: 0.9,
+onStart: () => document.querySelector(".floating-project-btn")?.classList.remove("is-hidden")
+}, "-=0.6")
+
+// TEIL B: Die Grafik-Animation (Startet direkt im Anschluss)
+.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.45 }, "-=0.2")
 .to("#powerbutton", {
 scale: 0.94,
-transformOrigin: "center center", // Sicherer als feste Pixelwerte
+transformOrigin: "center center",
 duration: 0.08,
 yoyo: true,
 repeat: 1
 }, "-=0.08")
-
-// Leitung wird gezeichnet
-.to("#leitung", {
-strokeDashoffset: 0,
-duration: 0.8,
-ease: "power2.out"
-})
-
-// Birne Links
-.to("#birne-links", {
-opacity: 1,
-scale: 1,
-duration: 0.45,
-ease: "back.out(1.5)"
-}, "-=0.2")
-
-// Birne Rechts
-.to("#birne-rechts", {
-opacity: 1,
-scale: 1,
-duration: 0.45,
-ease: "back.out(1.5)"
-}, "-=0.2")
-
-// Das Leucht-Ö (dein neues Highlight)
+.to("#leitung", { strokeDashoffset: 0, duration: 1, ease: "power2.inOut" })
+.to("#birne-links", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, "-=0.4")
+.to("#birne-rechts", { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, "-=0.3")
 .to("#leucht-o", {
-opacity: 1,
-scale: 1,
-duration: 0.5,
-ease: "back.out(1.5)",
+opacity: 1, scale: 1, duration: 0.5,
 filter: "drop-shadow(0 0 15px rgba(253, 144, 21, 0.6))"
-}, "-=0.1")
+}, "-=0.2")
+.to("#dom", { opacity: 1, duration: 0.6, ease: "back.out(1.2)" }, "-=0.1");
+}
 
-// Der Dom zum Finale
-.to("#dom", {
-opacity: 1,
-duration: 0.6,
-ease: "back.out(1.2)"
-}, "-=0.1");
+// DER ZÜNDER: Ersetze dein altes window.addEventListener("load") am Ende des Scripts hiermit:
+window.addEventListener("load", () => {
+// Kurze Verzögerung, damit der Browser alles gerendert hat
+setTimeout(startIntroAnimations, 500);
 });
 
 
