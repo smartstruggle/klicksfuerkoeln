@@ -296,7 +296,7 @@ width: 100%;
 margin: 0 auto;
 padding-top: 0 !important;
 margin-top: -15px !important; /* Zieht das SVG näher an die Headline */
-max-height: 460px;
+max-height: 600px;
 display: flex;
 justify-content: center;
 align-items: flex-start;
@@ -310,7 +310,7 @@ height: auto;
 /* Sichtbarkeit steuern */
 .mobile-only {
 display: block;
-max-width: 270px; /* Ein klein wenig schmaler macht die ganze Einheit "höher" */
+max-width: 340px; /* Ein klein wenig schmaler macht die ganze Einheit "höher" */
 margin: 0 auto;
 }
 
