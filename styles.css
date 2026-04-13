@@ -310,7 +310,7 @@ height: auto;
 /* Sichtbarkeit steuern */
 .mobile-only {
 display: block;
-max-width: 340px; /* Ein klein wenig schmaler macht die ganze Einheit "höher" */
+max-width: 290px; /* Ein klein wenig schmaler macht die ganze Einheit "höher" */
 margin: 0 auto;
 }
 
