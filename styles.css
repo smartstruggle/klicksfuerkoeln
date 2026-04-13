@@ -256,13 +256,6 @@ margin-bottom: 0 !important;
 
 }
 
-.eyebrow {
-margin: 0 0 var(--space-2);
-text-transform: uppercase;
-letter-spacing: 0.16em;
-font-size: var(--text-xs);
-color: var(--green-500);
-}
 
 .hero h1 {
 margin: 0;
