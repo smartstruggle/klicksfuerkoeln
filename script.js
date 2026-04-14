@@ -184,57 +184,6 @@ handleFormSubmit(embeddedForm, embeddedStatus);
 }
 
 
-/* =========================================
-Flyer Popup
-========================================= */
-const flyerPopup = document.getElementById("flyer-popup");
-const flyerPopupClose = document.getElementById("flyer-popup-close");
-const flyerPopupX = document.getElementById("flyer-popup-x");
-const flyerPopupMail = document.getElementById("flyer-popup-mail");
-const flyerOpenContactFirst = document.querySelectorAll("[data-close-flyer-first]");
-
-const urlParams = new URLSearchParams(window.location.search);
-const isFlyerVisit = urlParams.get("flyer") === "1";
-
-function openFlyerPopup() {
-if (!flyerPopup) return;
-flyerPopup.classList.add("is-open");
-flyerPopup.setAttribute("aria-hidden", "false");
-document.body.classList.add("modal-open");
-}
-
-function closeFlyerPopup() {
-if (!flyerPopup) return;
-flyerPopup.classList.remove("is-open");
-flyerPopup.setAttribute("aria-hidden", "true");
-document.body.classList.remove("modal-open");
-
-// Beim Flyer-Besuch startet das Intro erst NACH dem Schließen
-if (isFlyerVisit) {
-startIntroAnimations();
-}
-}
-
-if (flyerPopupClose) {
-flyerPopupClose.addEventListener("click", closeFlyerPopup);
-}
-
-if (flyerPopupX) {
-flyerPopupX.addEventListener("click", closeFlyerPopup);
-}
-
-if (flyerPopupMail) {
-flyerPopupMail.addEventListener("click", closeFlyerPopup);
-}
-
-flyerOpenContactFirst.forEach((button) => {
-button.addEventListener("click", () => {
-closeFlyerPopup();
-setTimeout(() => openModal(), 120);
-});
-});
-
-
 
 /* ---------- Hero-Grafik: Kinematische Master-Logik ---------- */
 let introHasStarted = false;
@@ -338,162 +287,166 @@ startIntroAnimations();
 
 
 
+/* =========================================
+Flyer Popup
+========================================= */
+const flyerPopup = document.getElementById("flyer-popup");
+const flyerPopupClose = document.getElementById("flyer-popup-close");
+const flyerPopupX = document.getElementById("flyer-popup-x");
+const flyerPopupMail = document.getElementById("flyer-popup-mail");
+const flyerOpenContactFirst = document.querySelectorAll("[data-close-flyer-first]");
+
+const urlParams = new URLSearchParams(window.location.search);
+const isFlyerVisit = urlParams.get("flyer") === "1";
+
+function openFlyerPopup() {
+if (!flyerPopup) return;
+flyerPopup.classList.add("is-open");
+flyerPopup.setAttribute("aria-hidden", "false");
+document.body.classList.add("modal-open");
+}
+
+function closeFlyerPopup() {
+if (!flyerPopup) return;
+flyerPopup.classList.remove("is-open");
+flyerPopup.setAttribute("aria-hidden", "true");
+document.body.classList.remove("modal-open");
+
+// Beim Flyer-Besuch startet das Intro erst NACH dem Schließen
+if (isFlyerVisit) {
+startIntroAnimations();
+}
+}
+
+if (flyerPopupClose) {
+flyerPopupClose.addEventListener("click", closeFlyerPopup);
+}
+
+if (flyerPopupX) {
+flyerPopupX.addEventListener("click", closeFlyerPopup);
+}
+
+if (flyerPopupMail) {
+flyerPopupMail.addEventListener("click", closeFlyerPopup);
+}
+
+flyerOpenContactFirst.forEach((button) => {
+button.addEventListener("click", () => {
+closeFlyerPopup();
+setTimeout(() => openModal(), 120);
+});
+});
+
+
+
+
+
+/*MOBIL GRAPHIK*/
 
 document.addEventListener("DOMContentLoaded", () => {
+// PRÜFUNG: Nur ausführen, wenn wir das Mobil-Element auch wirklich haben
+if (!document.querySelector("#powerbutton-mobil")) return;
+
+// ... Rest des Mobil-Codes ...
+});
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+// 1. SETUP (Mobil)
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
 });
 
-gsap.set("#dom-mobil", {
-scale: 0.8,
-transformOrigin: "center bottom"
-});
+gsap.set("#dom-mobil", { scale: 0.8, transformOrigin: "center bottom" });
+gsap.set("#leucht-o-mobil", { opacity: 0.2 });
+gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
+gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
-gsap.set("#leucht-o-mobil", {
-opacity: 0.2
-});
-
-gsap.set("#leitung-mobil", {
-strokeDasharray: 2000,
-strokeDashoffset: 2000
-});
-
-gsap.set("#cursor-mobil", {
-x: 40,
-y: 40
-});
-
+// 2. TIMELINE (Mobil)
 const tl = gsap.timeline({
 delay: 0.5,
 defaults: { ease: "power2.inOut" },
-onComplete: initMobilInteractions
+onComplete: initMobilInteractions // WICHTIG: Startet die Klick-Logik
 });
 
-tl.to("#cursor-mobil", {
-autoAlpha: 1,
-x: 0,
-y: 0,
-duration: 0.8
-})
+tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
 .to({}, { duration: 0.2 })
-.to("#powerbutton-mobil", {
-scale: 0.88,
-duration: 0.2,
-transformOrigin: "center center"
-})
-.to("#powerbutton-mobil", {
-scale: 1,
-duration: 0.2
-})
-.to("#leitung-mobil", {
-autoAlpha: 1,
-strokeDashoffset: 0,
-duration: 1.8,
-ease: "none"
-}, "+=0.1")
-.to("#dom-mobil", {
-autoAlpha: 1,
-scale: 1,
-duration: 1.0,
-ease: "back.out(1.6)"
-})
+.to("#powerbutton-mobil", { scale: 0.88, duration: 0.2, transformOrigin: "center center" })
+.to("#powerbutton-mobil", { scale: 1, duration: 0.2 })
+.to("#leitung-mobil", { autoAlpha: 1, strokeDashoffset: 0, duration: 1.8, ease: "none" }, "+=0.1")
+.to("#dom-mobil", { autoAlpha: 1, scale: 1, duration: 1.0, ease: "back.out(1.6)" })
 .to("#leucht-o-mobil", {
 autoAlpha: 1,
 filter: "drop-shadow(0 0 25px rgba(253, 144, 21, 0.9))",
 duration: 0.7
 }, "+=0.3");
 
+// 3. INTERAKTIONS-FUNKTION
 function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
 const cursor = document.querySelector("#cursor-mobil");
 
-console.log("btn:", btn);
-console.log("dom:", dom);
-console.log("cursor:", cursor);
-
 if (!btn || !dom || !cursor) return;
+
+// Sicherstellen, dass der Button Klicks annimmt
+gsap.set(btn, { pointerEvents: "all", cursor: "pointer" });
 
 let growthLevel = 0;
 let pressTimer = null;
 let isPressing = false;
 
-const hintTl = gsap.timeline({ repeat: -1, paused: false });
-hintTl
-.to(btn, {
-scale: 1.08,
-duration: 0.8,
-yoyo: true,
-repeat: 1,
-ease: "sine.inOut",
-transformOrigin: "center center"
-})
-.to(cursor, {
-x: "+=3",
-y: "-=2",
-duration: 0.18,
-yoyo: true,
-repeat: 3
-}, 0)
-.to({}, { duration: 1.2 });
+// Lockruf-Animation (Pulsieren)
+const hintTl = gsap.timeline({ repeat: -1 });
+hintTl.to(btn, { scale: 1.08, duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center center" })
+.to(cursor, { x: "+=3", y: "-=2", duration: 0.18, yoyo: true, repeat: 3 }, 0);
 
 function growDom() {
-if (growthLevel >= 3) return;
-
-growthLevel += 1;
-const targetScale = 1 + growthLevel * 0.25;
-
-gsap.to(dom, {
-scale: targetScale,
-duration: 0.3,
-ease: "back.out(2)",
-transformOrigin: "center bottom"
-});
+if (growthLevel < 3) {
+growthLevel++;
+const targetScale = 1 + (growthLevel * 0.25);
+gsap.to(dom, { scale: targetScale, duration: 0.3, ease: "back.out(2)", transformOrigin: "center bottom" });
 
 if (growthLevel === 3) {
-gsap.to(dom, {
-filter: "brightness(1.15) drop-shadow(0 0 20px #fd9015)",
-duration: 0.2
-});
+gsap.to(dom, { filter: "brightness(1.2) drop-shadow(0 0 20px #fd9015)", duration: 0.2 });
+}
 }
 }
 
 function resetDom() {
 if (!isPressing) return;
 isPressing = false;
-
 clearInterval(pressTimer);
-pressTimer = null;
 
+// Dom verschwindet und kommt zurück
 gsap.to(dom, {
-scale: 1,
-duration: 0.45,
-delay: 0.5,
-ease: "power2.out",
-filter: "none",
-transformOrigin: "center bottom",
+scale: 0,
+autoAlpha: 0,
+duration: 0.4,
+delay: 0.6,
 onComplete: () => {
 growthLevel = 0;
-hintTl.restart();
+gsap.set(dom, { scale: 1, autoAlpha: 1, filter: "none" });
+hintTl.play();
 }
 });
 }
 
+// EVENT LISTENER
 btn.addEventListener("pointerdown", (e) => {
 e.preventDefault();
-
 if (isPressing) return;
 isPressing = true;
 
-hintTl.pause(0);
+hintTl.pause();
 growDom();
-pressTimer = setInterval(growDom, 450);
+pressTimer = setInterval(growDom, 500);
 });
 
-btn.addEventListener("pointerup", resetDom);
-btn.addEventListener("pointercancel", resetDom);
-btn.addEventListener("pointerleave", resetDom);
+// WICHTIG: Globales Loslassen abfangen (falls der Finger vom Button rutscht)
+window.addEventListener("pointerup", resetDom);
 btn.addEventListener("contextmenu", (e) => e.preventDefault());
 }
 });
