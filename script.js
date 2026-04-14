@@ -250,18 +250,19 @@ function initMobilEntrance() {
 
   const tl = gsap.timeline({
     delay: 0.5,
-    onComplete: () => {
-      const demo = runMiniDemo();
+   onComplete: () => {
+gsap.delayedCall(1.0, () => {
+const demo = runMiniDemo();
 
-      if (demo) {
-        demo.eventCallback("onComplete", () => {
-          initMobilInteractions(touchZone);
-        });
-      } else {
-        initMobilInteractions(touchZone);
-      }
-    }
-  });
+if (demo) {
+demo.eventCallback("onComplete", () => {
+initMobilInteractions(touchZone);
+});
+} else {
+initMobilInteractions(touchZone);
+}
+});
+}
 
   tl.to("#cursor-mobil", {
       autoAlpha: 1,
@@ -306,58 +307,51 @@ MINI DEMO (zeigt dem User was zu tun ist)
 ========================================= */
 
 function runMiniDemo() {
-  const cursor = document.querySelector("#cursor-mobil");
-  const button = document.querySelector("#powerbutton-mobil");
-  const dom = document.querySelector("#dom-mobil");
+const cursor = document.querySelector("#cursor-mobil");
+const button = document.querySelector("#powerbutton-mobil");
+const dom = document.querySelector("#dom-mobil");
 
-  if (!cursor || !button || !dom) return null;
+if (!cursor || !button || !dom) return null;
 
-  const tl = gsap.timeline();
+const tl = gsap.timeline();
 
-  function demoOnce() {
-    return gsap.timeline()
-      .to(cursor, {
-        scale: 1.25,
-        duration: 0.3,
-        ease: "power2.out"
-      })
-      .to(cursor, {
-        x: 8,
-        y: 6,
-        duration: 1.1,
-        ease: "power2.inOut"
-      })
-      .to(button, {
-        scale: 0.9,
-        duration: 0.15,
-        yoyo: true,
-        repeat: 1,
-        ease: "power2.inOut"
-      }, "<")
-      .to(dom, {
-        scale: 1.18,
-        duration: 0.5,
-        ease: "back.out(1.7)"
-      }, "<+0.05")
-      .to(dom, {
-        scale: 1,
-        duration: 0.4,
-        ease: "power2.out"
-      })
-      .to(cursor, {
-        scale: 1,
-        x: 0,
-        y: 0,
-        duration: 0.9,
-        ease: "power2.inOut"
-      });
-  }
+tl.to(cursor, {
+scale: 1.16,
+duration: 0.32,
+ease: "power2.out",
+transformOrigin: "center center"
+})
+.to(cursor, {
+x: 8,
+y: 6,
+duration: 1.2,
+ease: "power2.inOut"
+})
+.to(button, {
+scale: 0.9,
+duration: 0.16,
+yoyo: true,
+repeat: 1,
+ease: "power2.inOut",
+transformOrigin: "center center"
+}, "<")
+.to(dom, {
+scale: 1.3,
+duration: 0.75,
+ease: "back.out(1.45)",
+transformOrigin: "center bottom",
+filter: "brightness(1.45) drop-shadow(0 0 24px #fd9015)"
+}, "<+0.08")
+.to(cursor, {
+scale: 1,
+x: 0,
+y: 0,
+duration: 0.9,
+ease: "power2.inOut",
+transformOrigin: "center center"
+}, "-=0.2");
 
-  tl.add(demoOnce())
-    .to({}, { duration: 0.5 })
-    .add(demoOnce());
-
-  return tl;
+return tl;
 }
 
 /* =========================================
