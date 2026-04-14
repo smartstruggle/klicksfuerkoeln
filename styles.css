@@ -1251,3 +1251,24 @@ touch-action: pan-y;
 }
 
 
+.hero-graphic {
+position: relative;
+}
+
+/* Linke Touch-Zone */
+.hero-touch-left {
+position: absolute;
+left: 0;
+top: 0;
+width: 38%;
+height: 100%;
+z-index: 10;
+background: transparent;
+
+touch-action: pan-y;
+
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
+-webkit-tap-highlight-color: transparent;
+}
