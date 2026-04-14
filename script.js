@@ -1,5 +1,5 @@
 /* =========================================
-Mobile Menu
+1. MOBILE MENU
 ========================================= */
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileMenu = document.querySelector(".mobile-menu");
@@ -21,11 +21,19 @@ if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
 
 
 /* =========================================
-Kontakt-Modal
+2. KONTAKT-MODAL & FLYER POPUP
 ========================================= */
 const contactModal = document.getElementById("contact-modal");
 const openButtons = document.querySelectorAll("[data-open-contact]");
 const closeButtons = document.querySelectorAll("[data-close-contact]");
+const flyerPopup = document.getElementById("flyer-popup");
+const flyerPopupClose = document.getElementById("flyer-popup-close");
+const flyerPopupX = document.getElementById("flyer-popup-x");
+const flyerPopupMail = document.getElementById("flyer-popup-mail");
+const flyerOpenContactFirst = document.querySelectorAll("[data-close-flyer-first]");
+
+const urlParams = new URLSearchParams(window.location.search);
+const isFlyerVisit = urlParams.get("flyer") === "1";
 
 function openModal() {
 if (!contactModal) return;
@@ -41,271 +49,6 @@ contactModal.setAttribute("aria-hidden", "true");
 document.body.classList.remove("modal-open");
 }
 
-openButtons.forEach((button) => {
-button.addEventListener("click", openModal);
-});
-
-closeButtons.forEach((button) => {
-button.addEventListener("click", closeModal);
-});
-
-document.addEventListener("keydown", (event) => {
-if (event.key === "Escape") {
-closeModal();
-closeFlyerPopup();
-}
-});
-
-
-/* =========================================
-Cookie Banner
-========================================= */
-const cookieBanner = document.getElementById("cookie-banner");
-const cookieAccept = document.getElementById("cookie-accept");
-const cookieAccepted = localStorage.getItem("kfk-cookie-accepted");
-
-if (!cookieAccepted && cookieBanner) {
-cookieBanner.hidden = false;
-}
-
-if (cookieAccept) {
-cookieAccept.addEventListener("click", () => {
-localStorage.setItem("kfk-cookie-accepted", "true");
-cookieBanner.hidden = true;
-});
-}
-
-
-
-/* =========================================
-SMARTE FLOATING-BUTTON LOGIK (Oben & Unten ausblenden)
-========================================= */
-const floatingBtn = document.querySelector(".floating-project-btn");
-const siteFooter = document.querySelector(".site-footer");
-const heroGraphic = document.querySelector(".hero-graphic");
-
-// Funktion zum Ein-/Ausblenden
-function updateBtnVisibility(shouldShow) {
-if (!floatingBtn) return;
-gsap.to(floatingBtn, {
-opacity: shouldShow ? 1 : 0,
-y: shouldShow ? 0 : 20,
-duration: 0.4,
-pointerEvents: shouldShow ? 'all' : 'none',
-overwrite: 'auto'
-});
-}
-
-// 1. Check für OBEN (Hero-Grafik)
-const heroObserver = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-// Wenn die Grafik sichtbar ist -> Button ausblenden
-if (entry.isIntersecting) {
-updateBtnVisibility(false);
-} else {
-// Wenn man die Grafik verlässt -> Button einblenden
-updateBtnVisibility(true);
-}
-});
-}, { threshold: 0.1 });
-
-// 2. Check für UNTEN (Footer)
-const footerObserver = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-// Wenn der Footer sichtbar wird -> Button wieder ausblenden
-if (entry.isIntersecting) {
-updateBtnVisibility(false);
-}
-});
-}, { threshold: 0 });
-
-// Observer starten
-if (floatingBtn) {
-if (heroGraphic) heroObserver.observe(heroGraphic);
-if (siteFooter) footerObserver.observe(siteFooter);
-}
-
-/* =========================================
-Formular-Senden
-========================================= */
-async function handleFormSubmit(formElement, statusElement) {
-if (!formElement || !statusElement) return;
-
-formElement.addEventListener("submit", async (e) => {
-e.preventDefault();
-
-statusElement.textContent = "Nachricht wird gesendet …";
-
-const formData = {
-name: formElement.name.value.trim(),
-email: formElement.email.value.trim(),
-message: formElement.message.value.trim()
-};
-
-try {
-const response = await fetch("/api/contact", {
-method: "POST",
-headers: {
-"Content-Type": "application/json"
-},
-body: JSON.stringify(formData)
-});
-
-const data = await response.json();
-
-if (!response.ok) {
-throw new Error(data.message || "E-Mail konnte nicht gesendet werden.");
-}
-
-statusElement.textContent = "Danke – deine Nachricht wurde gesendet.";
-formElement.reset();
-
-// Nur beim Modal-Formular automatisch schließen
-if (formElement.id === "contactForm") {
-setTimeout(() => {
-closeModal();
-statusElement.textContent = "";
-}, 1400);
-}
-
-} catch (error) {
-console.error(error);
-statusElement.textContent =
-error.message || "Das Senden hat gerade nicht funktioniert.";
-}
-});
-}
-
-const modalForm = document.getElementById("contactForm");
-const modalStatus = document.getElementById("form-status");
-
-if (modalForm && modalStatus) {
-handleFormSubmit(modalForm, modalStatus);
-}
-
-const embeddedForm = document.getElementById("embeddedContactForm");
-const embeddedStatus = document.getElementById("embedded-form-status");
-
-if (embeddedForm && embeddedStatus) {
-handleFormSubmit(embeddedForm, embeddedStatus);
-}
-
-
-
-/* ---------- Hero-Grafik: Kinematische Master-Logik ---------- */
-let introHasStarted = false;
-
-function startIntroAnimations() {
-if (introHasStarted) return;
-introHasStarted = true;
-
-// 1. DER NULLZUSTAND
-gsap.set("#leucht-o", { opacity: 0.2 });
-gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.98 });
-gsap.set(["#birne-links", "#birne-rechts"], { opacity: 0 });
-gsap.set("#dom", { opacity: 0, scale: 0, transformOrigin: "center bottom" });
-gsap.set("#cursor", { x: 40, y: 30, opacity: 0 });
-
-// Leitung verstecken (Start rechts)
-gsap.set("#leitung", { strokeDasharray: 2500, strokeDashoffset: -2500 });
-
-/* ---------- DIE TIMELINE ---------- */
-const masterTL = gsap.timeline({
-defaults: { ease: "power2.inOut" }
-});
-
-// SCHRITT 1: Cursor & Klick
-masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
-.to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
-.to("#powerbutton", { scale: 1, duration: 0.2 })
-.to("#cursor", { opacity: 0, duration: 0.5 }, "+=0.2");
-
-// SCHRITT 2: Die Leitung startet (Dauer auf 4s erhöht für mehr Realismus)
-// Wir setzen hier einen Marker "leitungStart"
-masterTL.addLabel("leitungStart")
-.to("#leitung", {
-strokeDashoffset: 0,
-duration: 4,
-ease: "none"
-}, "leitungStart");
-
-// SCHRITT 3: Birne RECHTS (Trigger nach ca. 20% der Leitungsfahrt)
-// "<" bedeutet: Beziehe dich auf den Start der vorherigen Animation (Leitung)
-masterTL.to("#filament-rechts", {
-opacity: 1,
-scale: 1.02,
-duration: 0.3
-}, "leitungStart+=0.8") // 0.8s nach Start der Leitung
-.to("#birne-rechts", {
-opacity: 1,
-duration: 0.8
-}, "<");
-
-// SCHRITT 4: Birne LINKS (Trigger nach ca. 70% der Leitungsfahrt)
-masterTL.to("#filament-links", {
-opacity: 1,
-scale: 1.02,
-duration: 0.3
-}, "leitungStart+=2.8") // 2.8s nach Start der Leitung
-.to("#birne-links", {
-opacity: 1,
-duration: 0.8
-}, "<");
-
-// SCHRITT 5: Das Ö (Exakt am Ende der 4s Leitung)
-masterTL.to("#leucht-o", {
-opacity: 1,
-filter: "drop-shadow(0 0 30px rgba(253, 144, 21, 0.8))",
-duration: 0.6
-}, "leitungStart+=4");
-
-// SCHRITT 6: Der Dom-Plopp
-masterTL.to("#dom", {
-opacity: 1,
-scale: 1,
-duration: 1.2,
-ease: "back.out(1.2)"
-}, "+=0.2");
-
-// SCHRITT 7: Dom-Finale (Bleibt stehen)
-masterTL.to("#dom", {
-opacity: 0,
-duration: 1,
-delay: 5
-});
-}
-
-window.addEventListener("load", () => {
-setTimeout(startIntroAnimations, 800);
-});
-
-
-/* =========================================
-Startlogik beim Laden
-========================================= */
-window.addEventListener("load", () => {
-if (isFlyerVisit) {
-openFlyerPopup();
-} else {
-startIntroAnimations();
-}
-});
-
-
-
-
-/* =========================================
-Flyer Popup
-========================================= */
-const flyerPopup = document.getElementById("flyer-popup");
-const flyerPopupClose = document.getElementById("flyer-popup-close");
-const flyerPopupX = document.getElementById("flyer-popup-x");
-const flyerPopupMail = document.getElementById("flyer-popup-mail");
-const flyerOpenContactFirst = document.querySelectorAll("[data-close-flyer-first]");
-
-const urlParams = new URLSearchParams(window.location.search);
-const isFlyerVisit = urlParams.get("flyer") === "1";
-
 function openFlyerPopup() {
 if (!flyerPopup) return;
 flyerPopup.classList.add("is-open");
@@ -318,24 +61,15 @@ if (!flyerPopup) return;
 flyerPopup.classList.remove("is-open");
 flyerPopup.setAttribute("aria-hidden", "true");
 document.body.classList.remove("modal-open");
-
-// Beim Flyer-Besuch startet das Intro erst NACH dem Schließen
-if (isFlyerVisit) {
-startIntroAnimations();
-}
+if (isFlyerVisit) startIntroAnimations();
 }
 
-if (flyerPopupClose) {
-flyerPopupClose.addEventListener("click", closeFlyerPopup);
-}
+openButtons.forEach(button => button.addEventListener("click", openModal));
+closeButtons.forEach(button => button.addEventListener("click", closeModal));
 
-if (flyerPopupX) {
-flyerPopupX.addEventListener("click", closeFlyerPopup);
-}
-
-if (flyerPopupMail) {
-flyerPopupMail.addEventListener("click", closeFlyerPopup);
-}
+if (flyerPopupClose) flyerPopupClose.addEventListener("click", closeFlyerPopup);
+if (flyerPopupX) flyerPopupX.addEventListener("click", closeFlyerPopup);
+if (flyerPopupMail) flyerPopupMail.addEventListener("click", closeFlyerPopup);
 
 flyerOpenContactFirst.forEach((button) => {
 button.addEventListener("click", () => {
@@ -344,169 +78,236 @@ setTimeout(() => openModal(), 120);
 });
 });
 
+document.addEventListener("keydown", (event) => {
+if (event.key === "Escape") {
+closeModal();
+closeFlyerPopup();
+}
+});
 
 
+/* =========================================
+3. COOKIE BANNER
+========================================= */
+const cookieBanner = document.getElementById("cookie-banner");
+const cookieAccept = document.getElementById("cookie-accept");
+if (!localStorage.getItem("kfk-cookie-accepted") && cookieBanner) {
+cookieBanner.hidden = false;
+}
+if (cookieAccept) {
+cookieAccept.addEventListener("click", () => {
+localStorage.setItem("kfk-cookie-accepted", "true");
+cookieBanner.hidden = true;
+});
+}
 
 
-/* ==========================================================================
-MOBIL GRAFIK & ANIMATION (Entrance + Premium Interaktion)
-========================================================================== */
+/* =========================================
+4. FORMULAR-SENDEN (API)
+========================================= */
+async function handleFormSubmit(formElement, statusElement) {
+if (!formElement || !statusElement) return;
 
-document.addEventListener("DOMContentLoaded", () => {
-// 1. SICHERHEITS-CHECK: Lädt nur, wenn das mobile SVG da ist
-if (!document.querySelector("#powerbutton-mobil")) return;
+formElement.addEventListener("submit", async (e) => {
+e.preventDefault();
+statusElement.textContent = "Nachricht wird gesendet …";
 
-// 2. SETUP (Mobil)
-gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil"], {
+const formData = {
+name: formElement.name.value.trim(),
+email: formElement.email.value.trim(),
+message: formElement.message.value.trim()
+};
+
+try {
+const response = await fetch("/api/contact", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(formData)
+});
+const data = await response.json();
+if (!response.ok) throw new Error(data.message || "E-Mail Fehler.");
+
+statusElement.textContent = "Danke – deine Nachricht wurde gesendet.";
+formElement.reset();
+if (formElement.id === "contactForm") {
+setTimeout(() => { closeModal(); statusElement.textContent = ""; }, 1400);
+}
+} catch (error) {
+statusElement.textContent = error.message || "Senden fehlgeschlagen.";
+}
+});
+}
+
+const modalForm = document.getElementById("contactForm");
+const modalStatus = document.getElementById("form-status");
+if (modalForm) handleFormSubmit(modalForm, modalStatus);
+
+const embeddedForm = document.getElementById("embeddedContactForm");
+const embeddedStatus = document.getElementById("embedded-form-status");
+if (embeddedForm) handleFormSubmit(embeddedForm, embeddedStatus);
+
+
+/* =========================================
+5. SMARTE FLOATING-BUTTON LOGIK
+========================================= */
+const floatingBtn = document.querySelector(".floating-project-btn");
+const siteFooter = document.querySelector(".site-footer");
+const heroGraphic = document.querySelector(".hero-graphic");
+
+function updateBtnVisibility(shouldShow) {
+if (!floatingBtn) return;
+gsap.to(floatingBtn, {
+opacity: shouldShow ? 1 : 0,
+y: shouldShow ? 0 : 20,
+autoAlpha: shouldShow ? 1 : 0,
+duration: 0.4,
+pointerEvents: shouldShow ? 'all' : 'none',
+overwrite: 'auto'
+});
+}
+
+const scrollObserver = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+// Wenn Hero oder Footer sichtbar -> Button weg
+if (entry.isIntersecting) {
+updateBtnVisibility(false);
+} else if (entry.target === heroGraphic) {
+// Wenn man den Hero verlässt -> Button herzeigen
+updateBtnVisibility(true);
+}
+});
+}, { threshold: 0.1 });
+
+if (floatingBtn) {
+if (heroGraphic) scrollObserver.observe(heroGraphic);
+if (siteFooter) scrollObserver.observe(siteFooter);
+}
+
+
+/* =========================================
+6. DESKTOP HERO ANIMATION
+========================================= */
+let introHasStarted = false;
+
+function startIntroAnimations() {
+if (introHasStarted || window.innerWidth < 768) return;
+const btn = document.querySelector("#powerbutton");
+if (!btn) return;
+introHasStarted = true;
+
+gsap.set("#leucht-o", { opacity: 0.2 });
+gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.98 });
+gsap.set(["#birne-links", "#birne-rechts"], { opacity: 0 });
+gsap.set("#dom", { opacity: 0, scale: 0, transformOrigin: "center bottom" });
+gsap.set("#cursor", { x: 40, y: 30, opacity: 0 });
+gsap.set("#leitung", { strokeDasharray: 2500, strokeDashoffset: -2500 });
+
+const masterTL = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+
+masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
+.to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
+.to("#powerbutton", { scale: 1, duration: 0.2 })
+.to("#cursor", { opacity: 0, duration: 0.5 }, "+=0.2")
+.addLabel("leitungStart")
+.to("#leitung", { strokeDashoffset: 0, duration: 4, ease: "none" }, "leitungStart")
+.to("#filament-rechts", { opacity: 1, scale: 1.02, duration: 0.3 }, "leitungStart+=0.8")
+.to("#birne-rechts", { opacity: 1, duration: 0.8 }, "<")
+.to("#filament-links", { opacity: 1, scale: 1.02, duration: 0.3 }, "leitungStart+=2.8")
+.to("#birne-links", { opacity: 1, duration: 0.8 }, "<")
+.to("#leucht-o", { opacity: 1, filter: "drop-shadow(0 0 30px #fd9015)", duration: 0.6 }, "leitungStart+=4")
+.to("#dom", { opacity: 1, scale: 1, duration: 1.2, ease: "back.out(1.2)" }, "+=0.2");
+}
+
+
+/* =========================================
+7. MOBIL HERO (ENTRANCE & INTERAKTION)
+========================================= */
+function initMobilEntrance() {
+const btn = document.querySelector("#powerbutton-mobil");
+if (!btn || window.innerWidth >= 768) return;
+
+gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
 });
-
 gsap.set("#dom-mobil", { scale: 0.8, transformOrigin: "center bottom" });
-gsap.set("#leucht-o-mobil", { opacity: 0.2 });
 gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
 gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
-// 3. ENTRANCE TIMELINE
-const tl = gsap.timeline({
-delay: 0.5,
-defaults: { ease: "power2.inOut" },
-onComplete: initMobilInteractions // Startet das Klicken nach der Animation
-});
+const tl = gsap.timeline({ delay: 0.5, onComplete: initMobilInteractions });
 
 tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
-.to({}, { duration: 0.2 })
+.to("#powerbutton-mobil", { autoAlpha: 1, duration: 0.3 })
 .to("#powerbutton-mobil", { scale: 0.88, duration: 0.2, transformOrigin: "center center" })
 .to("#powerbutton-mobil", { scale: 1, duration: 0.2 })
 .to("#leitung-mobil", { autoAlpha: 1, strokeDashoffset: 0, duration: 1.8, ease: "none" }, "+=0.1")
 .to("#dom-mobil", { autoAlpha: 1, scale: 1, duration: 1.0, ease: "back.out(1.6)" })
-.to("#leucht-o-mobil", {
-autoAlpha: 1,
-filter: "drop-shadow(0 0 25px rgba(253, 144, 21, 0.9))",
-duration: 0.7
-}, "+=0.3");
+.to("#leucht-o-mobil", { autoAlpha: 1, filter: "drop-shadow(0 0 25px #fd9015)", duration: 0.7 }, "+=0.3");
+}
 
-// 4. INTERAKTIONS-FUNKTION (Die Premium-Version)
 function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
 const cursor = document.querySelector("#cursor-mobil");
+if (!btn || !dom) return;
 
-// Wenn etwas schiefgeht, sofort abbrechen ohne Fehler
-if (!btn || !dom || !cursor) {
-console.error("Fehler: Mobil-Elemente fehlen für die Interaktion!");
-return;
-}
-
-console.log("ERFOLG: Entrance durch, Button ist scharfgeschaltet.");
-
-// Button klickbar machen
-gsap.set(btn, { pointerEvents: "all", cursor: "pointer" });
+// Panzerung
+gsap.set(btn, { pointerEvents: "all", cursor: "pointer", touchAction: "none" });
 
 let growthLevel = 0;
 let pressTimer = null;
 let isPressing = false;
 
-// LOCKRUF: Button pulsiert und leuchtet sanft
 const hintTl = gsap.timeline({ repeat: -1 });
-hintTl.to(btn, {
-scale: 1.08,
-filter: "drop-shadow(0 0 8px rgba(253, 144, 21, 0.5))",
-duration: 0.8,
-yoyo: true,
-repeat: 1,
-ease: "sine.inOut",
-transformOrigin: "center center"
-})
-.to(cursor, { x: "+=3", y: "-=2", duration: 0.18, yoyo: true, repeat: 3 }, 0);
+hintTl.to(btn, { scale: 1.08, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center" })
+.to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
 
-// WACHSEN (4 Stufen + Explosion am Ende)
 function growDom() {
 if (growthLevel < 4) {
 growthLevel++;
-const targetScale = 1 + (growthLevel * 0.3); // Faktor für 4 Stufen angepasst
-
-gsap.to(dom, {
-scale: targetScale,
-duration: 0.25,
-ease: "back.out(1.5)",
-transformOrigin: "center bottom"
-});
-
-// Wenn Stufe 4 erreicht ist -> FINALE EXPLOSION
+gsap.to(dom, { scale: 1 + (growthLevel * 0.3), duration: 0.25, ease: "back.out(1.5)", transformOrigin: "center bottom" });
 if (growthLevel === 4) {
 clearInterval(pressTimer);
-
-gsap.timeline()
-.to(dom, {
-filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", // Krasses Leuchten
-scale: targetScale + 0.1, // Kurzer Kick nach oben
-duration: 0.15
-})
-.to(dom, {
-filter: "brightness(1) drop-shadow(0 0 0px #fd9015)", // Leuchten erlischt
-duration: 0.3
-});
+gsap.timeline().to(dom, { filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", scale: "+=0.1", duration: 0.15 })
+.to(dom, { filter: "brightness(1)", duration: 0.3 });
 }
 }
 }
 
-// RESET (Sofortiger Rückfall)
 function resetDom() {
 if (!isPressing) return;
 isPressing = false;
 clearInterval(pressTimer);
-
-// Fällt schwerer (power3.in) und schneller zurück
-gsap.to(dom, {
-scale: 1,
-duration: 0.4,
-ease: "power3.in",
-filter: "none",
-transformOrigin: "center bottom",
-onComplete: () => {
-growthLevel = 0;
-hintTl.restart(); // Lockruf geht sofort wieder los
-}
-});
+gsap.to(dom, { scale: 1, duration: 0.4, ease: "power3.in", filter: "none", transformOrigin: "center bottom", onComplete: () => { growthLevel = 0; hintTl.restart(); } });
 }
 
-// MAUS/TOUCH EVENT: Drücken
 btn.addEventListener("pointerdown", (e) => {
 e.preventDefault();
 if (isPressing) return;
 isPressing = true;
-
 hintTl.pause();
-gsap.set(btn, { filter: "none" }); // Glühen beim Drücken aus
-
 growDom();
 pressTimer = setInterval(growDom, 400);
 });
 
-// MAUS/TOUCH EVENT: Loslassen (auch wenn der Finger wegrutscht)
 window.addEventListener("pointerup", resetDom);
 btn.addEventListener("pointerleave", resetDom);
-btn.addEventListener("pointercancel", resetDom);
-btn.addEventListener("contextmenu", (e) => e.preventDefault());
+btn.addEventListener("contextmenu", e => e.preventDefault());
 }
-});
 
-const heroGraphic = document.querySelector(".hero-graphic");
-const floatingBtn = document.querySelector(".floating-project-btn");
 
-const showBtnObserver = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if (!entry.isIntersecting) {
-// Wenn Grafik NICHT mehr sichtbar ist -> Button zeigen
-gsap.to(floatingBtn, { opacity: 1, y: 0, pointerEvents: "all" });
+/* =========================================
+8. GLOBALER START-CHECK
+========================================= */
+window.addEventListener("load", () => {
+if (isFlyerVisit) {
+openFlyerPopup();
 } else {
-// Wenn man wieder ganz oben ist -> Button weg
-gsap.to(floatingBtn, { opacity: 0, y: 20, pointerEvents: "none" });
+if (window.innerWidth < 768) {
+initMobilEntrance();
+} else {
+startIntroAnimations();
+}
 }
 });
-}, { threshold: 0.1 });
 
-if (heroGraphic && floatingBtn) {
-showBtnObserver.observe(heroGraphic);
-}
