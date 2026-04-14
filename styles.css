@@ -860,7 +860,13 @@ animation: pulseRing 1.8s ease-out infinite;
 animation: pulseRing 1.8s ease-out 0.55s infinite;
 }
 
-
+@media (max-width: 767px) {
+.floating-project-btn {
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.4s ease;
+}
+}
 @keyframes pulseProjectBtn {
 0%, 100% {
 transform: scale(1);
