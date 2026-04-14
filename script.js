@@ -220,12 +220,14 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 
 /* =========================================
+/* =========================================
 7. MOBIL HERO (ENTRANCE & INTERAKTION)
 ========================================= */
 function initMobilEntrance() {
 const btn = document.querySelector("#powerbutton-mobil");
 if (!btn || window.innerWidth >= 768) return;
 
+// Alles auf Anfang setzen
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
@@ -234,7 +236,10 @@ gsap.set("#dom-mobil", { scale: 0.8, transformOrigin: "center bottom" });
 gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
 gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
-const tl = gsap.timeline({ delay: 0.5, onComplete: initMobilInteractions });
+const tl = gsap.timeline({
+delay: 0.5,
+onComplete: initMobilInteractions // Startet die Klick-Logik, wenn das Intro fertig ist
+});
 
 tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
 .to("#powerbutton-mobil", { autoAlpha: 1, duration: 0.3 })
@@ -248,93 +253,109 @@ tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
 function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
+const cursor = document.querySelector("#cursor-mobil");
 
 if (!btn || !dom) return;
 
-// --- DIE PANZERUNG ---
+// --- DIE PANZERUNG (Wichtig für 100% Zuverlässigkeit) ---
 gsap.set(btn, {
 pointerEvents: "all",
 touchAction: "none",
 userSelect: "none"
 });
 
-// Wir erzwingen, dass der gesamte Bereich des Buttons klickbar ist,
-// nicht nur die gezeichneten Linien:
+// Killt die Lupe und iOS-Kontextmenüs
 btn.style.webkitTouchCallout = "none";
 btn.style.webkitUserSelect = "none";
 
-// Falls dein Powerbutton aus vielen Einzelteilen besteht,
-// stellen wir sicher, dass das gesamte Gruppen-Element (g) reagiert:
-btn.setAttribute("pointer-events", "bounding-box");
-// Oder noch besser: Wir geben ihm eine unsichtbare Füllung, falls er keine hat
-if (btn.tagName === "g") {
-btn.style.fill = "transparent";
-// "transparent" klingt zwar nach "nichts", aber für den Browser
-// ist es jetzt eine solide Fläche, die man anfassen kann!
+// Macht das SVG "greifbar", auch zwischen den Linien
+if (btn.tagName === "g" || btn.tagName === "svg") {
+btn.style.fill = "rgba(255,255,255,0.01)";
 }
 
-// ... Rest deiner Logik (growthLevel, pressTimer etc.) ...
+// INTERNE VARIABLEN (Nur hier drin bekannt)
+let growthLevel = 0;
+let pressTimer = null;
+let isPressing = false;
 
-// Kleiner Pro-Tipp für die Events:
-// Wir nutzen 'pointerdown', aber fügen 'preventDefault' hinzu,
-// um die Lupe endgültig zu killen.
-btn.addEventListener("pointerdown", (e) => {
-if (e.pointerType === 'touch') {
-// Verhindert, dass das Handy die Lupe oder das Scrollen startet
-e.preventDefault();
-}
+// Lockruf-Animation
+const hintTl = gsap.timeline({ repeat: -1 });
+hintTl.to(btn, {
+scale: 1.08,
+filter: "drop-shadow(0 0 8px #fd9015)",
+duration: 0.8,
+yoyo: true,
+repeat: 1,
+ease: "sine.inOut",
+transformOrigin: "center"
+}).to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
 
-if (isPressing) return;
-isPressing = true;
-// ... deine growDom Logik
-}, { passive: false }); // 'passive: false' ist wichtig, damit preventDefault funktioniert!
-}
-
+// WACHSEN
 function growDom() {
 if (growthLevel < 4) {
 growthLevel++;
-gsap.to(dom, { scale: 1 + (growthLevel * 0.3), duration: 0.25, ease: "back.out(1.5)", transformOrigin: "center bottom" });
+gsap.to(dom, {
+scale: 1 + (growthLevel * 0.3),
+duration: 0.25,
+ease: "back.out(1.5)",
+transformOrigin: "center bottom"
+});
 if (growthLevel === 4) {
 clearInterval(pressTimer);
-gsap.timeline().to(dom, { filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", scale: "+=0.1", duration: 0.15 })
+gsap.timeline()
+.to(dom, { filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", scale: "+=0.1", duration: 0.15 })
 .to(dom, { filter: "brightness(1)", duration: 0.3 });
 }
 }
 }
 
+// RESET
 function resetDom() {
 if (!isPressing) return;
 isPressing = false;
 clearInterval(pressTimer);
-gsap.to(dom, { scale: 1, duration: 0.4, ease: "power3.in", filter: "none", transformOrigin: "center bottom", onComplete: () => { growthLevel = 0; hintTl.restart(); } });
+gsap.to(dom, {
+scale: 1,
+duration: 0.4,
+ease: "power3.in",
+filter: "none",
+transformOrigin: "center bottom",
+onComplete: () => {
+growthLevel = 0;
+hintTl.restart();
+}
+});
 }
 
+// EVENT LISTENER (Alle sicher in der Funktion verpackt)
 btn.addEventListener("pointerdown", (e) => {
-e.preventDefault();
+if (e.pointerType === 'touch') e.preventDefault(); // Killt Lupe/Scrollen
+
 if (isPressing) return;
 isPressing = true;
+
 hintTl.pause();
 growDom();
 pressTimer = setInterval(growDom, 400);
-});
+}, { passive: false });
 
 window.addEventListener("pointerup", resetDom);
 btn.addEventListener("pointerleave", resetDom);
 btn.addEventListener("contextmenu", e => e.preventDefault());
 }
 
-
 /* =========================================
 8. GLOBALER START-CHECK
 ========================================= */
 window.addEventListener("load", () => {
-if (isFlyerVisit) {
-openFlyerPopup();
+// Falls du isFlyerVisit oben definiert hast:
+if (typeof isFlyerVisit !== 'undefined' && isFlyerVisit) {
+if (typeof openFlyerPopup === 'function') openFlyerPopup();
 } else {
 if (window.innerWidth < 768) {
 initMobilEntrance();
 } else {
-startIntroAnimations();
+if (typeof startIntroAnimations === 'function') startIntroAnimations();
 }
 }
 });
