@@ -11,6 +11,9 @@
 --green-800: #39513b;
 --green-700: #4d654f;
 --green-500: #72866f;
+.hero-graphic {
+position: relative;
+}
 
 --text: #161616;
 --text-soft: #505050;
@@ -75,7 +78,7 @@ text-rendering: optimizeLegibility;
 }
 
 body.modal-open {
-overflow: hidden;
+overflow: visible;
 }
 
 img,
