@@ -220,12 +220,13 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 
 /* =========================================
-7. MOBIL HERO (FINAL SCROLL-SAFE VERSION)
+7. MOBIL HERO (SPLIT-SCREEN LOGIK)
 ========================================= */
 function initMobilEntrance() {
 const heroContainer = document.querySelector(".hero-graphic");
 if (!heroContainer || window.innerWidth >= 768) return;
 
+// Alles initial vorbereiten
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
@@ -236,9 +237,10 @@ gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
 const tl = gsap.timeline({
 delay: 0.5,
-onComplete: () => initMobilInteractions(heroContainer)
+onComplete: initMobilInteractions
 });
 
+// Turbo-Intro
 tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.4 })
 .to("#powerbutton-mobil", { autoAlpha: 1, duration: 0.2 })
 .to("#powerbutton-mobil", { scale: 0.88, duration: 0.15, transformOrigin: "center center" })
@@ -248,17 +250,21 @@ tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.4 })
 .to("#leucht-o-mobil", { autoAlpha: 1, filter: "drop-shadow(0 0 25px #fd9015)", duration: 0.5 }, "-=0.2");
 }
 
-function initMobilInteractions(container) {
-const dom = document.querySelector("#dom-mobil");
+function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
+const dom = document.querySelector("#dom-mobil");
 
-if (!dom || !container) return;
+if (!btn || !dom) return;
 
 let growthLevel = 0;
 let pressTimer = null;
-let startDelayTimer = null;
 let isPressing = false;
-let startY = 0; // Wir merken uns, wo der Finger startete
+
+// Den Button "greifbar" machen (unsichtbare Füllung für bessere Hitbox)
+gsap.set(btn, {
+pointerEvents: "all",
+fill: "rgba(255,255,255,0.01)"
+});
 
 const hintTl = gsap.timeline({ repeat: -1 });
 hintTl.to(btn, { scale: 1.05, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center" });
@@ -269,46 +275,40 @@ growthLevel++;
 gsap.to(dom, { scale: 1 + (growthLevel * 0.3), duration: 0.25, ease: "back.out(1.5)", transformOrigin: "center bottom" });
 if (growthLevel === 4) {
 clearInterval(pressTimer);
-gsap.timeline().to(dom, { filter: "brightness(1.8) shadow", scale: "+=0.1", duration: 0.15 }).to(dom, { filter: "brightness(1)", duration: 0.3 });
+gsap.timeline()
+.to(dom, { filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", scale: "+=0.1", duration: 0.15 })
+.to(dom, { filter: "brightness(1)", duration: 0.3 });
 }
 }
 }
 
 function resetDom() {
+if (!isPressing) return;
 isPressing = false;
-clearTimeout(startDelayTimer);
 clearInterval(pressTimer);
-gsap.to(dom, { scale: 1, duration: 0.4, ease: "power3.in", filter: "none", onComplete: () => { growthLevel = 0; if (hintTl) hintTl.restart(); } });
+gsap.to(dom, {
+scale: 1,
+duration: 0.4,
+ease: "power3.in",
+filter: "none",
+onComplete: () => { growthLevel = 0; if (hintTl) hintTl.restart(); }
+});
 }
 
-// --- DIE ULTIMATIVE SCROLL-SICHERUNG ---
-container.addEventListener("touchstart", (e) => {
-// Wir merken uns die Startposition des Fingers
-startY = e.touches[0].pageY;
-isPressing = true;
+// INTERAKTION NUR AUF DEM BUTTON
+btn.addEventListener("pointerdown", (e) => {
+// Verhindert Lupe/Menü NUR auf dem Button
+if (e.pointerType === 'touch') e.preventDefault();
 
-startDelayTimer = setTimeout(() => {
-if (isPressing) {
+isPressing = true;
 if (hintTl) hintTl.pause();
 growDom();
 pressTimer = setInterval(growDom, 400);
-}
-}, 200); // 200ms warten, um sicher zu sein
-}, { passive: true });
+}, { passive: false });
 
-container.addEventListener("touchmove", (e) => {
-// Wenn sich der Finger mehr als 5 Pixel bewegt, wird ALLES abgebrochen
-let moveY = Math.abs(e.touches[0].pageY - startY);
-if (moveY > 5) {
-isPressing = false;
-clearTimeout(startDelayTimer);
-clearInterval(pressTimer);
-// Hier KEIN resetDom (Animation rückwärts), damit es beim Scrollen nicht flackert
-}
-}, { passive: true });
-
-window.addEventListener("touchend", resetDom);
-window.addEventListener("touchcancel", resetDom);
+// Globales Loslassen (damit es nicht hängen bleibt)
+window.addEventListener("pointerup", resetDom);
+window.addEventListener("pointercancel", resetDom);
 }
 
 
