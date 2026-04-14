@@ -220,37 +220,39 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 
 /* =========================================
-7. MOBIL HERO (FINAL POLISHED VERSION)
-- Entrance + Mini Demo + Interactions
-- smooth + emotional
+7. MOBIL HERO (FINAL CLEAN VERSION)
+- 1 Demo
+- Pause nach Entrance
+- smooth & ruhig
 ========================================= */
 
 function initMobilEntrance() {
-  const heroContainer = document.querySelector(".hero-graphic");
-  const touchZone = document.querySelector(".hero-touch-left");
+const heroContainer = document.querySelector(".hero-graphic");
+const touchZone = document.querySelector(".hero-touch-left");
 
-  if (!heroContainer || !touchZone || window.innerWidth >= 768) return;
+if (!heroContainer || !touchZone || window.innerWidth >= 768) return;
 
-  gsap.set(
-    ["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"],
-    { autoAlpha: 0, visibility: "visible" }
-  );
+gsap.set(
+["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"],
+{ autoAlpha: 0, visibility: "visible" }
+);
 
-  gsap.set("#dom-mobil", {
-    scale: 0.8,
-    transformOrigin: "center bottom"
-  });
+gsap.set("#dom-mobil", {
+scale: 0.8,
+transformOrigin: "center bottom"
+});
 
-  gsap.set("#leitung-mobil", {
-    strokeDasharray: 2000,
-    strokeDashoffset: 2000
-  });
+gsap.set("#leitung-mobil", {
+strokeDasharray: 2000,
+strokeDashoffset: 2000
+});
 
-  gsap.set("#cursor-mobil", { x: 40, y: 40 });
+gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
-  const tl = gsap.timeline({
-    delay: 0.5,
-   onComplete: () => {
+const tl = gsap.timeline({
+delay: 0.5,
+onComplete: () => {
+// 🔥 PAUSE NACH ENTRANCE
 gsap.delayedCall(1.0, () => {
 const demo = runMiniDemo();
 
@@ -263,47 +265,48 @@ initMobilInteractions(touchZone);
 }
 });
 }
+});
 
-  tl.to("#cursor-mobil", {
-      autoAlpha: 1,
-      x: 0,
-      y: 0,
-      duration: 0.5,
-      ease: "power2.out"
-    })
-    .to("#powerbutton-mobil", {
-      autoAlpha: 1,
-      duration: 0.25
-    })
-    .to("#powerbutton-mobil", {
-      scale: 0.9,
-      duration: 0.2,
-      ease: "power2.inOut",
-      yoyo: true,
-      repeat: 1,
-      transformOrigin: "center"
-    })
-    .to("#leitung-mobil", {
-      autoAlpha: 1,
-      strokeDashoffset: 0,
-      duration: 1.3,
-      ease: "power1.out"
-    }, "-=0.1")
-    .to("#dom-mobil", {
-      autoAlpha: 1,
-      scale: 1,
-      duration: 0.9,
-      ease: "back.out(1.7)"
-    }, "-=0.8")
-    .to("#leucht-o-mobil", {
-      autoAlpha: 1,
-      filter: "drop-shadow(0 0 25px #fd9015)",
-      duration: 0.45
-    }, "-=0.3");
+tl.to("#cursor-mobil", {
+autoAlpha: 1,
+x: 0,
+y: 0,
+duration: 0.5,
+ease: "power2.out"
+})
+.to("#powerbutton-mobil", {
+autoAlpha: 1,
+duration: 0.25
+})
+.to("#powerbutton-mobil", {
+scale: 0.9,
+duration: 0.2,
+ease: "power2.inOut",
+yoyo: true,
+repeat: 1
+})
+.to("#leitung-mobil", {
+autoAlpha: 1,
+strokeDashoffset: 0,
+duration: 1.3,
+ease: "power1.out"
+}, "-=0.1")
+.to("#dom-mobil", {
+autoAlpha: 1,
+scale: 1,
+duration: 0.9,
+ease: "back.out(1.6)"
+}, "-=0.8")
+.to("#leucht-o-mobil", {
+autoAlpha: 1,
+filter: "drop-shadow(0 0 25px #fd9015)",
+duration: 0.45,
+ease: "power2.out"
+}, "-=0.5");
 }
 
 /* =========================================
-MINI DEMO (zeigt dem User was zu tun ist)
+MINI DEMO (nur 1x, ruhig & klar)
 ========================================= */
 
 function runMiniDemo() {
@@ -318,8 +321,7 @@ const tl = gsap.timeline();
 tl.to(cursor, {
 scale: 1.16,
 duration: 0.32,
-ease: "power2.out",
-transformOrigin: "center center"
+ease: "power2.out"
 })
 .to(cursor, {
 x: 8,
@@ -332,14 +334,12 @@ scale: 0.9,
 duration: 0.16,
 yoyo: true,
 repeat: 1,
-ease: "power2.inOut",
-transformOrigin: "center center"
+ease: "power2.inOut"
 }, "<")
 .to(dom, {
 scale: 1.3,
 duration: 0.75,
 ease: "back.out(1.45)",
-transformOrigin: "center bottom",
 filter: "brightness(1.45) drop-shadow(0 0 24px #fd9015)"
 }, "<+0.08")
 .to(cursor, {
@@ -347,111 +347,108 @@ scale: 1,
 x: 0,
 y: 0,
 duration: 0.9,
-ease: "power2.inOut",
-transformOrigin: "center center"
+ease: "power2.inOut"
 }, "-=0.2");
 
 return tl;
 }
 
 /* =========================================
-INTERACTIONS (smooth + glow at max)
+INTERACTIONS (smooth)
 ========================================= */
 
 function initMobilInteractions(touchZone) {
-  const dom = document.querySelector("#dom-mobil");
-  const btn = document.querySelector("#powerbutton-mobil");
-  const cursor = document.querySelector("#cursor-mobil");
+const dom = document.querySelector("#dom-mobil");
+const btn = document.querySelector("#powerbutton-mobil");
+const cursor = document.querySelector("#cursor-mobil");
 
-  if (!dom || !btn || !cursor || !touchZone) return;
+if (!dom || !btn || !cursor || !touchZone) return;
 
-  let growthLevel = 0;
-  let pressTimer = null;
-  let startDelayTimer = null;
+let growthLevel = 0;
+let pressTimer = null;
+let startDelayTimer = null;
 
-  let pointerIsDown = false;
+let pointerIsDown = false;
 
-  const HOLD_DELAY = 180;
+const HOLD_DELAY = 180;
 
-  const hintTl = gsap.timeline({ repeat: -1 });
-  hintTl
-    .to(btn, {
-      scale: 1.05,
-      filter: "drop-shadow(0 0 8px #fd9015)",
-      duration: 0.8,
-      yoyo: true,
-      repeat: 1,
-      ease: "sine.inOut"
-    })
-    .to(cursor, {
-      x: 3,
-      y: -2,
-      duration: 0.18,
-      yoyo: true,
-      repeat: 3
-    }, 0);
+const hintTl = gsap.timeline({ repeat: -1 });
+hintTl
+.to(btn, {
+scale: 1.05,
+filter: "drop-shadow(0 0 8px #fd9015)",
+duration: 0.8,
+yoyo: true,
+repeat: 1,
+ease: "sine.inOut"
+})
+.to(cursor, {
+x: 3,
+y: -2,
+duration: 0.18,
+yoyo: true,
+repeat: 3
+}, 0);
 
-  function growDom() {
-    if (growthLevel >= 4) return;
+function growDom() {
+if (growthLevel >= 4) return;
 
-    growthLevel++;
+growthLevel++;
 
-    gsap.to(dom, {
-      scale: 1 + (growthLevel * 0.28),
-      duration: 0.4,
-      ease: "power2.out"
-    });
+gsap.to(dom, {
+scale: 1 + (growthLevel * 0.28),
+duration: 0.4,
+ease: "power2.out"
+});
 
-    if (growthLevel === 4) {
-      clearInterval(pressTimer);
+if (growthLevel === 4) {
+clearInterval(pressTimer);
 
-      gsap.timeline()
-        .to(dom, {
-          scale: "+=0.08",
-          filter: "brightness(1.6) drop-shadow(0 0 40px #fd9015)",
-          duration: 0.3,
-          ease: "power2.out"
-        })
-        .to(dom, {
-          filter: "brightness(1)",
-          duration: 0.5,
-          ease: "power2.out"
-        });
-    }
-  }
+gsap.timeline()
+.to(dom, {
+scale: "+=0.08",
+filter: "brightness(1.6) drop-shadow(0 0 40px #fd9015)",
+duration: 0.3
+})
+.to(dom, {
+filter: "brightness(1)",
+duration: 0.5
+});
+}
+}
 
-  function resetDom() {
-    pointerIsDown = false;
-    clearTimeout(startDelayTimer);
-    clearInterval(pressTimer);
+function resetDom() {
+pointerIsDown = false;
+clearTimeout(startDelayTimer);
+clearInterval(pressTimer);
 
-    gsap.to(dom, {
-      scale: 1,
-      duration: 0.5,
-      ease: "power3.out",
-      filter: "none",
-      onComplete: () => {
-        growthLevel = 0;
-        hintTl.restart();
-      }
-    });
-  }
+gsap.to(dom, {
+scale: 1,
+duration: 0.5,
+ease: "power3.out",
+filter: "none",
+onComplete: () => {
+growthLevel = 0;
+hintTl.restart();
+}
+});
+}
 
-  function beginGrowth() {
-    if (!pointerIsDown) return;
+function beginGrowth() {
+if (!pointerIsDown) return;
 
-    hintTl.pause();
-    growDom();
-    pressTimer = setInterval(growDom, 450);
-  }
+hintTl.pause();
+growDom();
+pressTimer = setInterval(growDom, 450);
+}
 
-  touchZone.addEventListener("pointerdown", () => {
-    pointerIsDown = true;
-    startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
-  }, { passive: true });
+touchZone.addEventListener("pointerdown", () => {
+pointerIsDown = true;
+startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
+}, { passive: true });
 
-  window.addEventListener("pointerup", resetDom);
-  window.addEventListener("pointercancel", resetDom);
+window.addEventListener("pointerup", resetDom);
+window.addEventListener("pointercancel", resetDom);
 }
 
 /* =========================================
