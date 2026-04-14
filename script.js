@@ -343,6 +343,9 @@ setTimeout(() => openModal(), 120);
 
 /*MOBIL GRAPHIK*/
 
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
 // PRÜFUNG: Nur ausführen, wenn wir das Mobil-Element auch wirklich haben
 if (!document.querySelector("#powerbutton-mobil")) return;
@@ -389,51 +392,29 @@ const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
 const cursor = document.querySelector("#cursor-mobil");
 
-if (!btn || !dom || !cursor) return;
+// DER WICHTIGSTE CHECK:
+if (!btn) {
+console.error("FEHLER: #powerbutton-mobil wurde nicht im HTML gefunden!");
+return; // Bricht hier ab, damit kein Fehler die Seite lahmlegt
+}
 
-// Sicherstellen, dass der Button Klicks annimmt
+console.log("ERFOLG: Button gefunden, Interaktion wird geladen.");
+
+// Ab hier ist alles sicher:
 gsap.set(btn, { pointerEvents: "all", cursor: "pointer" });
 
 let growthLevel = 0;
 let pressTimer = null;
 let isPressing = false;
 
-// Lockruf-Animation (Pulsieren)
-const hintTl = gsap.timeline({ repeat: -1 });
-hintTl.to(btn, { scale: 1.08, duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center center" })
-.to(cursor, { x: "+=3", y: "-=2", duration: 0.18, yoyo: true, repeat: 3 }, 0);
+// ... (Dein restlicher growDom & resetDom Code) ...
 
-function growDom() {
-if (growthLevel < 3) {
-growthLevel++;
-const targetScale = 1 + (growthLevel * 0.25);
-gsap.to(dom, { scale: targetScale, duration: 0.3, ease: "back.out(2)", transformOrigin: "center bottom" });
-
-if (growthLevel === 3) {
-gsap.to(dom, { filter: "brightness(1.2) drop-shadow(0 0 20px #fd9015)", duration: 0.2 });
-}
-}
-}
-
-function resetDom() {
-if (!isPressing) return;
-isPressing = false;
-clearInterval(pressTimer);
-
-// Dom verschwindet und kommt zurück
-gsap.to(dom, {
-scale: 0,
-autoAlpha: 0,
-duration: 0.4,
-delay: 0.6,
-onComplete: () => {
-growthLevel = 0;
-gsap.set(dom, { scale: 1, autoAlpha: 1, filter: "none" });
-hintTl.play();
-}
+btn.addEventListener("pointerdown", (e) => {
+e.preventDefault();
+isPressing = true;
+// ... usw
 });
 }
-
 // EVENT LISTENER
 btn.addEventListener("pointerdown", (e) => {
 e.preventDefault();
