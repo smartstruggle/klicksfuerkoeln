@@ -220,250 +220,244 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 
 /* =========================================
-7. MOBIL HERO (SMART SCROLL SAFE VERSION)
-- MIT touch-layer (links)
-- Scrollen bleibt safe
+7. MOBIL HERO (FINAL POLISHED VERSION)
+- Entrance + Mini Demo + Interactions
+- smooth + emotional
 ========================================= */
 
 function initMobilEntrance() {
-const heroContainer = document.querySelector(".hero-graphic");
-const touchZone = document.querySelector(".hero-touch-left");
+  const heroContainer = document.querySelector(".hero-graphic");
+  const touchZone = document.querySelector(".hero-touch-left");
 
-if (!heroContainer || !touchZone || window.innerWidth >= 768) return;
+  if (!heroContainer || !touchZone || window.innerWidth >= 768) return;
 
-// Alles initial vorbereiten
-gsap.set(
-["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"],
-{
-autoAlpha: 0,
-visibility: "visible"
+  gsap.set(
+    ["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"],
+    { autoAlpha: 0, visibility: "visible" }
+  );
+
+  gsap.set("#dom-mobil", {
+    scale: 0.8,
+    transformOrigin: "center bottom"
+  });
+
+  gsap.set("#leitung-mobil", {
+    strokeDasharray: 2000,
+    strokeDashoffset: 2000
+  });
+
+  gsap.set("#cursor-mobil", { x: 40, y: 40 });
+
+  const tl = gsap.timeline({
+    delay: 0.5,
+    onComplete: () => {
+      const demo = runMiniDemo();
+
+      if (demo) {
+        demo.eventCallback("onComplete", () => {
+          initMobilInteractions(touchZone);
+        });
+      } else {
+        initMobilInteractions(touchZone);
+      }
+    }
+  });
+
+  tl.to("#cursor-mobil", {
+      autoAlpha: 1,
+      x: 0,
+      y: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    })
+    .to("#powerbutton-mobil", {
+      autoAlpha: 1,
+      duration: 0.25
+    })
+    .to("#powerbutton-mobil", {
+      scale: 0.9,
+      duration: 0.2,
+      ease: "power2.inOut",
+      yoyo: true,
+      repeat: 1,
+      transformOrigin: "center"
+    })
+    .to("#leitung-mobil", {
+      autoAlpha: 1,
+      strokeDashoffset: 0,
+      duration: 1.3,
+      ease: "power1.out"
+    }, "-=0.1")
+    .to("#dom-mobil", {
+      autoAlpha: 1,
+      scale: 1,
+      duration: 0.9,
+      ease: "back.out(1.7)"
+    }, "-=0.8")
+    .to("#leucht-o-mobil", {
+      autoAlpha: 1,
+      filter: "drop-shadow(0 0 25px #fd9015)",
+      duration: 0.6
+    }, "-=0.3");
 }
-);
 
-gsap.set("#dom-mobil", {
-scale: 0.8,
-transformOrigin: "center bottom"
-});
+/* =========================================
+MINI DEMO (zeigt dem User was zu tun ist)
+========================================= */
 
-gsap.set("#leitung-mobil", {
-strokeDasharray: 2000,
-strokeDashoffset: 2000
-});
+function runMiniDemo() {
+  const cursor = document.querySelector("#cursor-mobil");
+  const button = document.querySelector("#powerbutton-mobil");
+  const dom = document.querySelector("#dom-mobil");
 
-gsap.set("#cursor-mobil", {
-x: 40,
-y: 40
-});
+  if (!cursor || !button || !dom) return null;
 
-const tl = gsap.timeline({
-delay: 0.5,
-onComplete: () => initMobilInteractions(touchZone) // 🔥 geändert
-});
+  const tl = gsap.timeline();
 
-tl.to("#cursor-mobil", {
-autoAlpha: 1,
-x: 0,
-y: 0,
-duration: 0.4
-})
-.to("#powerbutton-mobil", {
-autoAlpha: 1,
-duration: 0.2
-})
-.to("#powerbutton-mobil", {
-scale: 0.88,
-duration: 0.15,
-transformOrigin: "center center"
-})
-.to("#powerbutton-mobil", {
-scale: 1,
-duration: 0.15
-})
-.to("#leitung-mobil", {
-autoAlpha: 1,
-strokeDashoffset: 0,
-duration: 1.2,
-ease: "none"
-}, "-=0.1")
-.to("#dom-mobil", {
-autoAlpha: 1,
-scale: 1,
-duration: 0.7,
-ease: "back.out(1.6)"
-}, "-=0.8")
-.to("#leucht-o-mobil", {
-autoAlpha: 1,
-filter: "drop-shadow(0 0 25px #fd9015)",
-duration: 0.5
-}, "-=0.2");
+  function demoOnce() {
+    return gsap.timeline()
+      .to(cursor, {
+        scale: 1.25,
+        duration: 0.3,
+        ease: "power2.out"
+      })
+      .to(cursor, {
+        x: 8,
+        y: 6,
+        duration: 1.1,
+        ease: "power2.inOut"
+      })
+      .to(button, {
+        scale: 0.9,
+        duration: 0.15,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut"
+      }, "<")
+      .to(dom, {
+        scale: 1.18,
+        duration: 0.5,
+        ease: "back.out(1.7)"
+      }, "<+0.05")
+      .to(dom, {
+        scale: 1,
+        duration: 0.4,
+        ease: "power2.out"
+      })
+      .to(cursor, {
+        scale: 1,
+        x: 0,
+        y: 0,
+        duration: 0.9,
+        ease: "power2.inOut"
+      });
+  }
+
+  tl.add(demoOnce())
+    .to({}, { duration: 0.5 })
+    .add(demoOnce());
+
+  return tl;
 }
+
+/* =========================================
+INTERACTIONS (smooth + glow at max)
+========================================= */
 
 function initMobilInteractions(touchZone) {
-const dom = document.querySelector("#dom-mobil");
-const btn = document.querySelector("#powerbutton-mobil");
-const cursor = document.querySelector("#cursor-mobil");
+  const dom = document.querySelector("#dom-mobil");
+  const btn = document.querySelector("#powerbutton-mobil");
+  const cursor = document.querySelector("#cursor-mobil");
 
-if (!dom || !btn || !cursor || !touchZone) return;
+  if (!dom || !btn || !cursor || !touchZone) return;
 
-let growthLevel = 0;
-let pressTimer = null;
-let startDelayTimer = null;
+  let growthLevel = 0;
+  let pressTimer = null;
+  let startDelayTimer = null;
 
-let pointerIsDown = false;
-let interactionActive = false;
-let activePointerId = null;
+  let pointerIsDown = false;
 
-let startX = 0;
-let startY = 0;
+  const HOLD_DELAY = 180;
 
-const HOLD_DELAY = 180;
-const MOVE_THRESHOLD = 14;
+  const hintTl = gsap.timeline({ repeat: -1 });
+  hintTl
+    .to(btn, {
+      scale: 1.05,
+      filter: "drop-shadow(0 0 8px #fd9015)",
+      duration: 0.8,
+      yoyo: true,
+      repeat: 1,
+      ease: "sine.inOut"
+    })
+    .to(cursor, {
+      x: 3,
+      y: -2,
+      duration: 0.18,
+      yoyo: true,
+      repeat: 3
+    }, 0);
 
-const hintTl = gsap.timeline({ repeat: -1 });
-hintTl
-.to(btn, {
-scale: 1.05,
-filter: "drop-shadow(0 0 8px #fd9015)",
-duration: 0.8,
-yoyo: true,
-repeat: 1,
-ease: "sine.inOut",
-transformOrigin: "center"
-})
-.to(cursor, {
-x: 3,
-y: -2,
-duration: 0.18,
-yoyo: true,
-repeat: 3,
-ease: "sine.inOut"
-}, 0);
+  function growDom() {
+    if (growthLevel >= 4) return;
 
-function clearTimers() {
-if (startDelayTimer) {
-clearTimeout(startDelayTimer);
-startDelayTimer = null;
-}
+    growthLevel++;
 
-if (pressTimer) {
-clearInterval(pressTimer);
-pressTimer = null;
-}
-}
+    gsap.to(dom, {
+      scale: 1 + (growthLevel * 0.28),
+      duration: 0.4,
+      ease: "power2.out"
+    });
 
-function growDom() {
-if (growthLevel >= 4) return;
+    if (growthLevel === 4) {
+      clearInterval(pressTimer);
 
-growthLevel++;
+      gsap.timeline()
+        .to(dom, {
+          scale: "+=0.08",
+          filter: "brightness(1.6) drop-shadow(0 0 40px #fd9015)",
+          duration: 0.3,
+          ease: "power2.out"
+        })
+        .to(dom, {
+          filter: "brightness(1)",
+          duration: 0.5,
+          ease: "power2.out"
+        });
+    }
+  }
 
-gsap.to(dom, {
-scale: 1 + (growthLevel * 0.3),
-duration: 0.25,
-ease: "back.out(1.5)",
-transformOrigin: "center bottom"
-});
+  function resetDom() {
+    pointerIsDown = false;
+    clearTimeout(startDelayTimer);
+    clearInterval(pressTimer);
 
-if (growthLevel === 4) {
-clearInterval(pressTimer);
-pressTimer = null;
+    gsap.to(dom, {
+      scale: 1,
+      duration: 0.5,
+      ease: "power3.out",
+      filter: "none",
+      onComplete: () => {
+        growthLevel = 0;
+        hintTl.restart();
+      }
+    });
+  }
 
-gsap.timeline()
-.to(dom, {
-filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)",
-scale: "+=0.1",
-duration: 0.15
-})
-.to(dom, {
-filter: "brightness(1)",
-duration: 0.3
-});
-}
-}
+  function beginGrowth() {
+    if (!pointerIsDown) return;
 
-function stopTracking() {
-pointerIsDown = false;
-interactionActive = false;
-activePointerId = null;
-clearTimers();
-}
+    hintTl.pause();
+    growDom();
+    pressTimer = setInterval(growDom, 450);
+  }
 
-function resetDom() {
-stopTracking();
+  touchZone.addEventListener("pointerdown", () => {
+    pointerIsDown = true;
+    startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
+  }, { passive: true });
 
-gsap.to(dom, {
-scale: 1,
-duration: 0.4,
-ease: "power3.in",
-filter: "none",
-onComplete: () => {
-growthLevel = 0;
-hintTl.restart();
-}
-});
-}
-
-function cancelBeforeActivation() {
-stopTracking();
-}
-
-function beginGrowthIfStillHolding() {
-if (!pointerIsDown) return;
-
-interactionActive = true;
-hintTl.pause();
-growDom();
-pressTimer = setInterval(growDom, 400);
-}
-
-function handlePointerDown(e) {
-if (window.innerWidth >= 768) return;
-if (pointerIsDown) return;
-
-pointerIsDown = true;
-interactionActive = false;
-activePointerId = e.pointerId;
-
-startX = e.clientX;
-startY = e.clientY;
-
-startDelayTimer = setTimeout(beginGrowthIfStillHolding, HOLD_DELAY);
-}
-
-function handlePointerMove(e) {
-if (!pointerIsDown) return;
-if (e.pointerId !== activePointerId) return;
-
-const dx = e.clientX - startX;
-const dy = e.clientY - startY;
-
-if (Math.abs(dx) > MOVE_THRESHOLD || Math.abs(dy) > MOVE_THRESHOLD) {
-if (interactionActive || growthLevel > 0) {
-resetDom();
-} else {
-cancelBeforeActivation();
-}
-}
-}
-
-function handlePointerEnd(e) {
-if (!pointerIsDown) return;
-if (activePointerId !== null && e.pointerId !== activePointerId) return;
-
-if (interactionActive || growthLevel > 0) {
-resetDom();
-} else {
-cancelBeforeActivation();
-}
-}
-
-// 🔥 WICHTIG: jetzt auf touchZone statt container
-touchZone.addEventListener("pointerdown", handlePointerDown, { passive: true });
-touchZone.addEventListener("pointermove", handlePointerMove, { passive: true });
-touchZone.addEventListener("pointerup", handlePointerEnd, { passive: true });
-touchZone.addEventListener("pointercancel", handlePointerEnd, { passive: true });
-
-window.addEventListener("pointerup", handlePointerEnd, { passive: true });
-window.addEventListener("pointercancel", handlePointerEnd, { passive: true });
+  window.addEventListener("pointerup", resetDom);
+  window.addEventListener("pointercancel", resetDom);
 }
 
 /* =========================================
