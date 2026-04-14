@@ -492,3 +492,21 @@ btn.addEventListener("contextmenu", (e) => e.preventDefault());
 }
 });
 
+const heroGraphic = document.querySelector(".hero-graphic");
+const floatingBtn = document.querySelector(".floating-project-btn");
+
+const showBtnObserver = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (!entry.isIntersecting) {
+// Wenn Grafik NICHT mehr sichtbar ist -> Button zeigen
+gsap.to(floatingBtn, { opacity: 1, y: 0, pointerEvents: "all" });
+} else {
+// Wenn man wieder ganz oben ist -> Button weg
+gsap.to(floatingBtn, { opacity: 0, y: 20, pointerEvents: "none" });
+}
+});
+}, { threshold: 0.1 });
+
+if (heroGraphic && floatingBtn) {
+showBtnObserver.observe(heroGraphic);
+}
