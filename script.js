@@ -220,14 +220,12 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 
 /* =========================================
-/* =========================================
-7. MOBIL HERO (SMART SCROLL & TURBO VERSION)
+7. MOBIL HERO (FINAL SCROLL-SAFE VERSION)
 ========================================= */
 function initMobilEntrance() {
 const heroContainer = document.querySelector(".hero-graphic");
 if (!heroContainer || window.innerWidth >= 768) return;
 
-// Alles initial auf unsichtbar/vorbereitet setzen
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
@@ -241,12 +239,10 @@ delay: 0.5,
 onComplete: () => initMobilInteractions(heroContainer)
 });
 
-// TURBO-INTRO: Zeiten verkürzt für besseres Feeling
 tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.4 })
 .to("#powerbutton-mobil", { autoAlpha: 1, duration: 0.2 })
 .to("#powerbutton-mobil", { scale: 0.88, duration: 0.15, transformOrigin: "center center" })
 .to("#powerbutton-mobil", { scale: 1, duration: 0.15 })
-// Leitung und Dom starten jetzt fast gleichzeitig (Überlappung)
 .to("#leitung-mobil", { autoAlpha: 1, strokeDashoffset: 0, duration: 1.2, ease: "none" }, "-=0.1")
 .to("#dom-mobil", { autoAlpha: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, "-=0.8")
 .to("#leucht-o-mobil", { autoAlpha: 1, filter: "drop-shadow(0 0 25px #fd9015)", duration: 0.5 }, "-=0.2");
@@ -255,85 +251,65 @@ tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.4 })
 function initMobilInteractions(container) {
 const dom = document.querySelector("#dom-mobil");
 const btn = document.querySelector("#powerbutton-mobil");
-const cursor = document.querySelector("#cursor-mobil");
 
 if (!dom || !container) return;
 
 let growthLevel = 0;
 let pressTimer = null;
-let startDelayTimer = null; // Timer für die Scroll-Erkennung
+let startDelayTimer = null;
 let isPressing = false;
+let startY = 0; // Wir merken uns, wo der Finger startete
 
-// Pulsierender Lockruf
 const hintTl = gsap.timeline({ repeat: -1 });
-hintTl.to(btn, { scale: 1.05, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center" })
-.to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
+hintTl.to(btn, { scale: 1.05, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center" });
 
-// Wachstums-Logik
 function growDom() {
 if (growthLevel < 4) {
 growthLevel++;
-gsap.to(dom, {
-scale: 1 + (growthLevel * 0.3),
-duration: 0.25,
-ease: "back.out(1.5)",
-transformOrigin: "center bottom"
-});
+gsap.to(dom, { scale: 1 + (growthLevel * 0.3), duration: 0.25, ease: "back.out(1.5)", transformOrigin: "center bottom" });
 if (growthLevel === 4) {
 clearInterval(pressTimer);
-gsap.timeline()
-.to(dom, { filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", scale: "+=0.1", duration: 0.15 })
-.to(dom, { filter: "brightness(1)", duration: 0.3 });
+gsap.timeline().to(dom, { filter: "brightness(1.8) shadow", scale: "+=0.1", duration: 0.15 }).to(dom, { filter: "brightness(1)", duration: 0.3 });
 }
 }
 }
 
-// Reset-Logik
 function resetDom() {
 isPressing = false;
 clearTimeout(startDelayTimer);
 clearInterval(pressTimer);
-gsap.to(dom, {
-scale: 1,
-duration: 0.4,
-ease: "power3.in",
-filter: "none",
-onComplete: () => {
-growthLevel = 0;
-if (hintTl) hintTl.restart();
-}
-});
+gsap.to(dom, { scale: 1, duration: 0.4, ease: "power3.in", filter: "none", onComplete: () => { growthLevel = 0; if (hintTl) hintTl.restart(); } });
 }
 
-// SMART-SCROLL EVENTS
-container.addEventListener("pointerdown", (e) => {
-// Wir setzen isPressing auf true, aber starten die Action erst verzögert
+// --- DIE ULTIMATIVE SCROLL-SICHERUNG ---
+container.addEventListener("touchstart", (e) => {
+// Wir merken uns die Startposition des Fingers
+startY = e.touches[0].pageY;
 isPressing = true;
 
-// 160ms Bedenkzeit: Wenn der User nur wischt (scrollt), passiert nichts am Dom.
 startDelayTimer = setTimeout(() => {
 if (isPressing) {
-// JETZT sind wir sicher: User hält fest.
 if (hintTl) hintTl.pause();
 growDom();
 pressTimer = setInterval(growDom, 400);
 }
-}, 160);
-}, { passive: true }); // passive: true ist wichtig für flüssiges Scrollen!
+}, 200); // 200ms warten, um sicher zu sein
+}, { passive: true });
 
-// Falls der Finger sich bewegt (Scrollen), brechen wir das Wachstum sofort ab
-container.addEventListener("pointermove", (e) => {
-if (isPressing) {
-// Bei Bewegung gehen wir davon aus, dass gescrollt wird
+container.addEventListener("touchmove", (e) => {
+// Wenn sich der Finger mehr als 5 Pixel bewegt, wird ALLES abgebrochen
+let moveY = Math.abs(e.touches[0].pageY - startY);
+if (moveY > 5) {
+isPressing = false;
 clearTimeout(startDelayTimer);
+clearInterval(pressTimer);
+// Hier KEIN resetDom (Animation rückwärts), damit es beim Scrollen nicht flackert
 }
 }, { passive: true });
 
-// Globales Loslassen
-window.addEventListener("pointerup", resetDom);
-window.addEventListener("pointercancel", resetDom);
+window.addEventListener("touchend", resetDom);
+window.addEventListener("touchcancel", resetDom);
 }
-
 
 
 /* =========================================
