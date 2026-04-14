@@ -1232,4 +1232,19 @@ user-select: none !important;
 touch-action: none !important;
 }
 
+.hero-graphic {
+position: relative;
+}
+
+.hero-left-touchzone {
+position: absolute;
+left: 0;
+top: 0;
+width: 52%;
+height: 100%;
+z-index: 5;
+background: transparent;
+touch-action: pan-y;
+}
+
 
