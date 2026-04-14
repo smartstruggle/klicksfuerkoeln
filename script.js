@@ -78,44 +78,51 @@ cookieBanner.hidden = true;
 
 
 /* =========================================
-Smarte Footer-Erkennung (Intersection Observer)
+SMARTE FLOATING-BUTTON LOGIK (Oben & Unten ausblenden)
 ========================================= */
 const floatingBtn = document.querySelector(".floating-project-btn");
 const siteFooter = document.querySelector(".site-footer");
+const heroGraphic = document.querySelector(".hero-graphic");
 
-// Die Logik, die prüft, ob der Footer sichtbar wird
+// Funktion zum Ein-/Ausblenden
+function updateBtnVisibility(shouldShow) {
+if (!floatingBtn) return;
+gsap.to(floatingBtn, {
+opacity: shouldShow ? 1 : 0,
+y: shouldShow ? 0 : 20,
+duration: 0.4,
+pointerEvents: shouldShow ? 'all' : 'none',
+overwrite: 'auto'
+});
+}
+
+// 1. Check für OBEN (Hero-Grafik)
+const heroObserver = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+// Wenn die Grafik sichtbar ist -> Button ausblenden
+if (entry.isIntersecting) {
+updateBtnVisibility(false);
+} else {
+// Wenn man die Grafik verlässt -> Button einblenden
+updateBtnVisibility(true);
+}
+});
+}, { threshold: 0.1 });
+
+// 2. Check für UNTEN (Footer)
 const footerObserver = new IntersectionObserver((entries) => {
 entries.forEach(entry => {
+// Wenn der Footer sichtbar wird -> Button wieder ausblenden
 if (entry.isIntersecting) {
-// Wenn der Footer den Sichtbereich berührt: Ausblenden
-gsap.to(floatingBtn, {
-opacity: 0,
-y: 20,
-duration: 0.4,
-pointerEvents: 'none',
-overwrite: 'auto'
-});
-} else {
-// Wenn wir wieder nach oben scrollen: Einblenden
-// Aber nur, wenn die Start-Animation (dein Master-Code) schon durch ist
-if (typeof floatingVisibilityEnabled !== 'undefined' && floatingVisibilityEnabled) {
-gsap.to(floatingBtn, {
-opacity: 1,
-y: 0,
-duration: 0.4,
-pointerEvents: 'all',
-overwrite: 'auto'
-});
-}
+updateBtnVisibility(false);
 }
 });
-}, {
-rootMargin: '0px 0px -20px 0px', // Erscheint/Verschwindet 20px vor Kontakt
-threshold: 0
-});
+}, { threshold: 0 });
 
-if (siteFooter && floatingBtn) {
-footerObserver.observe(siteFooter);
+// Observer starten
+if (floatingBtn) {
+if (heroGraphic) heroObserver.observe(heroGraphic);
+if (siteFooter) footerObserver.observe(siteFooter);
 }
 
 /* =========================================
