@@ -1232,17 +1232,4 @@ user-select: none !important;
 touch-action: none !important;
 }
 
-/* Die gesamte Grafik wird für den Browser "unsichtbar" gemacht, damit man durch-scrollen kann */
-.hero-graphic {
-pointer-events: none !important;
--webkit-touch-callout: none !important;
--webkit-user-select: none !important;
-user-select: none !important;
-touch-action: pan-y !important; /* Erlaubt vertikales Scrollen explizit */
-}
 
-/* Nur der Button-Bereich links bekommt die Interaktion zurück */
-#powerbutton-mobil {
-pointer-events: all !important;
-cursor: pointer;
-}
