@@ -220,35 +220,81 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 
 /* =========================================
-7. MOBIL HERO (SMART SCROLL & TURBO VERSION)
+7. MOBIL HERO (SMART SCROLL SAFE VERSION)
+- ohne extra HTML
+- linke Hero-Zone reagiert
+- Scrollen bleibt möglich
 ========================================= */
+
 function initMobilEntrance() {
 const heroContainer = document.querySelector(".hero-graphic");
 if (!heroContainer || window.innerWidth >= 768) return;
 
-// Alles initial auf unsichtbar/vorbereitet setzen
-gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"], {
+// Alles initial vorbereiten
+gsap.set(
+["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"],
+{
 autoAlpha: 0,
 visibility: "visible"
+}
+);
+
+gsap.set("#dom-mobil", {
+scale: 0.8,
+transformOrigin: "center bottom"
 });
-gsap.set("#dom-mobil", { scale: 0.8, transformOrigin: "center bottom" });
-gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
-gsap.set("#cursor-mobil", { x: 40, y: 40 });
+
+gsap.set("#leitung-mobil", {
+strokeDasharray: 2000,
+strokeDashoffset: 2000
+});
+
+gsap.set("#cursor-mobil", {
+x: 40,
+y: 40
+});
 
 const tl = gsap.timeline({
 delay: 0.5,
 onComplete: () => initMobilInteractions(heroContainer)
 });
 
-// TURBO-INTRO: Zeiten verkürzt für besseres Feeling
-tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.4 })
-.to("#powerbutton-mobil", { autoAlpha: 1, duration: 0.2 })
-.to("#powerbutton-mobil", { scale: 0.88, duration: 0.15, transformOrigin: "center center" })
-.to("#powerbutton-mobil", { scale: 1, duration: 0.15 })
-// Leitung und Dom starten jetzt fast gleichzeitig (Überlappung)
-.to("#leitung-mobil", { autoAlpha: 1, strokeDashoffset: 0, duration: 1.2, ease: "none" }, "-=0.1")
-.to("#dom-mobil", { autoAlpha: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, "-=0.8")
-.to("#leucht-o-mobil", { autoAlpha: 1, filter: "drop-shadow(0 0 25px #fd9015)", duration: 0.5 }, "-=0.2");
+tl.to("#cursor-mobil", {
+autoAlpha: 1,
+x: 0,
+y: 0,
+duration: 0.4
+})
+.to("#powerbutton-mobil", {
+autoAlpha: 1,
+duration: 0.2
+})
+.to("#powerbutton-mobil", {
+scale: 0.88,
+duration: 0.15,
+transformOrigin: "center center"
+})
+.to("#powerbutton-mobil", {
+scale: 1,
+duration: 0.15
+})
+.to("#leitung-mobil", {
+autoAlpha: 1,
+strokeDashoffset: 0,
+duration: 1.2,
+ease: "none"
+}, "-=0.1")
+.to("#dom-mobil", {
+autoAlpha: 1,
+scale: 1,
+duration: 0.7,
+ease: "back.out(1.6)"
+}, "-=0.8")
+.to("#leucht-o-mobil", {
+autoAlpha: 1,
+filter: "drop-shadow(0 0 25px #fd9015)",
+duration: 0.5
+}, "-=0.2");
 }
 
 function initMobilInteractions(container) {
@@ -256,42 +302,100 @@ const dom = document.querySelector("#dom-mobil");
 const btn = document.querySelector("#powerbutton-mobil");
 const cursor = document.querySelector("#cursor-mobil");
 
-if (!dom || !container) return;
+if (!dom || !btn || !cursor || !container) return;
 
 let growthLevel = 0;
 let pressTimer = null;
-let startDelayTimer = null; // Timer für die Scroll-Erkennung
-let isPressing = false;
+let startDelayTimer = null;
 
-// Pulsierender Lockruf
+let pointerIsDown = false;
+let interactionActive = false;
+let activePointerId = null;
+
+let startX = 0;
+let startY = 0;
+
+const HOLD_DELAY = 180;
+const MOVE_THRESHOLD = 14;
+const LEFT_ZONE_RATIO = 0.55;
+
 const hintTl = gsap.timeline({ repeat: -1 });
-hintTl.to(btn, { scale: 1.05, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center" })
-.to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
+hintTl
+.to(btn, {
+scale: 1.05,
+filter: "drop-shadow(0 0 8px #fd9015)",
+duration: 0.8,
+yoyo: true,
+repeat: 1,
+ease: "sine.inOut",
+transformOrigin: "center"
+})
+.to(cursor, {
+x: 3,
+y: -2,
+duration: 0.18,
+yoyo: true,
+repeat: 3,
+ease: "sine.inOut"
+}, 0);
 
-// Wachstums-Logik
+function isInLeftZone(e) {
+const rect = container.getBoundingClientRect();
+const x = e.clientX - rect.left;
+return x >= 0 && x <= rect.width * LEFT_ZONE_RATIO;
+}
+
+function clearTimers() {
+if (startDelayTimer) {
+clearTimeout(startDelayTimer);
+startDelayTimer = null;
+}
+
+if (pressTimer) {
+clearInterval(pressTimer);
+pressTimer = null;
+}
+}
+
 function growDom() {
-if (growthLevel < 4) {
+if (growthLevel >= 4) return;
+
 growthLevel++;
+
 gsap.to(dom, {
 scale: 1 + (growthLevel * 0.3),
 duration: 0.25,
 ease: "back.out(1.5)",
 transformOrigin: "center bottom"
 });
+
 if (growthLevel === 4) {
 clearInterval(pressTimer);
+pressTimer = null;
+
 gsap.timeline()
-.to(dom, { filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", scale: "+=0.1", duration: 0.15 })
-.to(dom, { filter: "brightness(1)", duration: 0.3 });
-}
+.to(dom, {
+filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)",
+scale: "+=0.1",
+duration: 0.15
+})
+.to(dom, {
+filter: "brightness(1)",
+duration: 0.3
+});
 }
 }
 
-// Reset-Logik
+function stopTracking() {
+pointerIsDown = false;
+interactionActive = false;
+activePointerId = null;
+clearTimers();
+}
+
 function resetDom() {
-isPressing = false;
-clearTimeout(startDelayTimer);
-clearInterval(pressTimer);
+stopTracking();
+
 gsap.to(dom, {
 scale: 1,
 duration: 0.4,
@@ -299,41 +403,85 @@ ease: "power3.in",
 filter: "none",
 onComplete: () => {
 growthLevel = 0;
-if (hintTl) hintTl.restart();
+hintTl.restart();
 }
 });
 }
 
-// SMART-SCROLL EVENTS
-container.addEventListener("pointerdown", (e) => {
-// Wir setzen isPressing auf true, aber starten die Action erst verzögert
-isPressing = true;
+function cancelBeforeActivation() {
+stopTracking();
+}
 
-// 160ms Bedenkzeit: Wenn der User nur wischt (scrollt), passiert nichts am Dom.
-startDelayTimer = setTimeout(() => {
-if (isPressing) {
-// JETZT sind wir sicher: User hält fest.
-if (hintTl) hintTl.pause();
+function beginGrowthIfStillHolding() {
+if (!pointerIsDown) return;
+
+interactionActive = true;
+hintTl.pause();
 growDom();
 pressTimer = setInterval(growDom, 400);
 }
-}, 160);
-}, { passive: true }); // passive: true ist wichtig für flüssiges Scrollen!
 
-// Falls der Finger sich bewegt (Scrollen), brechen wir das Wachstum sofort ab
-container.addEventListener("pointermove", (e) => {
-if (isPressing) {
-// Bei Bewegung gehen wir davon aus, dass gescrollt wird
-clearTimeout(startDelayTimer);
+function handlePointerDown(e) {
+if (window.innerWidth >= 768) return;
+if (pointerIsDown) return;
+if (!isInLeftZone(e)) return;
+
+pointerIsDown = true;
+interactionActive = false;
+activePointerId = e.pointerId;
+
+startX = e.clientX;
+startY = e.clientY;
+
+startDelayTimer = setTimeout(beginGrowthIfStillHolding, HOLD_DELAY);
 }
-}, { passive: true });
 
-// Globales Loslassen
-window.addEventListener("pointerup", resetDom);
-window.addEventListener("pointercancel", resetDom);
+function handlePointerMove(e) {
+if (!pointerIsDown) return;
+if (e.pointerId !== activePointerId) return;
+
+// Wenn Finger aus linker Zone rausgeht -> abbrechen
+if (!isInLeftZone(e)) {
+if (interactionActive || growthLevel > 0) {
+resetDom();
+} else {
+cancelBeforeActivation();
+}
+return;
 }
 
+const dx = e.clientX - startX;
+const dy = e.clientY - startY;
 
+// Sobald merkliche Bewegung da ist, werten wir das als Scroll / Swipe
+if (Math.abs(dx) > MOVE_THRESHOLD || Math.abs(dy) > MOVE_THRESHOLD) {
+if (interactionActive || growthLevel > 0) {
+resetDom();
+} else {
+cancelBeforeActivation();
+}
+}
+}
+
+function handlePointerEnd(e) {
+if (!pointerIsDown) return;
+if (activePointerId !== null && e.pointerId !== activePointerId) return;
+
+if (interactionActive || growthLevel > 0) {
+resetDom();
+} else {
+cancelBeforeActivation();
+}
+}
+
+container.addEventListener("pointerdown", handlePointerDown, { passive: true });
+container.addEventListener("pointermove", handlePointerMove, { passive: true });
+container.addEventListener("pointerup", handlePointerEnd, { passive: true });
+container.addEventListener("pointercancel", handlePointerEnd, { passive: true });
+
+window.addEventListener("pointerup", handlePointerEnd, { passive: true });
+window.addEventListener("pointercancel", handlePointerEnd, { passive: true });
+}
 
 /* =========================================
 8. GLOBALER START-CHECK
