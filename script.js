@@ -214,7 +214,7 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 .to("#birne-rechts", { opacity: 1, duration: 0.8 }, "<")
 .to("#filament-links", { opacity: 1, scale: 1.02, duration: 0.3 }, "leitungStart+=2.8")
 .to("#birne-links", { opacity: 1, duration: 0.8 }, "<")
-.to("#leucht-o", { opacity: 1, filter: "drop-shadow(0 0 30px #fd9015)", duration: 0.6 }, "leitungStart+=4")
+.to("#leucht-o", { opacity: 1, filter: "drop-shadow(0 0 30px #fd9015)", duration: 0.45 }, "leitungStart+=4")
 .to("#dom", { opacity: 1, scale: 1, duration: 1.2, ease: "back.out(1.2)" }, "+=0.2");
 }
 
