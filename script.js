@@ -248,19 +248,47 @@ tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
 function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
-const cursor = document.querySelector("#cursor-mobil");
+
 if (!btn || !dom) return;
 
-// Panzerung
-gsap.set(btn, { pointerEvents: "all", cursor: "pointer", touchAction: "none" });
+// --- DIE PANZERUNG ---
+gsap.set(btn, {
+pointerEvents: "all",
+touchAction: "none",
+userSelect: "none"
+});
 
-let growthLevel = 0;
-let pressTimer = null;
-let isPressing = false;
+// Wir erzwingen, dass der gesamte Bereich des Buttons klickbar ist,
+// nicht nur die gezeichneten Linien:
+btn.style.webkitTouchCallout = "none";
+btn.style.webkitUserSelect = "none";
 
-const hintTl = gsap.timeline({ repeat: -1 });
-hintTl.to(btn, { scale: 1.08, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center" })
-.to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
+// Falls dein Powerbutton aus vielen Einzelteilen besteht,
+// stellen wir sicher, dass das gesamte Gruppen-Element (g) reagiert:
+btn.setAttribute("pointer-events", "bounding-box");
+// Oder noch besser: Wir geben ihm eine unsichtbare Füllung, falls er keine hat
+if (btn.tagName === "g") {
+btn.style.fill = "transparent";
+// "transparent" klingt zwar nach "nichts", aber für den Browser
+// ist es jetzt eine solide Fläche, die man anfassen kann!
+}
+
+// ... Rest deiner Logik (growthLevel, pressTimer etc.) ...
+
+// Kleiner Pro-Tipp für die Events:
+// Wir nutzen 'pointerdown', aber fügen 'preventDefault' hinzu,
+// um die Lupe endgültig zu killen.
+btn.addEventListener("pointerdown", (e) => {
+if (e.pointerType === 'touch') {
+// Verhindert, dass das Handy die Lupe oder das Scrollen startet
+e.preventDefault();
+}
+
+if (isPressing) return;
+isPressing = true;
+// ... deine growDom Logik
+}, { passive: false }); // 'passive: false' ist wichtig, damit preventDefault funktioniert!
+}
 
 function growDom() {
 if (growthLevel < 4) {
