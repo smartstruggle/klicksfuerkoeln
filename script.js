@@ -221,14 +221,15 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 /* =========================================
 7. MOBIL HERO (SMART SCROLL SAFE VERSION)
-- ohne extra HTML
-- linke Hero-Zone reagiert
-- Scrollen bleibt möglich
+- MIT touch-layer (links)
+- Scrollen bleibt safe
 ========================================= */
 
 function initMobilEntrance() {
 const heroContainer = document.querySelector(".hero-graphic");
-if (!heroContainer || window.innerWidth >= 768) return;
+const touchZone = document.querySelector(".hero-touch-left");
+
+if (!heroContainer || !touchZone || window.innerWidth >= 768) return;
 
 // Alles initial vorbereiten
 gsap.set(
@@ -256,7 +257,7 @@ y: 40
 
 const tl = gsap.timeline({
 delay: 0.5,
-onComplete: () => initMobilInteractions(heroContainer)
+onComplete: () => initMobilInteractions(touchZone) // 🔥 geändert
 });
 
 tl.to("#cursor-mobil", {
@@ -297,12 +298,12 @@ duration: 0.5
 }, "-=0.2");
 }
 
-function initMobilInteractions(container) {
+function initMobilInteractions(touchZone) {
 const dom = document.querySelector("#dom-mobil");
 const btn = document.querySelector("#powerbutton-mobil");
 const cursor = document.querySelector("#cursor-mobil");
 
-if (!dom || !btn || !cursor || !container) return;
+if (!dom || !btn || !cursor || !touchZone) return;
 
 let growthLevel = 0;
 let pressTimer = null;
@@ -317,7 +318,6 @@ let startY = 0;
 
 const HOLD_DELAY = 180;
 const MOVE_THRESHOLD = 14;
-const LEFT_ZONE_RATIO = 0.30;
 
 const hintTl = gsap.timeline({ repeat: -1 });
 hintTl
@@ -338,12 +338,6 @@ yoyo: true,
 repeat: 3,
 ease: "sine.inOut"
 }, 0);
-
-function isInLeftZone(e) {
-const rect = container.getBoundingClientRect();
-const x = e.clientX - rect.left;
-return x >= 0 && x <= rect.width * LEFT_ZONE_RATIO;
-}
 
 function clearTimers() {
 if (startDelayTimer) {
@@ -424,7 +418,6 @@ pressTimer = setInterval(growDom, 400);
 function handlePointerDown(e) {
 if (window.innerWidth >= 768) return;
 if (pointerIsDown) return;
-if (!isInLeftZone(e)) return;
 
 pointerIsDown = true;
 interactionActive = false;
@@ -440,20 +433,9 @@ function handlePointerMove(e) {
 if (!pointerIsDown) return;
 if (e.pointerId !== activePointerId) return;
 
-// Wenn Finger aus linker Zone rausgeht -> abbrechen
-if (!isInLeftZone(e)) {
-if (interactionActive || growthLevel > 0) {
-resetDom();
-} else {
-cancelBeforeActivation();
-}
-return;
-}
-
 const dx = e.clientX - startX;
 const dy = e.clientY - startY;
 
-// Sobald merkliche Bewegung da ist, werten wir das als Scroll / Swipe
 if (Math.abs(dx) > MOVE_THRESHOLD || Math.abs(dy) > MOVE_THRESHOLD) {
 if (interactionActive || growthLevel > 0) {
 resetDom();
@@ -474,10 +456,11 @@ cancelBeforeActivation();
 }
 }
 
-container.addEventListener("pointerdown", handlePointerDown, { passive: true });
-container.addEventListener("pointermove", handlePointerMove, { passive: true });
-container.addEventListener("pointerup", handlePointerEnd, { passive: true });
-container.addEventListener("pointercancel", handlePointerEnd, { passive: true });
+// 🔥 WICHTIG: jetzt auf touchZone statt container
+touchZone.addEventListener("pointerdown", handlePointerDown, { passive: true });
+touchZone.addEventListener("pointermove", handlePointerMove, { passive: true });
+touchZone.addEventListener("pointerup", handlePointerEnd, { passive: true });
+touchZone.addEventListener("pointercancel", handlePointerEnd, { passive: true });
 
 window.addEventListener("pointerup", handlePointerEnd, { passive: true });
 window.addEventListener("pointercancel", handlePointerEnd, { passive: true });
