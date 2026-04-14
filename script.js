@@ -341,22 +341,15 @@ setTimeout(() => openModal(), 120);
 
 
 
-/*MOBIL GRAPHIK*/
-
-
-
+/* ==========================================================================
+MOBIL GRAFIK & ANIMATION (Entrance + Premium Interaktion)
+========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-// PRÜFUNG: Nur ausführen, wenn wir das Mobil-Element auch wirklich haben
+// 1. SICHERHEITS-CHECK: Lädt nur, wenn das mobile SVG da ist
 if (!document.querySelector("#powerbutton-mobil")) return;
 
-// ... Rest des Mobil-Codes ...
-});
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-// 1. SETUP (Mobil)
+// 2. SETUP (Mobil)
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
@@ -367,11 +360,11 @@ gsap.set("#leucht-o-mobil", { opacity: 0.2 });
 gsap.set("#leitung-mobil", { strokeDasharray: 2000, strokeDashoffset: 2000 });
 gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
-// 2. TIMELINE (Mobil)
+// 3. ENTRANCE TIMELINE
 const tl = gsap.timeline({
 delay: 0.5,
 defaults: { ease: "power2.inOut" },
-onComplete: initMobilInteractions // WICHTIG: Startet die Klick-Logik
+onComplete: initMobilInteractions // Startet das Klicken nach der Animation
 });
 
 tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
@@ -386,53 +379,109 @@ filter: "drop-shadow(0 0 25px rgba(253, 144, 21, 0.9))",
 duration: 0.7
 }, "+=0.3");
 
-// 3. INTERAKTIONS-FUNKTION
+// 4. INTERAKTIONS-FUNKTION (Die Premium-Version)
 function initMobilInteractions() {
 const btn = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
 const cursor = document.querySelector("#cursor-mobil");
 
-// DER WICHTIGSTE CHECK:
-if (!btn) {
-console.error("FEHLER: #powerbutton-mobil wurde nicht im HTML gefunden!");
-return; // Bricht hier ab, damit kein Fehler die Seite lahmlegt
+// Wenn etwas schiefgeht, sofort abbrechen ohne Fehler
+if (!btn || !dom || !cursor) {
+console.error("Fehler: Mobil-Elemente fehlen für die Interaktion!");
+return;
 }
 
-console.log("ERFOLG: Button gefunden, Interaktion wird geladen.");
+console.log("ERFOLG: Entrance durch, Button ist scharfgeschaltet.");
 
-// Ab hier ist alles sicher:
+// Button klickbar machen
 gsap.set(btn, { pointerEvents: "all", cursor: "pointer" });
 
 let growthLevel = 0;
 let pressTimer = null;
 let isPressing = false;
 
-// ... (Dein restlicher growDom & resetDom Code) ...
+// LOCKRUF: Button pulsiert und leuchtet sanft
+const hintTl = gsap.timeline({ repeat: -1 });
+hintTl.to(btn, {
+scale: 1.08,
+filter: "drop-shadow(0 0 8px rgba(253, 144, 21, 0.5))",
+duration: 0.8,
+yoyo: true,
+repeat: 1,
+ease: "sine.inOut",
+transformOrigin: "center center"
+})
+.to(cursor, { x: "+=3", y: "-=2", duration: 0.18, yoyo: true, repeat: 3 }, 0);
 
-btn.addEventListener("pointerdown", (e) => {
-e.preventDefault();
-isPressing = true;
-// ... usw
+// WACHSEN (4 Stufen + Explosion am Ende)
+function growDom() {
+if (growthLevel < 4) {
+growthLevel++;
+const targetScale = 1 + (growthLevel * 0.3); // Faktor für 4 Stufen angepasst
+
+gsap.to(dom, {
+scale: targetScale,
+duration: 0.25,
+ease: "back.out(1.5)",
+transformOrigin: "center bottom"
+});
+
+// Wenn Stufe 4 erreicht ist -> FINALE EXPLOSION
+if (growthLevel === 4) {
+clearInterval(pressTimer);
+
+gsap.timeline()
+.to(dom, {
+filter: "brightness(1.8) drop-shadow(0 0 35px #fd9015)", // Krasses Leuchten
+scale: targetScale + 0.1, // Kurzer Kick nach oben
+duration: 0.15
+})
+.to(dom, {
+filter: "brightness(1) drop-shadow(0 0 0px #fd9015)", // Leuchten erlischt
+duration: 0.3
 });
 }
-// EVENT LISTENER
+}
+}
+
+// RESET (Sofortiger Rückfall)
+function resetDom() {
+if (!isPressing) return;
+isPressing = false;
+clearInterval(pressTimer);
+
+// Fällt schwerer (power3.in) und schneller zurück
+gsap.to(dom, {
+scale: 1,
+duration: 0.4,
+ease: "power3.in",
+filter: "none",
+transformOrigin: "center bottom",
+onComplete: () => {
+growthLevel = 0;
+hintTl.restart(); // Lockruf geht sofort wieder los
+}
+});
+}
+
+// MAUS/TOUCH EVENT: Drücken
 btn.addEventListener("pointerdown", (e) => {
 e.preventDefault();
 if (isPressing) return;
 isPressing = true;
 
 hintTl.pause();
+gsap.set(btn, { filter: "none" }); // Glühen beim Drücken aus
+
 growDom();
-pressTimer = setInterval(growDom, 500);
+pressTimer = setInterval(growDom, 400);
 });
 
-// WICHTIG: Globales Loslassen abfangen (falls der Finger vom Button rutscht)
+// MAUS/TOUCH EVENT: Loslassen (auch wenn der Finger wegrutscht)
 window.addEventListener("pointerup", resetDom);
+btn.addEventListener("pointerleave", resetDom);
+btn.addEventListener("pointercancel", resetDom);
 btn.addEventListener("contextmenu", (e) => e.preventDefault());
 }
 });
-
-
-
-
 
