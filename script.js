@@ -317,7 +317,7 @@ let startY = 0;
 
 const HOLD_DELAY = 180;
 const MOVE_THRESHOLD = 14;
-const LEFT_ZONE_RATIO = 0.55;
+const LEFT_ZONE_RATIO = 0.30;
 
 const hintTl = gsap.timeline({ repeat: -1 });
 hintTl
