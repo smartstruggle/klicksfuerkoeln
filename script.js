@@ -191,8 +191,8 @@ let introHasStarted = false;
 
 function startIntroAnimations() {
 if (introHasStarted || window.innerWidth < 768) return;
-const btn = document.querySelector("#powerbutton");
-if (!btn) return;
+const heroContainer = document.querySelector(".hero-graphic");
+if (!heroContainer) return;
 introHasStarted = true;
 
 gsap.set("#leucht-o", { opacity: 0.2 });
@@ -220,14 +220,13 @@ masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
 
 
 /* =========================================
-/* =========================================
-7. MOBIL HERO (ENTRANCE & INTERAKTION)
+7. MOBIL HERO (ULTRA-SAFE VERSION)
 ========================================= */
 function initMobilEntrance() {
-const btn = document.querySelector("#powerbutton-mobil");
-if (!btn || window.innerWidth >= 768) return;
+const heroContainer = document.querySelector(".hero-graphic");
+if (!heroContainer || window.innerWidth >= 768) return;
 
-// Alles auf Anfang setzen
+// Alles initial verstecken
 gsap.set(["#dom-mobil", "#leucht-o-mobil", "#leitung-mobil", "#cursor-mobil", "#powerbutton-mobil"], {
 autoAlpha: 0,
 visibility: "visible"
@@ -238,7 +237,7 @@ gsap.set("#cursor-mobil", { x: 40, y: 40 });
 
 const tl = gsap.timeline({
 delay: 0.5,
-onComplete: initMobilInteractions // Startet die Klick-Logik, wenn das Intro fertig ist
+onComplete: () => initMobilInteractions(heroContainer)
 });
 
 tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
@@ -250,47 +249,22 @@ tl.to("#cursor-mobil", { autoAlpha: 1, x: 0, y: 0, duration: 0.8 })
 .to("#leucht-o-mobil", { autoAlpha: 1, filter: "drop-shadow(0 0 25px #fd9015)", duration: 0.7 }, "+=0.3");
 }
 
-function initMobilInteractions() {
-const btn = document.querySelector("#powerbutton-mobil");
+function initMobilInteractions(container) {
 const dom = document.querySelector("#dom-mobil");
+const btn = document.querySelector("#powerbutton-mobil");
 const cursor = document.querySelector("#cursor-mobil");
 
-if (!btn || !dom) return;
+if (!dom || !container) return;
 
-// --- DIE PANZERUNG (Wichtig für 100% Zuverlässigkeit) ---
-gsap.set(btn, {
-pointerEvents: "all",
-touchAction: "none",
-userSelect: "none"
-});
-
-// Killt die Lupe und iOS-Kontextmenüs
-btn.style.webkitTouchCallout = "none";
-btn.style.webkitUserSelect = "none";
-
-// Macht das SVG "greifbar", auch zwischen den Linien
-if (btn.tagName === "g" || btn.tagName === "svg") {
-btn.style.fill = "rgba(255,255,255,0.01)";
-}
-
-// INTERNE VARIABLEN (Nur hier drin bekannt)
 let growthLevel = 0;
 let pressTimer = null;
 let isPressing = false;
 
-// Lockruf-Animation
+// Lockruf-Animation (Pulsieren)
 const hintTl = gsap.timeline({ repeat: -1 });
-hintTl.to(btn, {
-scale: 1.08,
-filter: "drop-shadow(0 0 8px #fd9015)",
-duration: 0.8,
-yoyo: true,
-repeat: 1,
-ease: "sine.inOut",
-transformOrigin: "center"
-}).to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
+hintTl.to(btn, { scale: 1.08, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut", transformOrigin: "center" })
+.to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
 
-// WACHSEN
 function growDom() {
 if (growthLevel < 4) {
 growthLevel++;
@@ -309,7 +283,6 @@ gsap.timeline()
 }
 }
 
-// RESET
 function resetDom() {
 if (!isPressing) return;
 isPressing = false;
@@ -319,17 +292,14 @@ scale: 1,
 duration: 0.4,
 ease: "power3.in",
 filter: "none",
-transformOrigin: "center bottom",
-onComplete: () => {
-growthLevel = 0;
-hintTl.restart();
-}
+onComplete: () => { growthLevel = 0; hintTl.restart(); }
 });
 }
 
-// EVENT LISTENER (Alle sicher in der Funktion verpackt)
-btn.addEventListener("pointerdown", (e) => {
-if (e.pointerType === 'touch') e.preventDefault(); // Killt Lupe/Scrollen
+// DER CLOU: Wir legen die Events auf den GESAMTEN Container, nicht nur das SVG
+container.addEventListener("pointerdown", (e) => {
+// Verhindert ALLES (Lupe, Scrollen, Markieren)
+e.preventDefault();
 
 if (isPressing) return;
 isPressing = true;
@@ -339,23 +309,22 @@ growDom();
 pressTimer = setInterval(growDom, 400);
 }, { passive: false });
 
+// Globales Loslassen (auch wenn man vom Container runterrutscht)
 window.addEventListener("pointerup", resetDom);
-btn.addEventListener("pointerleave", resetDom);
-btn.addEventListener("contextmenu", e => e.preventDefault());
+window.addEventListener("pointercancel", resetDom);
 }
 
 /* =========================================
 8. GLOBALER START-CHECK
 ========================================= */
 window.addEventListener("load", () => {
-// Falls du isFlyerVisit oben definiert hast:
 if (typeof isFlyerVisit !== 'undefined' && isFlyerVisit) {
 if (typeof openFlyerPopup === 'function') openFlyerPopup();
 } else {
 if (window.innerWidth < 768) {
 initMobilEntrance();
 } else {
-if (typeof startIntroAnimations === 'function') startIntroAnimations();
+startIntroAnimations();
 }
 }
 });
