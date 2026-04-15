@@ -400,7 +400,7 @@ duration: 0.18,
 ease: "power2.out"
 })
 .to("#leitung-mobil", {
-scale: 1.04,
+scale: 1.02,
 transformOrigin: "center center",
 duration: 0.32,
 ease: "power2.out"
@@ -423,12 +423,12 @@ gsap.timeline()
 .to(glowO, {
 opacity: 1,
 scale: 1.05,
-duration: 0.14,
+duration: 0.18,
 ease: "power2.out"
 })
 .to(glowO, {
 scale: 1,
-duration: 0.22,
+duration: 0.32,
 ease: "power2.out"
 });
 }
@@ -437,12 +437,12 @@ ease: "power2.out"
 gsap.timeline()
 .to(dom, {
 opacity: 0.6,
-duration: 0.1,
+duration: 0.16,
 ease: "power1.out"
 })
 .to(dom, {
 opacity: 1,
-duration: 0.2,
+duration: 0.3,
 ease: "power1.out"
 });
 }
