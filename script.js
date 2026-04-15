@@ -395,25 +395,27 @@ ease: "power2.out"
 // Leitungsimpuls
 gsap.timeline()
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-fill: "#FFD43B",
-duration: 0.12,
+fill: "#FFE066",
+duration: 0.16,
 ease: "power2.out"
 })
-.to(line, {
-filter: "drop-shadow(0 0 6px #FFD43B) drop-shadow(0 0 14px rgba(255,212,59,0.75))",
-duration: 0.14,
+.to("#leitung-mobil", {
+scale: 1.03,
+transformOrigin: "center center",
+duration: 0.16,
 ease: "power2.out"
 }, "<")
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
 fill: "#D76C2F",
-duration: 0.25,
+duration: 0.28,
 ease: "power2.out"
 })
-.to(line, {
-filter: "none",
-duration: 0.25,
+.to("#leitung-mobil", {
+scale: 1,
+duration: 0.28,
 ease: "power2.out"
 }, "<");
+
 
 // O-Leuchten / kleiner Lichtimpuls
 if (glowO) {
