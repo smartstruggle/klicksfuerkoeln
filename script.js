@@ -432,32 +432,22 @@ ease: "power2.out"
 });
 }
 
-// kurzer Dom-Flash
-gsap.timeline()
-.to(dom, {
-opacity: 0.6,
-duration: 0.16,
-ease: "power1.out"
-})
-.to(dom, {
-opacity: 1,
-duration: 0.3,
-ease: "power1.out"
-});
-}
 
-function growDom() {
-if (growthLevel >= 4) return;
+// kurzer Dom-Flash (Ende von playTapFeedback)
+    gsap.timeline()
+    .to(dom, {
+        opacity: 0.6,
+        duration: 0.16,
+        ease: "power1.out"
+    })
+    .to(dom, {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power1.out"
+    });
+} // <--- Diese Klammer schließt playTapFeedback() korrekt ab!
 
-growthLevel++;
-
-gsap.to(dom, {
-scale: 1 + (growthLevel * 0.28),
-duration: 0.4,
-ease: "power2.out"
-});
-
-function growDom() {
+function growDom() { // Jetzt wird growDom EINMAL sauber gestartet
     if (growthLevel >= 4) return;
 
     growthLevel++;
@@ -472,6 +462,7 @@ function growDom() {
     // WENN MAXIMALES LEVEL ERREICHT
     if (growthLevel === 4) {
         clearInterval(pressTimer);
+        // ... hier geht dein Final-Effekt weiter
 
         // 1. Finaler Dom-Effekt
         const domTl = gsap.timeline();
