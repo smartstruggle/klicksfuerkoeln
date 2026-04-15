@@ -445,23 +445,24 @@ function initMobilInteractions(touchZone) {
         // FINALE (Wenn Level 4 erreicht ist)
         if (growthLevel === 4) {
             clearInterval(pressTimer);
-
-            // A) Dom Finale (Gelber Glow & Scale)
+            
             const domTl = gsap.timeline();
-            domTl.to(dom, {
-                scale: "+=0.12",
-                fill: "#FFD43B",
-                filter: "brightness(1.8) drop-shadow(0 0 50px #fd9015) drop-shadow(0 0 20px #FFB800)",
-                duration: 0.4,
-                ease: "back.out(2)"
-            })
-            .to(dom, {
-                fill: "#d76c2f",
-                filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))",
-                scale: "-=0.04",
-                duration: 0.8,
-                ease: "power2.inOut"
-            });
+domTl.to(dom, {
+    scale: "+=0.12",
+    // Wir nutzen 'attr', um das Attribut direkt im Pfad zu überschreiben
+    attr: { fill: "#FFD43B" }, 
+    // Wir reduzieren brightness etwas, damit die Farbe nicht "überstrahlt" wird
+    filter: "brightness(1.4) drop-shadow(0 0 40px #fd9015) drop-shadow(0 0 15px #FFB800)",
+    duration: 0.4,
+    ease: "back.out(2)"
+})
+.to(dom, {
+    attr: { fill: "#D76C2F" },
+    filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))",
+    scale: "-=0.04",
+    duration: 0.8,
+    ease: "power2.inOut"
+});
 
             // B) Leitung Finale (Dauerhaftes Aufladen-Gefühl)
             const lineTl = gsap.timeline();
