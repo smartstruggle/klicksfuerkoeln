@@ -461,16 +461,20 @@ if (growthLevel === 4) {
 clearInterval(pressTimer);
 
 // Finaler Dom-Effekt
-gsap.timeline()
 .to(dom, {
-scale: "+=0.08",
-filter: "brightness(1.6) drop-shadow(0 0 40px #fd9015)",
-duration: 0.3
-})
-.to(dom, {
-filter: "brightness(1)",
-duration: 0.5
-});
+    scale: "+=0.12", // Ein kleiner, kräftiger "Puls" am Ende
+    fill: "#FFD43B", // Der Dom selbst färbt sich sonnenblumengelb
+    filter: "brightness(1.8) drop-shadow(0 0 50px #fd9015) drop-shadow(0 0 20px #FFB800)",
+    duration: 0.4,
+    ease: "back.out(2)" // Schwingt leicht über für mehr Energie
+  })
+  .to(dom, {
+    fill: "#d76c2f", // Sanftes Zurückglühen auf dein Standard-Orange
+    filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))", 
+    scale: "-=0.04", // Geht nur ein kleines Stück zurück, bleibt aber groß
+    duration: 0.8,
+    ease: "power2.inOut"
+  });
 
 // Leitung final aufladen
 gsap.timeline()
