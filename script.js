@@ -447,19 +447,23 @@ function initMobilInteractions(touchZone) {
             clearInterval(pressTimer);
             
             const domTl = gsap.timeline();
-domTl.to(dom, {
-    scale: "+=0.12",
-    // Wir nutzen 'attr', um das Attribut direkt im Pfad zu überschreiben
-    attr: { fill: "#0000FF" }, 
-    // Wir reduzieren brightness etwas, damit die Farbe nicht "überstrahlt" wird
-    filter: "brightness(1.4) drop-shadow(0 0 40px #fd9015) drop-shadow(0 0 15px #FFB800)",
+
+
+const domTargets = "#dom-mobil, #dom-mobil path, #dom-mobil polygon, #dom-mobil circle";
+
+domTl.to(domTargets, {
+    scale: "+=0.12", // Hinweis: Scale wirkt nur auf das Haupt-Objekt 'dom' korrekt
+    fill: "#FFD43B", // Sonnenblumengelb
+    // Brightness auf 1.3 reduziert, damit das Gelb nicht zu Weiß wird
+    filter: "brightness(1.3) drop-shadow(0 0 40px #fd9015) drop-shadow(0 0 15px #FFB800)",
     duration: 0.4,
+    transformOrigin: "center bottom",
     ease: "back.out(2)"
 })
-.to(dom, {
-    attr: { fill: "#0000FF" },
-    filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))",
-    scale: "-=0.04",
+.to(domTargets, {
+    fill: "#D76C2F", // Zurück zum Orange
+    filter: "brightness(1) drop-shadow(0 0 0px rgba(0,0,0,0))",
+    scale: "-=0.04", 
     duration: 0.8,
     ease: "power2.inOut"
 });
