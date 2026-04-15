@@ -405,11 +405,22 @@ function initMobilInteractions(touchZone) {
             });
 
         // Leucht-O Impuls
-        if (glowO) {
-            gsap.timeline()
-                .to(glowO, { opacity: 1, scale: 1.05, duration: 0.22, ease: "power2.out" })
-                .to(glowO, { scale: 1, duration: 0.32, ease: "power2.out" });
-        }
+     if (glowO) {
+    gsap.timeline()
+        .to(glowO, { 
+            scale: 1.1, 
+            opacity: 1, 
+            filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)", 
+            duration: 0.3, 
+            ease: "power2.out" 
+        })
+        .to(glowO, { 
+            scale: 1, 
+            filter: "drop-shadow(0 0 15px #fd9015)", // Bleibt nach dem Finale leicht glühend
+            duration: 0.5, 
+            ease: "power2.out" 
+        });
+}
 
         // Kurzes Aufblinken des Doms
         gsap.to(dom, { opacity: 0.6, duration: 0.16, yoyo: true, repeat: 1 });
