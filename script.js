@@ -534,131 +534,98 @@ ease: "power1.out"
 }
 
 // 3. Wachstum-Logik
-function growDom() {
-if (growthLevel >= 4 || isAnimatingFinal) return;
+    function growDom() {
+        if (growthLevel >= 4) return;
+        growthLevel++;
 
-growthLevel++;
+        gsap.to(dom, {
+            scale: 1 + (growthLevel * 0.28),
+            duration: 0.4,
+            ease: "power2.out"
+        });
 
-gsap.to(dom, {
-scale: 1 + (growthLevel * 0.28),
-duration: 0.4,
-ease: "power2.out"
-});
+        if (growthLevel === 4) {
+            clearInterval(pressTimer);
 
-if (growthLevel === 4) {
-isAnimatingFinal = true;
-clearInterval(pressTimer);
+            // A) Dom Finale
+            gsap.timeline()
+                .to(dom, { 
+                    scale: "+=0.10", 
+                    filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)", 
+                    duration: 0.5, 
+                    ease: "power2.out" 
+                })
+                .to(dom, { 
+                    filter: "none", 
+                    scale: "-=0.03", 
+                    duration: 1.0, 
+                    ease: "power2.inOut" 
+                });
 
-const finalTl = gsap.timeline({
-onComplete: () => {
-isAnimatingFinal = false;
-}
-});
+            // B) Leitung Finale (Steel Blue)
+            gsap.timeline()
+                .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#B0C4DE", duration: 0.2 })
+                .to(line, { filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))", duration: 0.3 }, "<")
+                .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.6 })
+                .to(line, { filter: "none", duration: 0.6 }, "<");
 
-// A) Dom Finale
-finalTl
-.to(dom, {
-scale: "+=0.10",
-filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
-duration: 0.5,
-ease: "power2.out"
-}, 0)
-.to(dom, {
-filter: "none",
-scale: "-=0.03",
-duration: 1.0,
-ease: "power2.inOut"
-}, 0.5);
+            // C) Leucht-O Finale (Hochwertiger Glow)
+            if (glowO) {
+                gsap.timeline()
+                    .to(glowO, { 
+                        scale: 1.15, 
+                        filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)", 
+                        duration: 0.4 
+                    })
+                    .to(glowO, { 
+                        scale: 1, 
+                        filter: "drop-shadow(0 0 15px #fd9015)", 
+                        duration: 0.8,
+                        ease: "power2.inOut"
+                    });
+            }
+        }
+    }
 
-// B) Leitung Finale
-finalTl
-.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-stroke: "#B0C4DE",
-duration: 0.2,
-ease: "power2.out"
-}, 0)
-.to(line, {
-filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))",
-duration: 0.3,
-ease: "power2.out"
-}, 0)
-.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-stroke: "#D76C2F",
-duration: 0.6,
-ease: "power2.out"
-}, 0.5)
-.to(line, {
-filter: "none",
-duration: 0.6,
-ease: "power2.out"
-}, 0.5);
+    // 4. Reset-Logik
+    function resetDom() {
+        pointerIsDown = false;
+        clearTimeout(startDelayTimer);
+        clearInterval(pressTimer);
 
-// C) Leucht-O Finale
-if (glowO) {
-finalTl
-.to(glowO, {
-scale: 1.15,
-filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)",
-duration: 0.4,
-ease: "power2.out"
-}, 0)
-.to(glowO, {
-scale: 1,
-filter: "drop-shadow(0 0 15px #fd9015)",
-duration: 0.8,
-ease: "power2.inOut"
-}, 0.4);
-}
-}
-}
+        if (!holdStarted) {
+            hintTl.restart();
+            return;
+        }
 
-// 4. Reset
-function resetDom() {
-pointerIsDown = false;
-clearTimeout(startDelayTimer);
-clearInterval(pressTimer);
+        const isFinal = (growthLevel === 4);
 
-if (!holdStarted) {
-hintTl.restart();
-return;
-}
+        // Dom fährt immer weich zurück
+        gsap.to(dom, {
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
+            filter: "none",
+            onComplete: () => {
+                growthLevel = 0;
+                holdStarted = false;
+                hintTl.restart();
+            }
+        });
 
-gsap.to(dom, {
-scale: 1,
-duration: 0.6,
-ease: "power3.out",
-filter: "none",
-onComplete: () => {
-growthLevel = 0;
-holdStarted = false;
-hintTl.restart();
-}
-});
-
-// Nur zurücksetzen, wenn kein Finale läuft
-if (!isAnimatingFinal) {
-gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-stroke: "#D76C2F",
-duration: 0.3,
-ease: "power2.out"
-});
-
-gsap.to(line, {
-filter: "none",
-duration: 0.3,
-ease: "power2.out"
-});
-
-if (glowO) {
-gsap.to(glowO, {
-filter: "none",
-duration: 0.3,
-ease: "power2.out"
-});
-}
-}
-}
-
+        // Leitung & O nur zurücksetzen, wenn wir NICHT im Finale sind
+        // (Damit das Finale ungestört ausglühen kann)
+        if (!isFinal) {
+            gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", { 
+                stroke: "#D76C2F", 
+                duration: 0.3 
+            });
+            gsap.to(line, { filter: "none", duration: 0.3 });
+            if (glowO) {
+                gsap.to(glowO, { filter: "none", duration: 0.3 });
+            }
+        }
+    }
 // 5. Hold Start
 function beginGrowth() {
 if (!pointerIsDown || isAnimatingFinal) return;
