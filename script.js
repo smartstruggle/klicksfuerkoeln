@@ -442,63 +442,75 @@ function initMobilInteractions(touchZone) {
             ease: "power2.out"
         });
 
-        // FINALE (Wenn Level 4 erreicht ist)
-        if (growthLevel === 4) {
-            clearInterval(pressTimer);
-            
-            const domTl = gsap.timeline();
+// 3. Wachstum-Logik
+function growDom() {
+    if (growthLevel >= 4) return;
 
+    growthLevel++;
 
-const domTargets = "#dom-mobil, #dom-mobil path, #dom-mobil polygon, #dom-mobil circle";
+    // Normales Wachsen (Schrittweise)
+    gsap.to(dom, {
+        scale: 1 + (growthLevel * 0.28),
+        duration: 0.4,
+        ease: "power2.out"
+    });
 
-domTl.to(domTargets, {
-    scale: "+=0.12", // Hinweis: Scale wirkt nur auf das Haupt-Objekt 'dom' korrekt
-    fill: "#FFD43B", // Sonnenblumengelb
-    // Brightness auf 1.3 reduziert, damit das Gelb nicht zu Weiß wird
-    filter: "brightness(1.3) drop-shadow(0 0 40px #fd9015) drop-shadow(0 0 15px #FFB800)",
-    duration: 0.4,
-    transformOrigin: "center bottom",
-    ease: "back.out(2)"
-})
-.to(domTargets, {
-    fill: "#D76C2F", // Zurück zum Orange
-    filter: "brightness(1) drop-shadow(0 0 0px rgba(0,0,0,0))",
-    scale: "-=0.04", 
-    duration: 0.8,
-    ease: "power2.inOut"
-});
+    // FINALE (Wenn Level 4 erreicht ist)
+    if (growthLevel === 4) {
+        clearInterval(pressTimer);
 
-            // B) Leitung Finale (Dauerhaftes Aufladen-Gefühl)
-            const lineTl = gsap.timeline();
-            lineTl.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-                stroke: "#FFD43B",
-                duration: 0.15,
-                ease: "power2.out"
-            })
-            .to(line, {
-                filter: "drop-shadow(0 0 8px #FFD43B) drop-shadow(0 0 20px rgba(255,212,59,0.85))",
-                duration: 0.2,
-                ease: "power2.out"
-            }, "<")
-            .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-                stroke: "#D76C2F",
-                duration: 0.35,
-                ease: "power2.out"
-            })
-            .to(line, {
-                filter: "none",
-                duration: 0.35,
-                ease: "power2.out"
-            }, "<");
+        // Der "Safe-Target"-Fix: Wir sprechen die ID und alle Pfade darin an
+        const domTargets = "#dom-mobil, #dom-mobil path";
 
-            // C) O Finale
-            if (glowO) {
-                gsap.timeline()
-                    .to(glowO, { scale: 1.08, opacity: 1, duration: 0.18, ease: "power2.out" })
-                    .to(glowO, { scale: 1, duration: 0.28, ease: "power2.out" });
-            }
+        const domTl = gsap.timeline();
+        domTl.to(domTargets, {
+            scale: "+=0.12",
+            // Wir nutzen dein Test-Blau
+            fill: "#0000FF", 
+            // Brightness auf 1.4, damit das Blau nicht zu Weiß verwaschen wird
+            filter: "brightness(1.4) drop-shadow(0 0 40px #fd9015) drop-shadow(0 0 15px #FFB800)",
+            duration: 0.4,
+            ease: "back.out(2)"
+        })
+        .to(domTargets, {
+            fill: "#d76c2f", // Zurück zum Basis-Orange
+            filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))",
+            scale: "-=0.04",
+            duration: 0.8,
+            ease: "power2.inOut"
+        });
+
+        // 2. Leitung final aufladen (Elektrischer Impuls)
+        const lineTl = gsap.timeline();
+        lineTl.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+            stroke: "#00F3FF", // Elektrisches Blau für die Leitung
+            duration: 0.15,
+            ease: "power2.out"
+        })
+        .to(line, {
+            filter: "drop-shadow(0 0 8px #00F3FF) drop-shadow(0 0 20px rgba(0,243,255,0.8))",
+            duration: 0.2,
+            ease: "power2.out"
+        }, "<")
+        .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+            stroke: "#D76C2F",
+            duration: 0.35,
+            ease: "power2.out"
+        })
+        .to(line, {
+            filter: "none",
+            duration: 0.35,
+            ease: "power2.out"
+        }, "<");
+
+        // 3. O bekommt finalen Lichtmoment
+        if (glowO) {
+            gsap.timeline()
+                .to(glowO, { scale: 1.08, opacity: 1, duration: 0.18, ease: "power2.out" })
+                .to(glowO, { scale: 1, duration: 0.28, ease: "power2.out" });
         }
     }
+}
 
     // 4. Reset (Wenn losgelassen wird)
     function resetDom() {
