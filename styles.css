@@ -441,7 +441,7 @@ stroke-linecap: round;
 #leucht-o-mobil,
 #leitung-mobil,
 #cursor-mobil {
-visibility: hidden;
+visibility: visible;
 }
 
 
