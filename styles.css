@@ -381,7 +381,7 @@ PFAD-STYLES (IDs für Animation)
 /* --- 1. Die Fassungen & Basis (Dunkler Ton: #D26D14) --- */
 #fassung-links,
 #fassung-rechts {
-fill: #D26D14 !important;
+fill: #D26D14;
 stroke: none;
 }
 
@@ -389,7 +389,7 @@ stroke: none;
 #filament-links,
 #filament-rechts,
 #filament-mobil {
-stroke: #F4DE85 !important;
+stroke: #F4DE85;
 stroke-width: 2.5;
 fill: none;
 stroke-linecap: round;
@@ -401,7 +401,7 @@ stroke-linecap: round;
 #bulb-mobil,
 #leucht-o,
 #leucht-o-mobil {
-fill: var(--orange) !important;
+fill: var(--orange);
 stroke: none;
 }
 
@@ -418,7 +418,7 @@ stroke: none;
 #cursor,
 #cursor-mobil,
 #group-1 { /* Deine Gruppe für die Desktop-Elemente */
-fill: var(--orange) !important;
+fill: var(--orange);
 stroke: none;
 }
 
@@ -429,8 +429,8 @@ stroke: none;
 #line-horizontal-mobil,
 #line-vertikal,
 #line-vertikal-mobil {
-fill: none !important;
-stroke: var(--orange) !important;
+fill: none;
+stroke: var(--orange);
 stroke-width: 3;
 stroke-linecap: round;
 }
