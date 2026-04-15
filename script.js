@@ -290,62 +290,61 @@ ease: "power2.out"
 }, "-=0.5");
 }
 
-/* =========================================
-MINI DEMO (nur 1x, ruhig & klar)
-========================================= */
+/* ==========================================================================
+   MOBILE MASTER CONTROL (Full Version)
+   ========================================================================== */
 
+/**
+ * Startet die einmalige Demo-Animation
+ */
 function runMiniDemo() {
-const cursor = document.querySelector("#cursor-mobil");
-const button = document.querySelector("#powerbutton-mobil");
-const dom = document.querySelector("#dom-mobil");
+    const cursor = document.querySelector("#cursor-mobil");
+    const button = document.querySelector("#powerbutton-mobil");
+    const dom = document.querySelector("#dom-mobil");
 
-if (!cursor || !button || !dom) return null;
+    if (!cursor || !button || !dom) return null;
 
-const tl = gsap.timeline();
+    const tl = gsap.timeline();
+    tl.to(cursor, {
+        scale: 1.16,
+        duration: 0.32,
+        ease: "power2.out"
+    })
+    .to(cursor, {
+        x: 8,
+        y: 6,
+        duration: 1.2,
+        ease: "power2.inOut"
+    })
+    .to(button, {
+        scale: 0.9,
+        duration: 0.16,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut"
+    }, "<")
+    .to(dom, {
+        scale: 1.3,
+        duration: 0.75,
+        ease: "back.out(1.45)",
+        filter: "brightness(1.45) drop-shadow(0 0 24px #fd9015)"
+    }, "<+0.08")
+    .to(cursor, {
+        scale: 1,
+        x: 0,
+        y: 0,
+        duration: 0.9,
+        ease: "power2.inOut"
+    }, "-=0.2");
 
-tl.to(cursor, {
-scale: 1.16,
-duration: 0.32,
-ease: "power2.out"
-})
-.to(cursor, {
-x: 8,
-y: 6,
-duration: 1.2,
-ease: "power2.inOut"
-})
-.to(button, {
-scale: 0.9,
-duration: 0.16,
-yoyo: true,
-repeat: 1,
-ease: "power2.inOut"
-}, "<")
-.to(dom, {
-scale: 1.3,
-duration: 0.75,
-ease: "back.out(1.45)",
-filter: "brightness(1.45) drop-shadow(0 0 24px #fd9015)"
-}, "<+0.08")
-.to(cursor, {
-scale: 1,
-x: 0,
-y: 0,
-duration: 0.9,
-ease: "power2.inOut"
-}, "-=0.2");
-
-return tl;
+    return tl;
 }
 
-/* =========================================
-INTERACTIONS (smooth)
-========================================= */
-/* =========================================
-INTERACTIONS (smooth & fixed)
-========================================= */
-
+/**
+ * Initialisiert die gesamte Interaktions-Logik
+ */
 function initMobilInteractions(touchZone) {
+    // 1. DOM-Elemente abgreifen
     const dom = document.querySelector("#dom-mobil");
     const btn = document.querySelector("#powerbutton-mobil");
     const cursor = document.querySelector("#cursor-mobil");
@@ -354,7 +353,7 @@ function initMobilInteractions(touchZone) {
 
     if (!dom || !btn || !cursor || !touchZone || !line) return;
 
-    // Lokaler State
+    // 2. Lokaler State
     let growthLevel = 0;
     let pressTimer = null;
     let startDelayTimer = null;
@@ -362,7 +361,7 @@ function initMobilInteractions(touchZone) {
     let holdStarted = false;
     const HOLD_DELAY = 180;
 
-    // 1. Hint-Animation (Das sanfte Atmen zu Beginn)
+    // 3. Hint-Animation (Dezentes Atmen & Cursor-Wackeln)
     const hintTl = gsap.timeline({ repeat: -1 });
     hintTl
         .to(btn, {
@@ -381,126 +380,89 @@ function initMobilInteractions(touchZone) {
             repeat: 3
         }, 0);
 
-    // 2. Tap Feedback (Kurzer Impuls beim Antippen)
+    // 4. Tap Feedback (Kurzer Impuls beim Antippen)
     function playTapFeedback() {
-        // Button-Klick
+        // Button-Animation
         gsap.timeline()
             .to(btn, { scale: 0.92, duration: 0.12, ease: "power2.out" })
             .to(btn, { scale: 1, duration: 0.18, ease: "power2.out" });
 
-        // Leitungsimpuls (Sonnenblumengelb)
-       gsap.timeline()
-    .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-        stroke: "#00F3FF", // Das elektrische Cyan
-        filter: "drop-shadow(0 0 12px #00B8FF)", // Der blaue Glow
-        duration: 0.1, // Sehr schnell für den "Schlag"-Effekt
-        yoyo: true, 
-        repeat: 1,
-        ease: "power4.inOut"
-    })
-    .to("#leitung-mobil", {
-        scale: 1.06, // Ein kräftigerer Ruck
-        transformOrigin: "center center",
-        duration: 0.15,
-        ease: "expo.out"
-    }, "<")
-    .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-        stroke: "#D76C2F", // Zurück zum warmen Orange
-        filter: "none",
-        duration: 0.4,
-        ease: "power2.in"
-    })
-    .to("#leitung-mobil", {
-        scale: 1,
-        duration: 0.4,
-        ease: "power2.in"
-    }, "<");
+        // Leitungsimpuls (Steel Blue für High-End Optik)
+        gsap.timeline()
+            .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+                stroke: "#B0C4DE",
+                duration: 0.15,
+                ease: "power2.out"
+            })
+            .to("#leitung-mobil", {
+                scale: 1.03,
+                transformOrigin: "center center",
+                duration: 0.2
+            }, "<")
+            .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+                stroke: "#D76C2F",
+                duration: 0.4
+            });
 
-        // O-Lichtimpuls
+        // Leucht-O Impuls
         if (glowO) {
             gsap.timeline()
                 .to(glowO, { opacity: 1, scale: 1.05, duration: 0.22, ease: "power2.out" })
                 .to(glowO, { scale: 1, duration: 0.32, ease: "power2.out" });
         }
 
-        // Dom-Flash
-        gsap.timeline()
-            .to(dom, { opacity: 0.6, duration: 0.16, ease: "power1.out" })
-            .to(dom, { opacity: 1, duration: 0.3, ease: "power1.out" });
+        // Kurzes Aufblinken des Doms
+        gsap.to(dom, { opacity: 0.6, duration: 0.16, yoyo: true, repeat: 1 });
     }
 
+    // 5. Wachstum-Logik (Stufenweises Aufblasen)
+    function growDom() {
+        if (growthLevel >= 4) return;
+        growthLevel++;
 
-// 3. Wachstum-Logik
-function growDom() {
-    if (growthLevel >= 4) return;
-
-    growthLevel++;
-
-
-    gsap.to(dom, {
-        scale: 1 + (growthLevel * 0.28),
-        duration: 0.4,
-        ease: "power2.out"
-    });
-
-
-    if (growthLevel === 4) {
-        clearInterval(pressTimer);
-
-
-        const domTargets = "#dom-mobil, #dom-mobil path";
-
-        const domTl = gsap.timeline();
-        domTl.to(domTargets, {
-            scale: "+=0.12",
-            // Wir nutzen dein Test-Blau
-            fill: "#0000FF", 
-            // Brightness auf 1.4, damit das Blau nicht zu Weiß verwaschen wird
-            filter: "brightness(1.4) drop-shadow(0 0 40px #fd9015) drop-shadow(0 0 15px #FFB800)",
+        gsap.to(dom, {
+            scale: 1 + (growthLevel * 0.28),
             duration: 0.4,
-            ease: "back.out(2)"
-        })
-        .to(domTargets, {
-            fill: "#d76c2f", // Zurück zum Basis-Orange
-            filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))",
-            scale: "-=0.04",
-            duration: 0.8,
-            ease: "power2.inOut"
+            ease: "power2.out"
         });
 
-        // 2. Leitung final aufladen (Elektrischer Impuls)
-        const lineTl = gsap.timeline();
-        lineTl.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-            stroke: "#00F3FF", // Elektrisches Blau für die Leitung
-            duration: 0.15,
-            ease: "power2.out"
-        })
-        .to(line, {
-            filter: "drop-shadow(0 0 8px #00F3FF) drop-shadow(0 0 20px rgba(0,243,255,0.8))",
-            duration: 0.2,
-            ease: "power2.out"
-        }, "<")
-        .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-            stroke: "#D76C2F",
-            duration: 0.35,
-            ease: "power2.out"
-        })
-        .to(line, {
-            filter: "none",
-            duration: 0.35,
-            ease: "power2.out"
-        }, "<");
+        // MAXIMALES LEVEL ERREICHT (Das Finale)
+        if (growthLevel === 4) {
+            clearInterval(pressTimer);
 
-        // 3. O bekommt finalen Lichtmoment
-        if (glowO) {
+            const domTl = gsap.timeline();
+            domTl.to(dom, {
+                scale: "+=0.10",
+                filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
+                duration: 0.5,
+                ease: "power2.out"
+            })
+            .to(dom, {
+                filter: "brightness(1) drop-shadow(0 0 0px rgba(0,0,0,0))",
+                scale: "-=0.03",
+                duration: 1.0,
+                ease: "power2.inOut"
+            });
+
+            // Finale Leitungs-Aufladung (Dezenter Schimmer)
             gsap.timeline()
-                .to(glowO, { scale: 1.08, opacity: 1, duration: 0.18, ease: "power2.out" })
-                .to(glowO, { scale: 1, duration: 0.28, ease: "power2.out" });
+                .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+                    stroke: "#B0C4DE",
+                    duration: 0.2
+                })
+                .to(line, {
+                    filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))",
+                    duration: 0.3
+                }, "<")
+                .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+                    stroke: "#D76C2F",
+                    duration: 0.6
+                })
+                .to(line, { filter: "none", duration: 0.6 }, "<");
         }
     }
-}
 
-    // 4. Reset (Wenn losgelassen wird)
+    // 6. Reset (Wenn Finger losgelassen wird)
     function resetDom() {
         pointerIsDown = false;
         clearTimeout(startDelayTimer);
@@ -511,12 +473,12 @@ function growDom() {
             return;
         }
 
+        // Alles weich auf Startwerte zurückfahren
         gsap.to(dom, {
             scale: 1,
-            duration: 0.5,
+            duration: 0.6,
             ease: "power3.out",
             filter: "none",
-            fill: "#d76c2f", // Sicherstellen, dass die Farbe zurückgesetzt wird
             onComplete: () => {
                 growthLevel = 0;
                 holdStarted = false;
@@ -524,38 +486,40 @@ function growDom() {
             }
         });
 
-        gsap.to(line, { filter: "none", duration: 0.25 });
         gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", {
             stroke: "#D76C2F",
-            duration: 0.2
+            duration: 0.3
         });
+        gsap.to(line, { filter: "none", duration: 0.3 });
 
         if (glowO) {
             gsap.to(glowO, { scale: 1, opacity: 1, duration: 0.2 });
         }
     }
 
-    // 5. Start-Logik
+    // 7. Start-Phase
     function beginGrowth() {
         if (!pointerIsDown) return;
         holdStarted = true;
         hintTl.pause();
         growDom();
+        // Alle 450ms eine Stufe wachsen lassen
         pressTimer = setInterval(growDom, 450);
     }
 
-    // Event Listener
+    // 8. Event Listener (Pointer für Touch & Maus)
     touchZone.addEventListener("pointerdown", (e) => {
-        // Verhindert Scrolling während der Interaktion
         pointerIsDown = true;
         holdStarted = false;
         playTapFeedback();
+        // Verzögerung, bevor das "Halten" als Wachstum zählt
         startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
     }, { passive: true });
 
     window.addEventListener("pointerup", resetDom);
     window.addEventListener("pointercancel", resetDom);
 }
+                
 /* =========================================
 8. GLOBALER START-CHECK
 ========================================= */
