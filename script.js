@@ -426,161 +426,263 @@ function initMobilInteractions(touchZone) {
         gsap.to(dom, { opacity: 0.6, duration: 0.16, yoyo: true, repeat: 1 });
     }
 
-  /* =========================================
-   INTERACTIONS (Premium, Steel Blue & Stable)
-   ========================================= */
+ /* =========================================
+INTERACTIONS (Premium, Steel Blue & Stable)
+========================================= */
 
 function initMobilInteractions(touchZone) {
-    const dom = document.querySelector("#dom-mobil");
-    const btn = document.querySelector("#powerbutton-mobil");
-    const cursor = document.querySelector("#cursor-mobil");
-    const line = document.querySelector("#leitung-mobil");
-    const glowO = document.querySelector("#leucht-o-mobil");
+const dom = document.querySelector("#dom-mobil");
+const btn = document.querySelector("#powerbutton-mobil");
+const cursor = document.querySelector("#cursor-mobil");
+const line = document.querySelector("#leitung-mobil");
+const glowO = document.querySelector("#leucht-o-mobil");
 
-    if (!dom || !btn || !cursor || !touchZone || !line) return;
+if (!dom || !btn || !cursor || !touchZone || !line) return;
 
-    // Lokaler State
-    let growthLevel = 0;
-    let pressTimer = null;
-    let startDelayTimer = null;
-    let pointerIsDown = false;
-    let holdStarted = false;
-    let isAnimatingFinal = false; // Sperre, damit das Finale nicht unterbrochen wird
-    const HOLD_DELAY = 180;
+// Lokaler State
+let growthLevel = 0;
+let pressTimer = null;
+let startDelayTimer = null;
+let pointerIsDown = false;
+let holdStarted = false;
+let isAnimatingFinal = false;
 
-    // 1. Hint-Animation (Sanftes Atmen)
-    const hintTl = gsap.timeline({ repeat: -1 });
-    hintTl.to(btn, { scale: 1.05, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut" })
-          .to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
+const HOLD_DELAY = 180;
 
-    // 2. Tap Feedback (Kurzer Impuls)
-    function playTapFeedback() {
-        if (isAnimatingFinal) return;
-        
-        gsap.timeline()
-            .to(btn, { scale: 0.92, duration: 0.12, ease: "power2.out" })
-            .to(btn, { scale: 1, duration: 0.18, ease: "power2.out" });
+// 1. Hint-Animation
+const hintTl = gsap.timeline({ repeat: -1 });
 
-        gsap.timeline()
-            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#B0C4DE", duration: 0.15 })
-            .to("#leitung-mobil", { scale: 1.03, transformOrigin: "center center", duration: 0.2 }, "<")
-            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.4 });
+hintTl
+.to(btn, {
+scale: 1.05,
+filter: "drop-shadow(0 0 8px #fd9015)",
+duration: 0.8,
+yoyo: true,
+repeat: 1,
+ease: "sine.inOut"
+})
+.to(cursor, {
+x: 3,
+y: -2,
+duration: 0.18,
+yoyo: true,
+repeat: 3
+}, 0);
 
-        if (glowO) {
-            gsap.timeline()
-                .to(glowO, { opacity: 1, scale: 1.05, filter: "drop-shadow(0 0 15px #fd9015)", duration: 0.22 })
-                .to(glowO, { scale: 1, duration: 0.32 });
-        }
-    }
+// 2. Tap Feedback
+function playTapFeedback() {
+if (isAnimatingFinal) return;
 
-    // 3. Wachstum-Logik
-    function growDom() {
-        if (growthLevel >= 4 || isAnimatingFinal) return;
-        growthLevel++;
+// Button
+gsap.timeline()
+.to(btn, {
+scale: 0.92,
+duration: 0.12,
+ease: "power2.out"
+})
+.to(btn, {
+scale: 1,
+duration: 0.18,
+ease: "power2.out"
+});
 
-        gsap.to(dom, {
-            scale: 1 + (growthLevel * 0.28),
-            duration: 0.4,
-            ease: "power2.out"
-        });
+// Leitung
+gsap.timeline()
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+stroke: "#B0C4DE",
+duration: 0.15,
+ease: "power2.out"
+})
+.to("#leitung-mobil", {
+scale: 1.03,
+transformOrigin: "center center",
+duration: 0.2,
+ease: "power2.out"
+}, "<")
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+stroke: "#D76C2F",
+duration: 0.4,
+ease: "power2.out"
+});
 
-        if (growthLevel === 4) {
-            isAnimatingFinal = true; 
-            clearInterval(pressTimer);
-
-            const finalTl = gsap.timeline();
-
-            // A) Dom Finale
-            finalTl.to(dom, {
-                scale: "+=0.10",
-                filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
-                duration: 0.5,
-                ease: "power2.out"
-            }, 0)
-            .to(dom, {
-                filter: "none",
-                scale: "-=0.03",
-                duration: 1.0,
-                ease: "power2.inOut"
-            }, 0.5);
-
-            // B) Leitung Finale (Steel Blue Schimmer)
-            finalTl.to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#B0C4DE", duration: 0.2 }, 0)
-                   .to(line, { filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))", duration: 0.3 }, 0)
-                   .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.6 }, 0.5)
-                   .to(line, { filter: "none", duration: 0.6 }, 0.5);
-
-            // C) Leucht-O Finale (Hochwertiger Glow)
-            if (glowO) {
-                finalTl.to(glowO, { 
-                    scale: 1.15, 
-                    filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)", 
-                    duration: 0.4 
-                }, 0)
-                .to(glowO, { 
-                    scale: 1, 
-                    filter: "drop-shadow(0 0 15px #fd9015)", 
-                    duration: 0.8,
-                    ease: "power2.inOut"
-                }, 0.4);
-            }
-        }
-    }
-
-    // 4. Reset-Logik
-    function resetDom() {
-        pointerIsDown = false;
-        clearTimeout(startDelayTimer);
-        clearInterval(pressTimer);
-
-        if (!holdStarted) {
-            hintTl.restart();
-            return;
-        }
-
-        // Wir fahren den Dom immer sanft zurück
-        gsap.to(dom, {
-            scale: 1,
-            duration: 0.6,
-            ease: "power3.out",
-            filter: "none",
-            onComplete: () => {
-                growthLevel = 0;
-                holdStarted = false;
-                isAnimatingFinal = false; // Sperre erst hier aufheben
-                hintTl.restart();
-            }
-        });
-
-        // Leitung & O nur zurücksetzen, wenn das Finale NICHT gerade läuft
-        if (!isAnimatingFinal) {
-            gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.3 });
-            gsap.to(line, { filter: "none", duration: 0.3 });
-            if (glowO) gsap.to(glowO, { filter: "none", duration: 0.3 });
-        }
-    }
-
-    // 5. Start-Phase
-    function beginGrowth() {
-        if (!pointerIsDown || isAnimatingFinal) return;
-        holdStarted = true;
-        hintTl.pause();
-        growDom();
-        pressTimer = setInterval(growDom, 450);
-    }
-
-    // Event Listener
-    touchZone.addEventListener("pointerdown", (e) => {
-        if (isAnimatingFinal) return;
-        pointerIsDown = true;
-        holdStarted = false;
-        playTapFeedback();
-        startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
-    }, { passive: true });
-
-    window.addEventListener("pointerup", resetDom);
-    window.addEventListener("pointercancel", resetDom);
+// Leucht-O
+if (glowO) {
+gsap.timeline()
+.to(glowO, {
+scale: 1.1,
+opacity: 1,
+filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)",
+duration: 0.3,
+ease: "power2.out"
+})
+.to(glowO, {
+scale: 1,
+filter: "drop-shadow(0 0 15px #fd9015)",
+duration: 0.5,
+ease: "power2.out"
+});
 }
+
+// Dom
+gsap.to(dom, {
+opacity: 0.6,
+duration: 0.16,
+yoyo: true,
+repeat: 1,
+ease: "power1.out"
+});
+}
+
+// 3. Wachstum-Logik
+function growDom() {
+if (growthLevel >= 4 || isAnimatingFinal) return;
+
+growthLevel++;
+
+gsap.to(dom, {
+scale: 1 + (growthLevel * 0.28),
+duration: 0.4,
+ease: "power2.out"
+});
+
+if (growthLevel === 4) {
+isAnimatingFinal = true;
+clearInterval(pressTimer);
+
+const finalTl = gsap.timeline({
+onComplete: () => {
+isAnimatingFinal = false;
+}
+});
+
+// A) Dom Finale
+finalTl
+.to(dom, {
+scale: "+=0.10",
+filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
+duration: 0.5,
+ease: "power2.out"
+}, 0)
+.to(dom, {
+filter: "none",
+scale: "-=0.03",
+duration: 1.0,
+ease: "power2.inOut"
+}, 0.5);
+
+// B) Leitung Finale
+finalTl
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+stroke: "#B0C4DE",
+duration: 0.2,
+ease: "power2.out"
+}, 0)
+.to(line, {
+filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))",
+duration: 0.3,
+ease: "power2.out"
+}, 0)
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+stroke: "#D76C2F",
+duration: 0.6,
+ease: "power2.out"
+}, 0.5)
+.to(line, {
+filter: "none",
+duration: 0.6,
+ease: "power2.out"
+}, 0.5);
+
+// C) Leucht-O Finale
+if (glowO) {
+finalTl
+.to(glowO, {
+scale: 1.15,
+filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)",
+duration: 0.4,
+ease: "power2.out"
+}, 0)
+.to(glowO, {
+scale: 1,
+filter: "drop-shadow(0 0 15px #fd9015)",
+duration: 0.8,
+ease: "power2.inOut"
+}, 0.4);
+}
+}
+}
+
+// 4. Reset
+function resetDom() {
+pointerIsDown = false;
+clearTimeout(startDelayTimer);
+clearInterval(pressTimer);
+
+if (!holdStarted) {
+hintTl.restart();
+return;
+}
+
+gsap.to(dom, {
+scale: 1,
+duration: 0.6,
+ease: "power3.out",
+filter: "none",
+onComplete: () => {
+growthLevel = 0;
+holdStarted = false;
+hintTl.restart();
+}
+});
+
+// Nur zurücksetzen, wenn kein Finale läuft
+if (!isAnimatingFinal) {
+gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+stroke: "#D76C2F",
+duration: 0.3,
+ease: "power2.out"
+});
+
+gsap.to(line, {
+filter: "none",
+duration: 0.3,
+ease: "power2.out"
+});
+
+if (glowO) {
+gsap.to(glowO, {
+filter: "none",
+duration: 0.3,
+ease: "power2.out"
+});
+}
+}
+}
+
+// 5. Hold Start
+function beginGrowth() {
+if (!pointerIsDown || isAnimatingFinal) return;
+
+holdStarted = true;
+hintTl.pause();
+growDom();
+pressTimer = setInterval(growDom, 450);
+}
+
+// Events
+touchZone.addEventListener("pointerdown", () => {
+if (isAnimatingFinal) return;
+
+pointerIsDown = true;
+holdStarted = false;
+playTapFeedback();
+startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
+}, { passive: true });
+
+window.addEventListener("pointerup", resetDom);
+window.addEventListener("pointercancel", resetDom);
+}
+
                 
 /* =========================================
 8. GLOBALER START-CHECK
