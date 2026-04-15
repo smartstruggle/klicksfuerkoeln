@@ -346,14 +346,16 @@ function initMobilInteractions(touchZone) {
 const dom = document.querySelector("#dom-mobil");
 const btn = document.querySelector("#powerbutton-mobil");
 const cursor = document.querySelector("#cursor-mobil");
+const line = document.querySelector("#leitung-mobil");
 
-if (!dom || !btn || !cursor || !touchZone) return;
+if (!dom || !btn || !cursor || !touchZone || !line) return;
 
 let growthLevel = 0;
 let pressTimer = null;
 let startDelayTimer = null;
 
 let pointerIsDown = false;
+let holdStarted = false;
 
 const HOLD_DELAY = 180;
 
@@ -374,6 +376,32 @@ duration: 0.18,
 yoyo: true,
 repeat: 3
 }, 0);
+
+function playTapFeedback() {
+gsap.timeline()
+.to(btn, {
+scale: 0.92,
+duration: 0.12,
+ease: "power2.out"
+})
+.to(btn, {
+scale: 1,
+duration: 0.18,
+ease: "power2.out"
+});
+
+gsap.timeline()
+.to(line, {
+filter: "drop-shadow(0 0 6px #fd9015) drop-shadow(0 0 16px rgba(253,144,21,0.85))",
+duration: 0.16,
+ease: "power2.out"
+})
+.to(line, {
+filter: "none",
+duration: 0.22,
+ease: "power2.out"
+});
+}
 
 function growDom() {
 if (growthLevel >= 4) return;
@@ -407,6 +435,11 @@ pointerIsDown = false;
 clearTimeout(startDelayTimer);
 clearInterval(pressTimer);
 
+if (!holdStarted) {
+hintTl.restart();
+return;
+}
+
 gsap.to(dom, {
 scale: 1,
 duration: 0.5,
@@ -414,6 +447,7 @@ ease: "power3.out",
 filter: "none",
 onComplete: () => {
 growthLevel = 0;
+holdStarted = false;
 hintTl.restart();
 }
 });
@@ -422,6 +456,7 @@ hintTl.restart();
 function beginGrowth() {
 if (!pointerIsDown) return;
 
+holdStarted = true;
 hintTl.pause();
 growDom();
 pressTimer = setInterval(growDom, 450);
@@ -429,13 +464,14 @@ pressTimer = setInterval(growDom, 450);
 
 touchZone.addEventListener("pointerdown", () => {
 pointerIsDown = true;
+holdStarted = false;
+playTapFeedback();
 startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
 }, { passive: true });
 
 window.addEventListener("pointerup", resetDom);
 window.addEventListener("pointercancel", resetDom);
 }
-
 /* =========================================
 8. GLOBALER START-CHECK
 ========================================= */
