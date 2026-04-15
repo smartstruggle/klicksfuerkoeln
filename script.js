@@ -395,21 +395,26 @@ ease: "power2.out"
 // Leitungsimpuls
 gsap.timeline()
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-    stroke: "#39FF14", // Wir ändern die Konturfarbe, nicht die Füllung!
+    stroke: "#FFB800", // Warmes Sonnenblumengelb
     duration: 0.25,
     ease: "power2.out"
 })
 .to("#leitung-mobil", {
-    scale: 1.05, // Etwas deutlicher
+    scale: 1.04, 
     transformOrigin: "center center",
     duration: 0.28,
     ease: "power2.out"
 }, "<")
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-    stroke: "#d76c2f", // Zurück zum CSS-Standard (var(--orange))
-    duration: 0.35,
-    ease: "power2.in"
-});
+    stroke: "#D76C2F", // Zurück zum Basis-Orange
+    duration: 0.4,
+    ease: "power2.inOut"
+})
+.to("#leitung-mobil", {
+    scale: 1,
+    duration: 0.4,
+    ease: "power2.inOut"
+}, "<");
 
 // O-Leuchten / kleiner Lichtimpuls
 if (glowO) {
