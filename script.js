@@ -224,13 +224,7 @@ gsap.set(
 
 gsap.set("#dom-mobil", {
 scale: 0.8,
-transformOrigin: "center bottom",
-filter: "brightness(1)"
-});
-
-gsap.set("#leucht-o-mobil", {
-scale: 1,
-opacity: 1
+transformOrigin: "center bottom"
 });
 
 gsap.set("#leitung-mobil", {
@@ -286,13 +280,11 @@ ease: "power1.out"
 autoAlpha: 1,
 scale: 1,
 duration: 0.9,
-ease: "back.out(1.6)",
-filter: "brightness(1.06)"
+ease: "back.out(1.6)"
 }, "-=0.8")
 .to("#leucht-o-mobil", {
 autoAlpha: 1,
-opacity: 1,
-scale: 1.04,
+filter: "drop-shadow(0 0 25px #fd9015)",
 duration: 0.45,
 ease: "power2.out"
 }, "-=0.5");
@@ -306,7 +298,6 @@ function runMiniDemo() {
 const cursor = document.querySelector("#cursor-mobil");
 const button = document.querySelector("#powerbutton-mobil");
 const dom = document.querySelector("#dom-mobil");
-const glowO = document.querySelector("#leucht-o-mobil");
 
 if (!cursor || !button || !dom) return null;
 
@@ -334,16 +325,8 @@ ease: "power2.inOut"
 scale: 1.3,
 duration: 0.75,
 ease: "back.out(1.45)",
-filter: "brightness(1.22)"
+filter: "brightness(1.45) drop-shadow(0 0 24px #fd9015)"
 }, "<+0.08")
-.to(glowO, {
-opacity: 1,
-scale: 1.08,
-duration: 0.32,
-yoyo: true,
-repeat: 1,
-ease: "power2.out"
-}, "<")
 .to(cursor, {
 scale: 1,
 x: 0,
@@ -363,15 +346,14 @@ function initMobilInteractions(touchZone) {
 const dom = document.querySelector("#dom-mobil");
 const btn = document.querySelector("#powerbutton-mobil");
 const cursor = document.querySelector("#cursor-mobil");
-const glowO = document.querySelector("#leucht-o-mobil");
 
 if (!dom || !btn || !cursor || !touchZone) return;
 
 let growthLevel = 0;
 let pressTimer = null;
 let startDelayTimer = null;
+
 let pointerIsDown = false;
-let growthStarted = false;
 
 const HOLD_DELAY = 180;
 
@@ -393,46 +375,6 @@ yoyo: true,
 repeat: 3
 }, 0);
 
-function playTapFeedback() {
-gsap.timeline()
-.to(btn, {
-scale: 0.94,
-duration: 0.12,
-ease: "power2.out"
-})
-.to(btn, {
-scale: 1,
-duration: 0.18,
-ease: "power2.out"
-})
-.to(cursor, {
-x: 2,
-y: -1,
-duration: 0.08,
-yoyo: true,
-repeat: 1,
-ease: "power1.inOut"
-}, 0)
-.to(dom, {
-filter: "brightness(1.12)",
-duration: 0.14,
-yoyo: true,
-repeat: 1,
-ease: "power1.out"
-}, 0);
-
-if (glowO) {
-gsap.to(glowO, {
-opacity: 1,
-scale: 1.04,
-duration: 0.16,
-yoyo: true,
-repeat: 1,
-ease: "power1.out"
-});
-}
-}
-
 function growDom() {
 if (growthLevel >= 4) return;
 
@@ -441,18 +383,8 @@ growthLevel++;
 gsap.to(dom, {
 scale: 1 + (growthLevel * 0.28),
 duration: 0.4,
-ease: "power2.out",
-filter: `brightness(${1 + growthLevel * 0.06})`
-});
-
-if (glowO) {
-gsap.to(glowO, {
-opacity: 0.75 + growthLevel * 0.08,
-scale: 1 + growthLevel * 0.03,
-duration: 0.35,
 ease: "power2.out"
 });
-}
 
 if (growthLevel === 4) {
 clearInterval(pressTimer);
@@ -460,41 +392,14 @@ clearInterval(pressTimer);
 gsap.timeline()
 .to(dom, {
 scale: "+=0.08",
-filter: "brightness(1.35)",
-duration: 0.28,
-ease: "power2.out"
+filter: "brightness(1.6) drop-shadow(0 0 40px #fd9015)",
+duration: 0.3
 })
 .to(dom, {
-filter: "brightness(1.08)",
-duration: 0.45,
-ease: "power2.out"
-});
-
-if (glowO) {
-gsap.timeline()
-.to(glowO, {
-opacity: 1,
-scale: 1.12,
-duration: 0.28,
-ease: "power2.out"
-})
-.to(glowO, {
-opacity: 0.85,
-scale: 1.06,
-duration: 0.45,
-ease: "power2.out"
+filter: "brightness(1)",
+duration: 0.5
 });
 }
-}
-}
-
-function beginGrowth() {
-if (!pointerIsDown) return;
-
-growthStarted = true;
-hintTl.pause();
-growDom();
-pressTimer = setInterval(growDom, 450);
 }
 
 function resetDom() {
@@ -502,37 +407,28 @@ pointerIsDown = false;
 clearTimeout(startDelayTimer);
 clearInterval(pressTimer);
 
-if (!growthStarted) {
-hintTl.restart();
-return;
-}
-
 gsap.to(dom, {
 scale: 1,
 duration: 0.5,
 ease: "power3.out",
-filter: "brightness(1)",
+filter: "none",
 onComplete: () => {
 growthLevel = 0;
-growthStarted = false;
 hintTl.restart();
 }
 });
-
-if (glowO) {
-gsap.to(glowO, {
-opacity: 1,
-scale: 1,
-duration: 0.4,
-ease: "power2.out"
-});
 }
+
+function beginGrowth() {
+if (!pointerIsDown) return;
+
+hintTl.pause();
+growDom();
+pressTimer = setInterval(growDom, 450);
 }
 
 touchZone.addEventListener("pointerdown", () => {
 pointerIsDown = true;
-growthStarted = false;
-playTapFeedback();
 startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
 }, { passive: true });
 
