@@ -395,19 +395,19 @@ ease: "power2.out"
 // Leitungsimpuls
 gsap.timeline()
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-fill: "#FFE066",
+fill: "#39FF14",
 duration: 0.18,
 ease: "power2.out"
 })
 .to("#leitung-mobil", {
 scale: 1.02,
 transformOrigin: "center center",
-duration: 0.32,
+duration: 0.28,
 ease: "power2.out"
 }, "<")
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-fill: "#D76C2F",
-duration: 0.32,
+fill: "#39FF14",
+duration: 0.28,
 ease: "power2.out"
 })
 .to("#leitung-mobil", {
