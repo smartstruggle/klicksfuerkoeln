@@ -347,6 +347,7 @@ const dom = document.querySelector("#dom-mobil");
 const btn = document.querySelector("#powerbutton-mobil");
 const cursor = document.querySelector("#cursor-mobil");
 const line = document.querySelector("#leitung-mobil");
+const glowO = document.querySelector("#leucht-o-mobil");
 
 if (!dom || !btn || !cursor || !touchZone || !line) return;
 
@@ -377,10 +378,8 @@ yoyo: true,
 repeat: 3
 }, 0);
 
-// 🔥 TAP FEEDBACK (NEU)
 function playTapFeedback() {
-
-// Button klickt
+// Button-Klick
 gsap.timeline()
 .to(btn, {
 scale: 0.92,
@@ -393,20 +392,46 @@ duration: 0.18,
 ease: "power2.out"
 });
 
-// Leitung bekommt Farbimpuls
+// Leitungsimpuls
 gsap.timeline()
-.to(line, {
-stroke: "#FFD43B", // 🔥 GELB
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+fill: "#FFD43B",
 duration: 0.12,
 ease: "power2.out"
 })
 .to(line, {
-stroke: "#fd9015", // zurück zu Orange
+filter: "drop-shadow(0 0 6px #FFD43B) drop-shadow(0 0 14px rgba(255,212,59,0.75))",
+duration: 0.14,
+ease: "power2.out"
+}, "<")
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+fill: "#D76C2F",
 duration: 0.25,
 ease: "power2.out"
-});
+})
+.to(line, {
+filter: "none",
+duration: 0.25,
+ease: "power2.out"
+}, "<");
 
-// Dom kurzer Flash
+// O-Leuchten / kleiner Lichtimpuls
+if (glowO) {
+gsap.timeline()
+.to(glowO, {
+opacity: 1,
+scale: 1.05,
+duration: 0.14,
+ease: "power2.out"
+})
+.to(glowO, {
+scale: 1,
+duration: 0.22,
+ease: "power2.out"
+});
+}
+
+// kurzer Dom-Flash
 gsap.timeline()
 .to(dom, {
 opacity: 0.6,
@@ -434,6 +459,7 @@ ease: "power2.out"
 if (growthLevel === 4) {
 clearInterval(pressTimer);
 
+// Finaler Dom-Effekt
 gsap.timeline()
 .to(dom, {
 scale: "+=0.08",
@@ -444,6 +470,45 @@ duration: 0.3
 filter: "brightness(1)",
 duration: 0.5
 });
+
+// Leitung final aufladen
+gsap.timeline()
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+fill: "#FFD43B",
+duration: 0.15,
+ease: "power2.out"
+})
+.to(line, {
+filter: "drop-shadow(0 0 8px #FFD43B) drop-shadow(0 0 20px rgba(255,212,59,0.85))",
+duration: 0.2,
+ease: "power2.out"
+}, "<")
+.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+fill: "#D76C2F",
+duration: 0.35,
+ease: "power2.out"
+})
+.to(line, {
+filter: "none",
+duration: 0.35,
+ease: "power2.out"
+}, "<");
+
+// O bekommt finalen Lichtmoment
+if (glowO) {
+gsap.timeline()
+.to(glowO, {
+scale: 1.08,
+opacity: 1,
+duration: 0.18,
+ease: "power2.out"
+})
+.to(glowO, {
+scale: 1,
+duration: 0.28,
+ease: "power2.out"
+});
+}
 }
 }
 
@@ -468,6 +533,27 @@ holdStarted = false;
 hintTl.restart();
 }
 });
+
+gsap.to(line, {
+filter: "none",
+duration: 0.25,
+ease: "power2.out"
+});
+
+gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+fill: "#D76C2F",
+duration: 0.2,
+ease: "power2.out"
+});
+
+if (glowO) {
+gsap.to(glowO, {
+scale: 1,
+opacity: 1,
+duration: 0.2,
+ease: "power2.out"
+});
+}
 }
 
 function beginGrowth() {
@@ -483,7 +569,7 @@ touchZone.addEventListener("pointerdown", () => {
 pointerIsDown = true;
 holdStarted = false;
 
-playTapFeedback(); // 🔥 NEU
+playTapFeedback();
 
 startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
 }, { passive: true });
