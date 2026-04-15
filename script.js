@@ -377,7 +377,10 @@ yoyo: true,
 repeat: 3
 }, 0);
 
+// 🔥 TAP FEEDBACK (NEU)
 function playTapFeedback() {
+
+// Button klickt
 gsap.timeline()
 .to(btn, {
 scale: 0.92,
@@ -390,16 +393,30 @@ duration: 0.18,
 ease: "power2.out"
 });
 
+// Leitung bekommt Farbimpuls
 gsap.timeline()
 .to(line, {
-filter: "drop-shadow(0 0 6px #fd9015) drop-shadow(0 0 16px rgba(253,144,21,0.85))",
-duration: 0.16,
+stroke: "#FFD43B", // 🔥 GELB
+duration: 0.12,
 ease: "power2.out"
 })
 .to(line, {
-filter: "none",
-duration: 0.22,
+stroke: "#fd9015", // zurück zu Orange
+duration: 0.25,
 ease: "power2.out"
+});
+
+// Dom kurzer Flash
+gsap.timeline()
+.to(dom, {
+opacity: 0.6,
+duration: 0.1,
+ease: "power1.out"
+})
+.to(dom, {
+opacity: 1,
+duration: 0.2,
+ease: "power1.out"
 });
 }
 
@@ -465,13 +482,16 @@ pressTimer = setInterval(growDom, 450);
 touchZone.addEventListener("pointerdown", () => {
 pointerIsDown = true;
 holdStarted = false;
-playTapFeedback();
+
+playTapFeedback(); // 🔥 NEU
+
 startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
 }, { passive: true });
 
 window.addEventListener("pointerup", resetDom);
 window.addEventListener("pointercancel", resetDom);
 }
+
 /* =========================================
 8. GLOBALER START-CHECK
 ========================================= */
