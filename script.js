@@ -426,121 +426,155 @@ function initMobilInteractions(touchZone) {
         gsap.to(dom, { opacity: 0.6, duration: 0.16, yoyo: true, repeat: 1 });
     }
 
-    // 5. Wachstum-Logik (Stufenweises Aufblasen)
-   
+  /* =========================================
+   INTERACTIONS (Premium, Steel Blue & Stable)
+   ========================================= */
 
-    Wachstum-Logik
-function growDom() {
-    if (growthLevel >= 4) return;
-    growthLevel++;
+function initMobilInteractions(touchZone) {
+    const dom = document.querySelector("#dom-mobil");
+    const btn = document.querySelector("#powerbutton-mobil");
+    const cursor = document.querySelector("#cursor-mobil");
+    const line = document.querySelector("#leitung-mobil");
+    const glowO = document.querySelector("#leucht-o-mobil");
 
-    gsap.to(dom, {
-        scale: 1 + (growthLevel * 0.28),
-        duration: 0.4,
-        ease: "power2.out"
-    });
+    if (!dom || !btn || !cursor || !touchZone || !line) return;
 
-    if (growthLevel === 4) {
-        clearInterval(pressTimer);
+    // Lokaler State
+    let growthLevel = 0;
+    let pressTimer = null;
+    let startDelayTimer = null;
+    let pointerIsDown = false;
+    let holdStarted = false;
+    let isAnimatingFinal = false; // Sperre, damit das Finale nicht unterbrochen wird
+    const HOLD_DELAY = 180;
 
-        // A) DOM FINALE
-        const domTl = gsap.timeline();
-        domTl.to(dom, {
-            scale: "+=0.10",
-            filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
-            duration: 0.5,
-            ease: "power2.out"
-        })
-        .to(dom, {
-            filter: "brightness(1) drop-shadow(0 0 0px rgba(0,0,0,0))",
-            scale: "-=0.03",
-            duration: 1.0,
-            ease: "power2.inOut"
-        });
+    // 1. Hint-Animation (Sanftes Atmen)
+    const hintTl = gsap.timeline({ repeat: -1 });
+    hintTl.to(btn, { scale: 1.05, filter: "drop-shadow(0 0 8px #fd9015)", duration: 0.8, yoyo: true, repeat: 1, ease: "sine.inOut" })
+          .to(cursor, { x: 3, y: -2, duration: 0.18, yoyo: true, repeat: 3 }, 0);
 
-        // B) LEITUNG FINALE (Steel Blue)
+    // 2. Tap Feedback (Kurzer Impuls)
+    function playTapFeedback() {
+        if (isAnimatingFinal) return;
+        
         gsap.timeline()
-            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#B0C4DE", duration: 0.2 })
-            .to(line, { filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))", duration: 0.3 }, "<")
-            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.6 })
-            .to(line, { filter: "none", duration: 0.6 }, "<");
+            .to(btn, { scale: 0.92, duration: 0.12, ease: "power2.out" })
+            .to(btn, { scale: 1, duration: 0.18, ease: "power2.out" });
 
-        // C) LEUCHT-O FINALE (Jetzt ungestört)
+        gsap.timeline()
+            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#B0C4DE", duration: 0.15 })
+            .to("#leitung-mobil", { scale: 1.03, transformOrigin: "center center", duration: 0.2 }, "<")
+            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.4 });
+
         if (glowO) {
             gsap.timeline()
-                .to(glowO, { 
+                .to(glowO, { opacity: 1, scale: 1.05, filter: "drop-shadow(0 0 15px #fd9015)", duration: 0.22 })
+                .to(glowO, { scale: 1, duration: 0.32 });
+        }
+    }
+
+    // 3. Wachstum-Logik
+    function growDom() {
+        if (growthLevel >= 4 || isAnimatingFinal) return;
+        growthLevel++;
+
+        gsap.to(dom, {
+            scale: 1 + (growthLevel * 0.28),
+            duration: 0.4,
+            ease: "power2.out"
+        });
+
+        if (growthLevel === 4) {
+            isAnimatingFinal = true; 
+            clearInterval(pressTimer);
+
+            const finalTl = gsap.timeline();
+
+            // A) Dom Finale
+            finalTl.to(dom, {
+                scale: "+=0.10",
+                filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
+                duration: 0.5,
+                ease: "power2.out"
+            }, 0)
+            .to(dom, {
+                filter: "none",
+                scale: "-=0.03",
+                duration: 1.0,
+                ease: "power2.inOut"
+            }, 0.5);
+
+            // B) Leitung Finale (Steel Blue Schimmer)
+            finalTl.to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#B0C4DE", duration: 0.2 }, 0)
+                   .to(line, { filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))", duration: 0.3 }, 0)
+                   .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.6 }, 0.5)
+                   .to(line, { filter: "none", duration: 0.6 }, 0.5);
+
+            // C) Leucht-O Finale (Hochwertiger Glow)
+            if (glowO) {
+                finalTl.to(glowO, { 
                     scale: 1.15, 
-                    opacity: 1, 
                     filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)", 
-                    duration: 0.4, 
-                    ease: "power2.out" 
-                })
+                    duration: 0.4 
+                }, 0)
                 .to(glowO, { 
                     scale: 1, 
                     filter: "drop-shadow(0 0 15px #fd9015)", 
-                    duration: 0.8, 
-                    ease: "power2.inOut" 
-                });
+                    duration: 0.8,
+                    ease: "power2.inOut"
+                }, 0.4);
+            }
         }
     }
-}
 
-// 4. Reset-Logik (HIER LAG DER FEHLER)
-function resetDom() {
-    pointerIsDown = false;
-    clearTimeout(startDelayTimer);
-    clearInterval(pressTimer);
+    // 4. Reset-Logik
+    function resetDom() {
+        pointerIsDown = false;
+        clearTimeout(startDelayTimer);
+        clearInterval(pressTimer);
 
-    if (!holdStarted) {
-        hintTl.restart();
-        return;
-    }
-
-    // WICHTIG: Wenn wir bei Level 4 sind, machen wir keinen harten Reset für das O!
-    const isFinal = (growthLevel === 4);
-
-    gsap.to(dom, {
-        scale: 1,
-        duration: 0.6,
-        ease: "power3.out",
-        filter: "none",
-        onComplete: () => {
-            growthLevel = 0;
-            holdStarted = false;
+        if (!holdStarted) {
             hintTl.restart();
+            return;
         }
-    });
 
-    // Leitung zurücksetzen
-    gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.3 });
-    gsap.to(line, { filter: "none", duration: 0.3 });
-
-    // O nur zurücksetzen, wenn wir NICHT im Finale sind
-    if (glowO && !isFinal) {
-        gsap.to(glowO, { 
-            scale: 1, 
-            opacity: 1, 
-            filter: "none", // Oder dein Standard-Glow aus dem CSS
-            duration: 0.3 
+        // Wir fahren den Dom immer sanft zurück
+        gsap.to(dom, {
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
+            filter: "none",
+            onComplete: () => {
+                growthLevel = 0;
+                holdStarted = false;
+                isAnimatingFinal = false; // Sperre erst hier aufheben
+                hintTl.restart();
+            }
         });
+
+        // Leitung & O nur zurücksetzen, wenn das Finale NICHT gerade läuft
+        if (!isAnimatingFinal) {
+            gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.3 });
+            gsap.to(line, { filter: "none", duration: 0.3 });
+            if (glowO) gsap.to(glowO, { filter: "none", duration: 0.3 });
+        }
     }
-}
-    // 7. Start-Phase
+
+    // 5. Start-Phase
     function beginGrowth() {
-        if (!pointerIsDown) return;
+        if (!pointerIsDown || isAnimatingFinal) return;
         holdStarted = true;
         hintTl.pause();
         growDom();
-        // Alle 450ms eine Stufe wachsen lassen
         pressTimer = setInterval(growDom, 450);
     }
 
-    // 8. Event Listener (Pointer für Touch & Maus)
+    // Event Listener
     touchZone.addEventListener("pointerdown", (e) => {
+        if (isAnimatingFinal) return;
         pointerIsDown = true;
         holdStarted = false;
         playTapFeedback();
-        // Verzögerung, bevor das "Halten" als Wachstum zählt
         startDelayTimer = setTimeout(beginGrowth, HOLD_DELAY);
     }, { passive: true });
 
