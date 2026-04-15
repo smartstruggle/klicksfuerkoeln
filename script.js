@@ -423,7 +423,7 @@ gsap.timeline()
 .to(glowO, {
 opacity: 1,
 scale: 1.05,
-duration: 0.18,
+duration: 0.22,
 ease: "power2.out"
 })
 .to(glowO, {
