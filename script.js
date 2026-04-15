@@ -427,87 +427,104 @@ function initMobilInteractions(touchZone) {
     }
 
     // 5. Wachstum-Logik (Stufenweises Aufblasen)
-    function growDom() {
-        if (growthLevel >= 4) return;
-        growthLevel++;
+   
 
-        gsap.to(dom, {
-            scale: 1 + (growthLevel * 0.28),
-            duration: 0.4,
-            ease: "power2.out"
-        });
+    Wachstum-Logik
+function growDom() {
+    if (growthLevel >= 4) return;
+    growthLevel++;
 
-        // MAXIMALES LEVEL ERREICHT (Das Finale)
-        if (growthLevel === 4) {
-            clearInterval(pressTimer);
+    gsap.to(dom, {
+        scale: 1 + (growthLevel * 0.28),
+        duration: 0.4,
+        ease: "power2.out"
+    });
 
-            const domTl = gsap.timeline();
-            domTl.to(dom, {
-                scale: "+=0.10",
-                filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
-                duration: 0.5,
-                ease: "power2.out"
-            })
-            .to(dom, {
-                filter: "brightness(1) drop-shadow(0 0 0px rgba(0,0,0,0))",
-                scale: "-=0.03",
-                duration: 1.0,
-                ease: "power2.inOut"
-            });
-
-            // Finale Leitungs-Aufladung (Dezenter Schimmer)
-            gsap.timeline()
-                .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-                    stroke: "#B0C4DE",
-                    duration: 0.2
-                })
-                .to(line, {
-                    filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))",
-                    duration: 0.3
-                }, "<")
-                .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-                    stroke: "#D76C2F",
-                    duration: 0.6
-                })
-                .to(line, { filter: "none", duration: 0.6 }, "<");
-        }
-    }
-
-    // 6. Reset (Wenn Finger losgelassen wird)
-    function resetDom() {
-        pointerIsDown = false;
-        clearTimeout(startDelayTimer);
+    if (growthLevel === 4) {
         clearInterval(pressTimer);
 
-        if (!holdStarted) {
-            hintTl.restart();
-            return;
-        }
-
-        // Alles weich auf Startwerte zurückfahren
-        gsap.to(dom, {
-            scale: 1,
-            duration: 0.6,
-            ease: "power3.out",
-            filter: "none",
-            onComplete: () => {
-                growthLevel = 0;
-                holdStarted = false;
-                hintTl.restart();
-            }
+        // A) DOM FINALE
+        const domTl = gsap.timeline();
+        domTl.to(dom, {
+            scale: "+=0.10",
+            filter: "brightness(1.3) drop-shadow(0 0 35px #fd9015)",
+            duration: 0.5,
+            ease: "power2.out"
+        })
+        .to(dom, {
+            filter: "brightness(1) drop-shadow(0 0 0px rgba(0,0,0,0))",
+            scale: "-=0.03",
+            duration: 1.0,
+            ease: "power2.inOut"
         });
 
-        gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-            stroke: "#D76C2F",
-            duration: 0.3
-        });
-        gsap.to(line, { filter: "none", duration: 0.3 });
+        // B) LEITUNG FINALE (Steel Blue)
+        gsap.timeline()
+            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#B0C4DE", duration: 0.2 })
+            .to(line, { filter: "drop-shadow(0 0 8px rgba(176,196,222,0.6))", duration: 0.3 }, "<")
+            .to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.6 })
+            .to(line, { filter: "none", duration: 0.6 }, "<");
 
+        // C) LEUCHT-O FINALE (Jetzt ungestört)
         if (glowO) {
-            gsap.to(glowO, { scale: 1, opacity: 1, duration: 0.2 });
+            gsap.timeline()
+                .to(glowO, { 
+                    scale: 1.15, 
+                    opacity: 1, 
+                    filter: "drop-shadow(0 0 35px #fd9015) brightness(1.2)", 
+                    duration: 0.4, 
+                    ease: "power2.out" 
+                })
+                .to(glowO, { 
+                    scale: 1, 
+                    filter: "drop-shadow(0 0 15px #fd9015)", 
+                    duration: 0.8, 
+                    ease: "power2.inOut" 
+                });
         }
     }
+}
 
+// 4. Reset-Logik (HIER LAG DER FEHLER)
+function resetDom() {
+    pointerIsDown = false;
+    clearTimeout(startDelayTimer);
+    clearInterval(pressTimer);
+
+    if (!holdStarted) {
+        hintTl.restart();
+        return;
+    }
+
+    // WICHTIG: Wenn wir bei Level 4 sind, machen wir keinen harten Reset für das O!
+    const isFinal = (growthLevel === 4);
+
+    gsap.to(dom, {
+        scale: 1,
+        duration: 0.6,
+        ease: "power3.out",
+        filter: "none",
+        onComplete: () => {
+            growthLevel = 0;
+            holdStarted = false;
+            hintTl.restart();
+        }
+    });
+
+    // Leitung zurücksetzen
+    gsap.to("#line-horizontal-mobil, #line-vertikal-mobil", { stroke: "#D76C2F", duration: 0.3 });
+    gsap.to(line, { filter: "none", duration: 0.3 });
+
+    // O nur zurücksetzen, wenn wir NICHT im Finale sind
+    if (glowO && !isFinal) {
+        gsap.to(glowO, { 
+            scale: 1, 
+            opacity: 1, 
+            filter: "none", // Oder dein Standard-Glow aus dem CSS
+            duration: 0.3 
+        });
+    }
+}
     // 7. Start-Phase
     function beginGrowth() {
         if (!pointerIsDown) return;
