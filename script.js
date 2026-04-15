@@ -396,18 +396,18 @@ ease: "power2.out"
 gsap.timeline()
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
 fill: "#FFE066",
-duration: 0.16,
+duration: 0.18,
 ease: "power2.out"
 })
 .to("#leitung-mobil", {
-scale: 1.03,
+scale: 1.04,
 transformOrigin: "center center",
-duration: 0.16,
+duration: 0.32,
 ease: "power2.out"
 }, "<")
 .to("#line-horizontal-mobil, #line-vertikal-mobil", {
 fill: "#D76C2F",
-duration: 0.28,
+duration: 0.32,
 ease: "power2.out"
 })
 .to("#leitung-mobil", {
