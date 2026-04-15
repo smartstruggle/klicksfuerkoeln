@@ -394,28 +394,29 @@ ease: "power2.out"
 
 // Leitungsimpuls
 gsap.timeline()
-.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-fill: "#39FF14",
-duration: 0.18,
-ease: "power2.out"
+.to(["#line-horizontal-mobil", "#line-vertikal-mobil"], {
+    // 1. Zwingt GSAP, das harte SVG-Attribut zu überschreiben statt CSS
+    attr: { fill: "#39FF14" }, 
+    // 2. Zeitlupe: 1.5 Sekunden statt 0.18, damit wir sehen, was passiert!
+    duration: 1.5, 
+    ease: "power2.out"
 })
 .to("#leitung-mobil", {
-scale: 1.02,
-transformOrigin: "center center",
-duration: 0.28,
-ease: "power2.out"
+    scale: 1.02,
+    transformOrigin: "center center",
+    duration: 0.28,
+    ease: "power2.out"
 }, "<")
-.to("#line-horizontal-mobil, #line-vertikal-mobil", {
-fill: "#39FF14",
-duration: 0.28,
-ease: "power2.out"
+.to(["#line-horizontal-mobil", "#line-vertikal-mobil"], {
+    attr: { fill: "#D76C2F" },
+    duration: 1.5, // Auch hier Zeitlupe
+    ease: "power2.out"
 })
 .to("#leitung-mobil", {
-scale: 1,
-duration: 0.28,
-ease: "power2.out"
+    scale: 1,
+    duration: 0.28,
+    ease: "power2.out"
 }, "<");
-
 
 // O-Leuchten / kleiner Lichtimpuls
 if (glowO) {
