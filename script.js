@@ -429,18 +429,6 @@ function initMobilInteractions(touchZone) {
             .to(dom, { opacity: 1, duration: 0.3, ease: "power1.out" });
     }
 
-    // 3. Wachstum-Logik
-    function growDom() {
-        if (growthLevel >= 4) return;
-
-        growthLevel++;
-
-        // Normales Wachsen (Schrittweise)
-        gsap.to(dom, {
-            scale: 1 + (growthLevel * 0.28),
-            duration: 0.4,
-            ease: "power2.out"
-        });
 
 // 3. Wachstum-Logik
 function growDom() {
@@ -448,18 +436,18 @@ function growDom() {
 
     growthLevel++;
 
-    // Normales Wachsen (Schrittweise)
+
     gsap.to(dom, {
         scale: 1 + (growthLevel * 0.28),
         duration: 0.4,
         ease: "power2.out"
     });
 
-    // FINALE (Wenn Level 4 erreicht ist)
+
     if (growthLevel === 4) {
         clearInterval(pressTimer);
 
-        // Der "Safe-Target"-Fix: Wir sprechen die ID und alle Pfade darin an
+
         const domTargets = "#dom-mobil, #dom-mobil path";
 
         const domTl = gsap.timeline();
