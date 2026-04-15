@@ -86,21 +86,6 @@ closeFlyerPopup();
 });
 
 
-/* =========================================
-3. COOKIE BANNER
-========================================= */
-const cookieBanner = document.getElementById("cookie-banner");
-const cookieAccept = document.getElementById("cookie-accept");
-if (!localStorage.getItem("kfk-cookie-accepted") && cookieBanner) {
-cookieBanner.hidden = false;
-}
-if (cookieAccept) {
-cookieAccept.addEventListener("click", () => {
-localStorage.setItem("kfk-cookie-accepted", "true");
-cookieBanner.hidden = true;
-});
-}
-
 
 /* =========================================
 4. FORMULAR-SENDEN (API)
