@@ -389,28 +389,32 @@ function initMobilInteractions(touchZone) {
             .to(btn, { scale: 1, duration: 0.18, ease: "power2.out" });
 
         // Leitungsimpuls (Sonnenblumengelb)
-        gsap.timeline()
-            .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-                stroke: "#FFB800",
-                duration: 0.25,
-                ease: "power2.out"
-            })
-            .to("#leitung-mobil", {
-                scale: 1.04,
-                transformOrigin: "center center",
-                duration: 0.28,
-                ease: "power2.out"
-            }, "<")
-            .to("#line-horizontal-mobil, #line-vertikal-mobil", {
-                stroke: "#D76C2F",
-                duration: 0.4,
-                ease: "power2.inOut"
-            })
-            .to("#leitung-mobil", {
-                scale: 1,
-                duration: 0.4,
-                ease: "power2.inOut"
-            }, "<");
+       gsap.timeline()
+    .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+        stroke: "#00F3FF", // Das elektrische Cyan
+        filter: "drop-shadow(0 0 12px #00B8FF)", // Der blaue Glow
+        duration: 0.1, // Sehr schnell für den "Schlag"-Effekt
+        yoyo: true, 
+        repeat: 1,
+        ease: "power4.inOut"
+    })
+    .to("#leitung-mobil", {
+        scale: 1.06, // Ein kräftigerer Ruck
+        transformOrigin: "center center",
+        duration: 0.15,
+        ease: "expo.out"
+    }, "<")
+    .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+        stroke: "#D76C2F", // Zurück zum warmen Orange
+        filter: "none",
+        duration: 0.4,
+        ease: "power2.in"
+    })
+    .to("#leitung-mobil", {
+        scale: 1,
+        duration: 0.4,
+        ease: "power2.in"
+    }, "<");
 
         // O-Lichtimpuls
         if (glowO) {
