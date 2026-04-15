@@ -458,23 +458,64 @@ ease: "power2.out"
 });
 
 if (growthLevel === 4) {
-clearInterval(pressTimer);
+    clearInterval(pressTimer);
 
-// Finaler Dom-Effekt
-.to(dom, {
-    scale: "+=0.12", // Ein kleiner, kräftiger "Puls" am Ende
-    fill: "#FFD43B", // Der Dom selbst färbt sich sonnenblumengelb
-    filter: "brightness(1.8) drop-shadow(0 0 50px #fd9015) drop-shadow(0 0 20px #FFB800)",
-    duration: 0.4,
-    ease: "back.out(2)" // Schwingt leicht über für mehr Energie
-  })
-  .to(dom, {
-    fill: "#d76c2f", // Sanftes Zurückglühen auf dein Standard-Orange
-    filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))", 
-    scale: "-=0.04", // Geht nur ein kleines Stück zurück, bleibt aber groß
-    duration: 0.8,
-    ease: "power2.inOut"
-  });
+    // 1. Finaler Dom-Effekt (Jetzt korrekt als neue Timeline deklariert)
+    const domTl = gsap.timeline();
+    domTl.to(dom, {
+        scale: "+=0.12", 
+        fill: "#FFD43B", 
+        filter: "brightness(1.8) drop-shadow(0 0 50px #fd9015) drop-shadow(0 0 20px #FFB800)",
+        duration: 0.4,
+        ease: "back.out(2)"
+    })
+    .to(dom, {
+        fill: "#d76c2f", 
+        filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))", 
+        scale: "-=0.04", 
+        duration: 0.8,
+        ease: "power2.inOut"
+    });
+
+    // 2. Leitung final aufladen (Wichtig: stroke statt fill!)
+    const lineTl = gsap.timeline();
+    lineTl.to("#line-horizontal-mobil, #line-vertikal-mobil", {
+        stroke: "#FFD43B", // Sonnenblumengelb
+        duration: 0.15,
+        ease: "power2.out"
+    })
+    .to(line, {
+        filter: "drop-shadow(0 0 8px #FFD43B) drop-shadow(0 0 20px rgba(255,212,59,0.85))",
+        duration: 0.2,
+        ease: "power2.out"
+    }, "<")
+    .to("#line-horizontal-mobil, #line-vertikal-mobil", {
+        stroke: "#D76C2F", // Zurück zum Orange
+        duration: 0.35,
+        ease: "power2.out"
+    })
+    .to(line, {
+        filter: "none",
+        duration: 0.35,
+        ease: "power2.out"
+    }, "<");
+
+    // 3. O bekommt finalen Lichtmoment
+    if (glowO) {
+        gsap.timeline()
+        .to(glowO, {
+            scale: 1.08,
+            opacity: 1,
+            duration: 0.18,
+            ease: "power2.out"
+        })
+        .to(glowO, {
+            scale: 1,
+            duration: 0.28,
+            ease: "power2.out"
+        });
+    }
+}
 
 // Leitung final aufladen
 gsap.timeline()
