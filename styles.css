@@ -1043,41 +1043,6 @@ font-weight: 600;
 word-break: break-word;
 }
 
-/* Cookie banner */
-
-.cookie-banner {
-position: fixed;
-left: 0.875rem;
-bottom: 0.875rem;
-z-index: 2100;
-width: min(20rem, calc(100% - 1.75rem));
-background: rgba(20, 20, 20, 0.96);
-color: rgba(255, 255, 255, 0.88);
-border-radius: 1.125rem;
-padding: 0.875rem 0.875rem 1rem;
-box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
-}
-
-.cookie-banner p {
-margin: 0;
-font-size: 0.86rem;
-line-height: 1.55;
-}
-
-.cookie-banner a {
-color: #fff;
-text-decoration: underline;
-}
-
-.cookie-accept {
-margin-top: 0.75rem;
-min-height: 2.625rem;
-padding-inline: 1rem;
-border-radius: var(--radius-pill);
-border: 1px solid rgba(255, 255, 255, 0.16);
-background: transparent;
-color: #fff;
-}
 
 /* Legal pages */
 
