@@ -450,14 +450,14 @@ function initMobilInteractions(touchZone) {
 domTl.to(dom, {
     scale: "+=0.12",
     // Wir nutzen 'attr', um das Attribut direkt im Pfad zu überschreiben
-    attr: { fill: "#FFD43B" }, 
+    attr: { fill: "#0000FF" }, 
     // Wir reduzieren brightness etwas, damit die Farbe nicht "überstrahlt" wird
     filter: "brightness(1.4) drop-shadow(0 0 40px #fd9015) drop-shadow(0 0 15px #FFB800)",
     duration: 0.4,
     ease: "back.out(2)"
 })
 .to(dom, {
-    attr: { fill: "#D76C2F" },
+    attr: { fill: "#0000FF" },
     filter: "brightness(1) drop-shadow(0 0 0px rgba(253,144,21,0))",
     scale: "-=0.04",
     duration: 0.8,
