@@ -170,39 +170,70 @@ if (siteFooter) scrollObserver.observe(siteFooter);
 
 
 /* =========================================
-6. DESKTOP HERO ANIMATION
+6. DESKTOP HERO ANIMATION (Optimized)
 ========================================= */
 let introHasStarted = false;
 
 function startIntroAnimations() {
-if (introHasStarted || window.innerWidth < 768) return;
-const heroContainer = document.querySelector(".hero-graphic");
-if (!heroContainer) return;
-introHasStarted = true;
+  if (introHasStarted || window.innerWidth < 768) return;
+  const heroContainer = document.querySelector(".hero-graphic");
+  if (!heroContainer) return;
+  introHasStarted = true;
 
-gsap.set("#leucht-o", { opacity: 0.2 });
-gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.98 });
-gsap.set(["#birne-links", "#birne-rechts"], { opacity: 0 });
-gsap.set("#dom", { opacity: 0, scale: 0, transformOrigin: "center bottom" });
-gsap.set("#cursor", { x: 40, y: 30, opacity: 0 });
-gsap.set("#leitung", { strokeDasharray: 2500, strokeDashoffset: -2500 });
+  // Initialzustände setzen
+  gsap.set("#leucht-o", { opacity: 0.2, scale: 1, transformOrigin: "center" });
+  gsap.set(["#filament-links", "#filament-rechts"], { opacity: 0.1, scale: 0.98 });
+  gsap.set(["#birne-links", "#birne-rechts"], { opacity: 0 });
+  // Dom ist am Anfang unsichtbar und klein
+  gsap.set("#dom", { opacity: 0, scale: 0.8, transformOrigin: "center bottom" });
+  gsap.set("#cursor", { x: 40, y: 30, opacity: 0 });
+  gsap.set("#leitung", { strokeDasharray: 2500, strokeDashoffset: 2500, stroke: "#666" }); // Startfarbe grau/neutral
 
-const masterTL = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+  const masterTL = gsap.timeline({ defaults: { ease: "power2.inOut" } });
 
-masterTL.to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
-.to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
-.to("#powerbutton", { scale: 1, duration: 0.2 })
-.to("#cursor", { opacity: 0, duration: 0.5 }, "+=0.2")
-.addLabel("leitungStart")
-.to("#leitung", { strokeDashoffset: 0, duration: 4, ease: "none" }, "leitungStart")
-.to("#filament-rechts", { opacity: 1, scale: 1.02, duration: 0.3 }, "leitungStart+=0.8")
-.to("#birne-rechts", { opacity: 1, duration: 0.8 }, "<")
-.to("#filament-links", { opacity: 1, scale: 1.02, duration: 0.3 }, "leitungStart+=2.8")
-.to("#birne-links", { opacity: 1, duration: 0.8 }, "<")
-.to("#leucht-o", { opacity: 1, filter: "drop-shadow(0 0 30px #fd9015)", duration: 0.6 }, "leitungStart+=4")
-.to("#dom", { opacity: 1, scale: 1, duration: 1.2, ease: "back.out(1.2)" }, "+=0.2");
+  masterTL
+    // 1. Cursor klickt den Button
+    .to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
+    .to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
+    .to("#powerbutton", { scale: 1, duration: 0.2 })
+    .to("#cursor", { opacity: 0, duration: 0.3 }, "+=0.1")
+    
+    .addLabel("leitungStart")
+    
+    // 2. Leitung zeichnet sich und wird kurz "elektrisch gelb"
+    .to("#leitung", { strokeDashoffset: 0, duration: 3.5, ease: "power1.inOut" }, "leitungStart")
+    .to("#leitung", { stroke: "#FFEA00", duration: 0.3, repeat: 1, yoyo: true }, "leitungStart+=0.2")
+    
+    // 3. Impuls passiert die Birnen (Rechts zuerst, dann Links)
+    .to("#filament-rechts", { opacity: 1, scale: 1.05, duration: 0.2 }, "leitungStart+=0.8")
+    .to("#birne-rechts", { opacity: 1, fill: "#FFEA00", duration: 0.4 }, "<")
+    
+    // 4. DER DOM: Wächst kurz an und blinkt gelb, wenn die Leitung ihn "passiert"
+    .to("#dom", { 
+      opacity: 1, 
+      scale: 1.1, 
+      filter: "brightness(1.5) drop-shadow(0 0 15px #FFEA00)",
+      duration: 0.4, 
+      ease: "back.out(2)" 
+    }, "leitungStart+=1.8")
+    .to("#dom", { scale: 1, filter: "brightness(1) drop-shadow(0 0 0px #FFEA00)", duration: 0.4 })
+
+    // 5. Weiterer Impuls zu den linken Birnen
+    .to("#filament-links", { opacity: 1, scale: 1.05, duration: 0.2 }, "leitungStart+=2.5")
+    .to("#birne-links", { opacity: 1, fill: "#FFEA00", duration: 0.4 }, "<")
+    
+    // 6. FINALE: Das Leucht-O erreicht den Zielpunkt
+    .to("#leucht-o", { 
+      opacity: 1, 
+      scale: 1.2, // Wird groß
+      fill: "#FFEA00",
+      filter: "drop-shadow(0 0 40px #fd9015)", // Glow Effekt
+      duration: 0.8, 
+      ease: "elastic.out(1, 0.5)" 
+    }, "leitungStart+=3.2")
+    // Leichte Rückskalierung für den "Bounce"-Effekt
+    .to("#leucht-o", { scale: 1.1, duration: 0.4 });
 }
-
 
 /* =========================================
 7. MOBIL HERO (FINAL CLEAN VERSION)
