@@ -168,9 +168,8 @@ if (heroGraphic) scrollObserver.observe(heroGraphic);
 if (siteFooter) scrollObserver.observe(siteFooter);
 }
 
-
 /* =========================================
-6. DESKTOP HERO ANIMATION (Final Version - Lamp Pulse)
+6. DESKTOP HERO ANIMATION (Final Version - Flow & Stay)
 ========================================= */
 let introHasStarted = false;
 
@@ -180,19 +179,19 @@ function startIntroAnimations() {
   if (!heroContainer) return;
   introHasStarted = true;
 
-  // --- 1. SETUP (Ursprungszustand) ---
-  gsap.set(["#birne-links", "#dom", "#leucht-o"], { 
-    opacity: 0.3, 
+  // --- 1. SETUP (Alles unsichtbar außer Button & Cursor) ---
+  gsap.set(["#birne-links", "#dom", "#leucht-o", "#line-vertikal", "#line-horizontal"], { 
+    opacity: 0, 
     scale: 1,
-    fill: "#D76C2F", // Ursprungsfarbe Orange
+    fill: "#D76C2F", // Standardfarbe
     transformOrigin: "center center" 
   });
   
   gsap.set("#dom", { transformOrigin: "center bottom" });
   
-  // Leitungen initialisieren
-  gsap.set("#line-vertikal", { strokeDasharray: 836, strokeDashoffset: -836, stroke: "#D76C2F" });
-  gsap.set("#line-horizontal", { strokeDasharray: 135, strokeDashoffset: 135, stroke: "#D76C2F" });
+  // Leitungen vorbereiten (unsichtbar und "leer")
+  gsap.set("#line-vertikal", { strokeDasharray: 836, strokeDashoffset: -836, stroke: "#FFEA00" });
+  gsap.set("#line-horizontal", { strokeDasharray: 135, strokeDashoffset: 135, stroke: "#FFEA00" });
 
   const masterTL = gsap.timeline({ defaults: { ease: "none" } });
 
@@ -203,15 +202,16 @@ function startIntroAnimations() {
     .to("#powerbutton", { scale: 1, duration: 0.1 })
     .to("#cursor", { opacity: 0, duration: 0.3 })
 
-    // --- SCHRITT 2: Stromfluss startet ---
+    // --- SCHRITT 2: Strom & Elemente erscheinen ---
+    // Leitung wird sichtbar und fließt
+    .to("#line-vertikal", { opacity: 1, duration: 0.1 })
     .to("#line-vertikal", { 
       strokeDashoffset: 0, 
       duration: 3, 
-      stroke: "#FFEA00", 
       ease: "power1.inOut"
     })
 
-    // --- STATION 1: Lampe (Kurzes Aufleuchten & Reset) ---
+    // STATION 1: Lampe (taucht auf, leuchtet, wird ruhig)
     .to("#birne-links", { 
       opacity: 1, 
       scale: 1.2, 
@@ -219,15 +219,13 @@ function startIntroAnimations() {
       duration: 0.4, 
       ease: "back.out(2)" 
     }, "-=2.2")
-    // Direkt zurück in den Normalzustand (gedimmt & klein)
     .to("#birne-links", { 
-      opacity: 0.3, 
       scale: 1, 
-      fill: "#D76C2F", 
-      duration: 0.3 
-    }, "-=1.8")
+      fill: "#D76C2F", // Zurück zum normalen Orange
+      duration: 0.5 
+    }, "-=1.7")
 
-    // --- STATION 2: Dom ---
+    // STATION 2: Dom (taucht auf, blinkt, bleibt)
     .to("#dom", { 
       opacity: 1, 
       scale: 1.15, 
@@ -235,16 +233,21 @@ function startIntroAnimations() {
       duration: 0.3 
     }, "-=1.2")
     .to("#dom", { opacity: 0.5, duration: 0.1, repeat: 1, yoyo: true })
-    .to("#dom", { opacity: 1, fill: "#D76C2F", scale: 1, duration: 0.5 })
+    .to("#dom", { 
+        scale: 1, 
+        fill: "#D76C2F", 
+        opacity: 1, 
+        duration: 0.5 
+    }, "-=0.7")
 
-    // --- SCHRITT 3: Kreuzung -> O ---
+    // SCHRITT 3: Abzweig zum O
+    .to("#line-horizontal", { opacity: 1, duration: 0.1 }, "-=0.2")
     .to("#line-horizontal", { 
       strokeDashoffset: 0, 
-      duration: 0.6, 
-      stroke: "#FFEA00" 
-    })
+      duration: 0.6 
+    }, "-=0.1")
 
-    // --- STATION 3: Leucht-O ---
+    // STATION 3: Leucht-O (Das Finale)
     .to("#leucht-o", { 
       opacity: 1, 
       scale: 1.2, 
@@ -258,10 +261,10 @@ function startIntroAnimations() {
       duration: 0.4 
     })
 
-    // --- SCHRITT 4: Finaler Strom-Reset ---
+    // --- SCHRITT 4: Abschlusszustand (Alles bleibt da, Strom wird ruhig) ---
     .to(["#line-vertikal", "#line-horizontal"], { 
-        stroke: "#D76C2F", 
-        duration: 1 
+        stroke: "#D76C2F", // Strom von Knallgelb zurück zu Orange
+        duration: 1.5 
     }, "+=0.5")
     .to("#leucht-o", { 
         filter: "drop-shadow(0 0 0px #FFEA00)", 
