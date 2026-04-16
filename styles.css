@@ -11,9 +11,6 @@
 --green-800: #39513b;
 --green-700: #4d654f;
 --green-500: #72866f;
-.hero-graphic {
-position: relative;
-}
 
 --text: #161616;
 --text-soft: #505050;
@@ -266,7 +263,7 @@ font-family: "Inter", sans-serif;
 font-weight: 700;
 font-size: clamp(3.2rem, 11vw, 4.8rem);
 line-height: 1.02 !important;
-letter-spacing: 0,02em !important;
+letter-spacing: 0.02em !important;
 text-align: center; /* Harmonisch zur zentrierten Grafik auf Mobil */
 max-width: 9ch;
 text-transform: none;
@@ -342,6 +339,115 @@ display: none !important;
     width: 130%; 
     margin-left: -15%; /* Zentriert die überbreite Grafik wieder */
   }
+}
+
+
+
+
+/* ==========================================================================
+MOBILE PILOT OFFER BLOCK
+zwischen Hero und Services
+========================================================================== */
+
+.pilot-offer {
+display: block;
+padding: 0 1.25rem 2.5rem;
+margin-top: -0.5rem;
+}
+
+.pilot-offer__inner {
+background: #f6f2ea;
+border: 1px solid rgba(22, 22, 22, 0.06);
+border-radius: 1.5rem;
+padding: 1.3rem 1.2rem 1.35rem;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.pilot-offer__eyebrow {
+margin: 0 0 0.55rem;
+font-family: "Inter", sans-serif;
+font-size: 0.88rem;
+line-height: 1;
+font-weight: 600;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+color: var(--orange);
+}
+
+.pilot-offer__title {
+margin: 0 0 0.8rem;
+font-family: "Inter", sans-serif;
+font-size: clamp(1.45rem, 5.4vw, 1.9rem);
+line-height: 1.08;
+font-weight: 700;
+color: var(--text);
+}
+
+.pilot-offer__text {
+margin: 0 0 1rem;
+font-family: "Inter", sans-serif;
+font-size: 1rem;
+line-height: 1.5;
+color: var(--text-soft);
+}
+
+.pilot-offer__list {
+list-style: none;
+margin: 0 0 1.15rem;
+padding: 0;
+display: grid;
+gap: 0.65rem;
+}
+
+.pilot-offer__list li {
+position: relative;
+padding-left: 1.35rem;
+font-family: "Inter", sans-serif;
+font-size: 0.97rem;
+line-height: 1.45;
+color: var(--text);
+}
+
+.pilot-offer__list li::before {
+content: "";
+position: absolute;
+left: 0;
+top: 0.42rem;
+width: 0.42rem;
+height: 0.42rem;
+border-radius: 50%;
+background: var(--green-900);
+}
+
+.pilot-offer__button {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+min-height: 3.35rem;
+padding: 0.95rem 1.2rem;
+border: none;
+border-radius: 999rem;
+background: var(--green-900);
+color: #fff;
+font-family: "Inter", sans-serif;
+font-size: 1rem;
+font-weight: 600;
+letter-spacing: 0.01em;
+transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.pilot-offer__button:hover,
+.pilot-offer__button:active {
+background: var(--green-800);
+transform: translateY(-1px);
+}
+
+/* Nur mobil sichtbar */
+@media (min-width: 768px) {
+.pilot-offer {
+display: none;
+}
 }
 
 /* ==========================================================================
