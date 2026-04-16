@@ -251,7 +251,7 @@ function startIntroAnimations() {
     .to("#leucht-o", { 
       opacity: 1, 
       scale: 1.2, 
-      fill: "#FFEA00",
+      fill: "#D76C2F",
       duration: 0.5, 
       ease: "back.out(3)"
     })
