@@ -327,13 +327,21 @@ display: none !important;
 display: none !important;
 }
 .desktop-only {
-display: block !important;
-max-width: 1200px;
-}
-.hero-graphic {
-padding-top: 50px !important;
-max-height: 700px;
-}
+    display: block !important;
+    /* Von 1200px auf 1560px erhöht (+30%) */
+    max-width: 1560px; 
+    /* Optional: Falls die Grafik zu weit nach rechts rutscht */
+    margin-inline: auto; 
+  }
+
+  .hero-graphic {
+    padding-top: 50px !important;
+    /* Von 700px auf 950px erhöht, damit Platz für die Skalierung ist */
+    max-height: 950px; 
+    /* WICHTIG: Erlaubt dem Container, breiter als der Standard-Content zu sein */
+    width: 130%; 
+    margin-left: -15%; /* Zentriert die überbreite Grafik wieder */
+  }
 }
 
 /* ==========================================================================
