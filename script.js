@@ -170,10 +170,8 @@ if (siteFooter) scrollObserver.observe(siteFooter);
 
 
 /* =========================================
-6. DESKTOP HERO ANIMATION (Optimized)
-========================================= */
 /* =========================================
-6. DESKTOP HERO ANIMATION (Final Flow)
+6. DESKTOP HERO ANIMATION (Correct Flow)
 ========================================= */
 let introHasStarted = false;
 
@@ -183,96 +181,74 @@ function startIntroAnimations() {
   if (!heroContainer) return;
   introHasStarted = true;
 
-  // 1. Initialzustände (Alles bereit machen)
-  gsap.set("#leucht-o", { opacity: 0.2, scale: 1, transformOrigin: "center" });
-  gsap.set(["#filament-links", "#filament-rechts", "#birne-links", "#birne-rechts"], { 
-    opacity: 0.1, 
-    fill: "#555" // Ursprungszustand
+  // 1. Setup: Ursprungszustand fixieren
+  gsap.set("#leucht-o", { opacity: 0.2, scale: 1 });
+  gsap.set(["#filament", "#bulb", "#birne-links", "#birne-rechts", "#dom"], { 
+    opacity: 0.3, 
+    fill: "#D76C2F" // Dein SVG-Orange
   });
-  gsap.set("#dom", { opacity: 0, scale: 0.8, transformOrigin: "center bottom" });
-  gsap.set("#cursor", { x: 40, y: 30, opacity: 0 });
   
-  // Die Leitung startet voll "ausgeblendet" (Offset = Array-Länge)
-  // Falls die Richtung immer noch falsch ist, ändere 2500 zu -2500
-  gsap.set("#leitung", { strokeDasharray: 2500, strokeDashoffset: 2500, stroke: "#666" });
+  // Leitungen vorbereiten
+  // Vertikal (836px lang): Wir starten bei -836, um von Rechts nach Links zu fließen
+  gsap.set("#line-vertikal", { strokeDasharray: 836, strokeDashoffset: -836 });
+  // Horizontal (135px lang): Startet bei 135 (leer)
+  gsap.set("#line-horizontal", { strokeDasharray: 135, strokeDashoffset: 135 });
 
-  const masterTL = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+  const masterTL = gsap.timeline({ defaults: { ease: "none" } });
 
   masterTL
-    // --- SCHRITT A: Der Klick ---
-    .to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5 })
-    .to("#powerbutton", { scale: 0.88, duration: 0.2, transformOrigin: "center" })
-    .to("#powerbutton", { scale: 1, duration: 0.2 })
-    .to("#cursor", { opacity: 0, duration: 0.3 }, "+=0.1")
-    
-    .addLabel("stromFluss") // Startpunkt der Strom-Reise
-    
-    // --- SCHRITT B: Strom fließt los (Leitung wird gezeichnet) ---
-    .to("#leitung", { 
-      strokeDashoffset: 0, 
-      duration: 4, 
-      ease: "none" // Gleichmäßiger Fluss
-    }, "stromFluss")
-    .to("#leitung", { 
-      stroke: "#FFEA00", // Kurzer gelber Blitz in der Leitung
-      duration: 0.3, 
-      repeat: 1, 
-      yoyo: true 
-    }, "stromFluss+=0.1")
+    // --- SCHRITT 1: Klick ---
+    .to("#cursor", { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power2.out" })
+    .to("#powerbutton", { scale: 0.9, duration: 0.1, transformOrigin: "center" })
+    .to("#powerbutton", { scale: 1, duration: 0.1 })
+    .to("#cursor", { opacity: 0, duration: 0.3 })
 
-    // --- SCHRITT C: Erreicht die Lampe (Vertical Path) ---
-    // Blitz-Effekt: Geht an und sofort wieder in den Normalzustand
-    .to(["#filament-rechts", "#birne-rechts"], { 
+    // --- SCHRITT 2: Strom fließt vom Button zur Kreuzung (Vertikale Leitung) ---
+    .to("#line-vertikal", { 
+      strokeDashoffset: 0, 
+      duration: 2.5,
+      stroke: "#FFEA00" // Stromfarbe Gelb während des Fließens
+    })
+
+    // --- SCHRITT 3: Effekte auf dem Weg (getriggert durch Zeitabstände) ---
+    
+    // Lampe Rechts (passiert der Strom zuerst)
+    .to("#birne-rechts", { opacity: 1, fill: "#FFEA00", duration: 0.2 }, "-=2.0")
+    .to("#birne-rechts", { fill: "#D76C2F", duration: 0.4 }, "-=1.6") // Zurück zum Ursprung
+
+    // Dom (in der Mitte der Leitung)
+    .to("#dom", { 
+      opacity: 1, 
+      fill: "#FFEA00", 
+      scale: 1.05, 
+      transformOrigin: "center bottom", 
+      duration: 0.3 
+    }, "-=1.2")
+    .to("#dom", { fill: "#D76C2F", scale: 1, duration: 0.5 }, "-=0.8") // Zurück zum Ursprung
+
+    // --- SCHRITT 4: Erreicht die Kreuzung & fließt zum O (Horizontale Leitung) ---
+    .to("#line-horizontal", { 
+      strokeDashoffset: 0, 
+      duration: 0.6,
+      stroke: "#FFEA00" 
+    })
+
+    // --- SCHRITT 5: Finale - Das O in Köln leuchtet auf ---
+    .to("#leucht-o", { 
       opacity: 1, 
       fill: "#FFEA00", 
       scale: 1.1, 
-      duration: 0.3 
-    }, "stromFluss+=0.8")
-    .to(["#filament-rechts", "#birne-rechts"], { 
-      scale: 1, 
-      fill: "#fd9015", // Warmes Leuchten als Endzustand
-      duration: 0.5 
-    })
-
-    // --- SCHRITT D: Erreicht den Dom ---
-    .to("#dom", { 
-      opacity: 1, 
-      scale: 1.1, 
-      filter: "brightness(1.8) drop-shadow(0 0 15px #FFEA00)",
       duration: 0.4, 
       ease: "back.out(2)" 
-    }, "stromFluss+=1.8")
-    // Dom beruhigt sich wieder
-    .to("#dom", { 
-      scale: 1, 
-      filter: "brightness(1) drop-shadow(0 0 0px #FFEA00)", 
-      duration: 0.6 
     })
-
-    // --- SCHRITT E: Erreicht die Lampe Links (optional, falls im Weg) ---
-    .to(["#filament-links", "#birne-links"], { 
-      opacity: 1, 
-      fill: "#FFEA00", 
+    .to("#leucht-o", { 
+      scale: 1, 
+      filter: "drop-shadow(0 0 20px #D76C2F)", 
       duration: 0.3 
-    }, "stromFluss+=2.8")
-    .to(["#filament-links", "#birne-links"], { 
-      fill: "#fd9015", 
-      duration: 0.5 
     })
-
-    // --- SCHRITT F: FINALE in Köln (Leucht-O) ---
-    .to("#leucht-o", { 
-      opacity: 1, 
-      scale: 1.25, 
-      fill: "#FFEA00",
-      filter: "drop-shadow(0 0 45px #fd9015)", 
-      duration: 0.7, 
-      ease: "elastic.out(1, 0.4)" 
-    }, "stromFluss+=3.8")
-    .to("#leucht-o", { 
-      scale: 1, 
-      duration: 0.5 
-    });
+    
+    // Alle Leitungen werden am Ende wieder Orange (Strom ist durchgeflossen)
+    .to(["#line-vertikal", "#line-horizontal"], { stroke: "#D76C2F", duration: 0.5 });
 }
 /* =========================================
 7. MOBIL HERO (FINAL CLEAN VERSION)
