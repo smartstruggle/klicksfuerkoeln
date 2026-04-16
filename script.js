@@ -169,7 +169,7 @@ if (siteFooter) scrollObserver.observe(siteFooter);
 }
 
 /* =========================================
-6. DESKTOP HERO ANIMATION (Final Version - Flow & Clean Glow)
+6. DESKTOP HERO ANIMATION (Full Restored Version)
 ========================================= */
 let introHasStarted = false;
 
@@ -179,21 +179,22 @@ function startIntroAnimations() {
   if (!heroContainer) return;
   introHasStarted = true;
 
-  // --- 1. SETUP ---
+  // --- 1. SETUP (Alles unsichtbar & Filter auf Null) ---
   gsap.set(["#birne-links", "#dom", "#leucht-o", "#line-vertikal", "#line-horizontal"], { 
     opacity: 0, 
     scale: 1,
     fill: "#D76C2F", 
-    transformOrigin: "center center" 
+    transformOrigin: "center center",
+    filter: "none" 
   });
   
   gsap.set("#dom", { transformOrigin: "center bottom" });
   
-  // Leitungen vorbereiten (Original-Werte beibehalten)
+  // Deine Original-Werte für die Leitungen
   gsap.set("#line-vertikal", { strokeDasharray: 836, strokeDashoffset: -836, stroke: "#FFEA00" });
   gsap.set("#line-horizontal", { strokeDasharray: 135, strokeDashoffset: 135, stroke: "#FFEA00" });
 
-  // Alle Filter-Intensitäten auf 0 setzen
+  // Filter-IDs initial auf 0 setzen
   gsap.set(["#filter1_d_28_70 feGaussianBlur", "#filter2_d_28_70 feGaussianBlur", "#filter3_d_28_70 feGaussianBlur"], {
     attr: { stdDeviation: 0 }
   });
@@ -215,31 +216,33 @@ function startIntroAnimations() {
       ease: "power1.inOut"
     })
 
-    // STATION 1: Lampe (Glow Impulse & Cleanup)
+    // STATION 1: Lampe (Glow Impulse)
     .to("#birne-links", { 
       opacity: 1, 
       scale: 1.2, 
       fill: "#FFEA00", 
       duration: 0.4, 
-      ease: "back.out(2)" 
+      ease: "back.out(2)",
+      onStart: () => gsap.set("#birne-links", { filter: "url(#filter3_d_28_70)" })
     }, "-=2.2")
     .to("#filter3_d_28_70 feGaussianBlur", { attr: { stdDeviation: 15 }, duration: 0.2 }, "-=2.0")
     .to("#birne-links", { 
       scale: 1, 
       fill: "#D76C2F", 
       duration: 0.5,
-      onComplete: () => gsap.set("#birne-links", { clearProps: "filter" }) // Verhindert "Geister-Effekt"
+      onComplete: () => gsap.set("#birne-links", { clearProps: "filter" }) 
     }, "-=1.7")
     .to("#filter3_d_28_70 feGaussianBlur", { attr: { stdDeviation: 0 }, duration: 0.5 }, "-=1.7")
 
-    // STATION 2: Dom (Glow Impulse & Cleanup)
+    // STATION 2: Dom (Glow Impulse)
     .to("#dom", { 
       opacity: 1, 
       scale: 1.15, 
       fill: "#FFEA00", 
-      duration: 0.3 
+      duration: 0.3,
+      onStart: () => gsap.set("#dom", { filter: "url(#filter2_d_28_70)" })
     }, "-=1.2")
-    .to("#filter2_d_28_70 feGaussianBlur", { attr: { stdDeviation: 20 }, duration: 0.2 }, "-=1.1")
+    .to("#filter2_d_28_70 feGaussianBlur", { attr: { stdDeviation: 15 }, duration: 0.2 }, "-=1.1")
     .to("#dom", { opacity: 0.5, duration: 0.1, repeat: 1, yoyo: true })
     .to("#dom", { 
         scale: 1, 
@@ -257,18 +260,19 @@ function startIntroAnimations() {
       duration: 0.6 
     }, "-=0.1")
 
-    // STATION 3: Leucht-O (Finale & Cleanup)
+    // STATION 3: Leucht-O (Das Finale)
     .to("#leucht-o", { 
       opacity: 1, 
       scale: 1.2, 
       fill: "#FFEA00",
       duration: 0.5, 
-      ease: "back.out(3)"
+      ease: "back.out(3)",
+      onStart: () => gsap.set("#leucht-o", { filter: "url(#filter1_d_28_70)" })
     })
-    .to("#filter1_d_28_70 feGaussianBlur", { attr: { stdDeviation: 20 }, duration: 0.4 })
+    .to("#filter1_d_28_70 feGaussianBlur", { attr: { stdDeviation: 15 }, duration: 0.4 })
     .to("#leucht-o", { scale: 1, duration: 0.4 }, "-=0.4")
 
-    // --- SCHRITT 4: Abschlusszustand (Alles ruhig & sauber) ---
+    // --- SCHRITT 4: Abschlusszustand (Alles bleibt da, Strom wird ruhig) ---
     .to(["#line-vertikal", "#line-horizontal"], { 
         stroke: "#D76C2F", 
         duration: 1.5 
@@ -276,14 +280,13 @@ function startIntroAnimations() {
     .to("#leucht-o", { 
         fill: "#D76C2F", 
         duration: 1,
-        onComplete: () => gsap.set("#leucht-o", { clearProps: "filter" }) // Macht das O wieder scharf
+        onComplete: () => gsap.set("#leucht-o", { clearProps: "filter" })
     }, "-=1")
     .to("#filter1_d_28_70 feGaussianBlur", { 
         attr: { stdDeviation: 0 }, 
         duration: 1 
     }, "-=1");
 }
-
 /* =========================================
 7. MOBIL HERO (FINAL CLEAN VERSION)
 - 1 Demo
