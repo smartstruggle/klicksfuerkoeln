@@ -170,7 +170,7 @@ if (siteFooter) scrollObserver.observe(siteFooter);
 
 
 /* =========================================
-6. DESKTOP HERO ANIMATION (Final Version)
+6. DESKTOP HERO ANIMATION (Final Version - Lamp Pulse)
 ========================================= */
 let introHasStarted = false;
 
@@ -181,20 +181,17 @@ function startIntroAnimations() {
   introHasStarted = true;
 
   // --- 1. SETUP (Ursprungszustand) ---
-  // Alle Elemente auf Start-Position setzen
   gsap.set(["#birne-links", "#dom", "#leucht-o"], { 
     opacity: 0.3, 
     scale: 1,
+    fill: "#D76C2F", // Ursprungsfarbe Orange
     transformOrigin: "center center" 
   });
   
-  // Dom braucht Ursprung unten für das Wachsen
   gsap.set("#dom", { transformOrigin: "center bottom" });
   
-  // Leitungen unsichtbar/leer machen
-  // Vertikal (836px): Startet beim Button (rechts) -> Fluss nach links
+  // Leitungen initialisieren
   gsap.set("#line-vertikal", { strokeDasharray: 836, strokeDashoffset: -836, stroke: "#D76C2F" });
-  // Horizontal (135px): Startet an Kreuzung -> Fluss nach oben zum O
   gsap.set("#line-horizontal", { strokeDasharray: 135, strokeDashoffset: 135, stroke: "#D76C2F" });
 
   const masterTL = gsap.timeline({ defaults: { ease: "none" } });
@@ -206,16 +203,15 @@ function startIntroAnimations() {
     .to("#powerbutton", { scale: 1, duration: 0.1 })
     .to("#cursor", { opacity: 0, duration: 0.3 })
 
-    // --- SCHRITT 2: Stromfluss startet am Button ---
+    // --- SCHRITT 2: Stromfluss startet ---
     .to("#line-vertikal", { 
       strokeDashoffset: 0, 
       duration: 3, 
-      stroke: "#FFEA00", // Stromfarbe Gelb
+      stroke: "#FFEA00", 
       ease: "power1.inOut"
     })
 
-    // --- STATION 1: Lampe (Birne rechts im Pfad) ---
-    // Passiert nach ca. 0.8s des Stromflusses
+    // --- STATION 1: Lampe (Kurzes Aufleuchten & Reset) ---
     .to("#birne-links", { 
       opacity: 1, 
       scale: 1.2, 
@@ -223,28 +219,32 @@ function startIntroAnimations() {
       duration: 0.4, 
       ease: "back.out(2)" 
     }, "-=2.2")
-    .to("#birne-links", { scale: 1, duration: 0.3 }, "-=1.8")
+    // Direkt zurück in den Normalzustand (gedimmt & klein)
+    .to("#birne-links", { 
+      opacity: 0.3, 
+      scale: 1, 
+      fill: "#D76C2F", 
+      duration: 0.3 
+    }, "-=1.8")
 
-    // --- STATION 2: Dom (Mitte des Pfads) ---
-    // Passiert nach ca. 1.8s des Stromflusses
+    // --- STATION 2: Dom ---
     .to("#dom", { 
       opacity: 1, 
       scale: 1.15, 
       fill: "#FFEA00", 
       duration: 0.3 
     }, "-=1.2")
-    // Kurzes Blinken (An-Aus-An)
     .to("#dom", { opacity: 0.5, duration: 0.1, repeat: 1, yoyo: true })
     .to("#dom", { opacity: 1, fill: "#D76C2F", scale: 1, duration: 0.5 })
 
-    // --- SCHRITT 3: Kreuzung erreicht -> Abzweig zum O ---
+    // --- SCHRITT 3: Kreuzung -> O ---
     .to("#line-horizontal", { 
       strokeDashoffset: 0, 
       duration: 0.6, 
       stroke: "#FFEA00" 
     })
 
-    // --- STATION 3: Leucht-O (Finale) ---
+    // --- STATION 3: Leucht-O ---
     .to("#leucht-o", { 
       opacity: 1, 
       scale: 1.2, 
@@ -258,7 +258,7 @@ function startIntroAnimations() {
       duration: 0.4 
     })
 
-    // --- SCHRITT 4: Rückkehr zum Ursprungszustand (Strom aus) ---
+    // --- SCHRITT 4: Finaler Strom-Reset ---
     .to(["#line-vertikal", "#line-horizontal"], { 
         stroke: "#D76C2F", 
         duration: 1 
@@ -269,6 +269,7 @@ function startIntroAnimations() {
         duration: 1 
     }, "-=1");
 }
+
 /* =========================================
 7. MOBIL HERO (FINAL CLEAN VERSION)
 - 1 Demo
