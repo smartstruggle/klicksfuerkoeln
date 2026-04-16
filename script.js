@@ -169,7 +169,7 @@ if (siteFooter) scrollObserver.observe(siteFooter);
 }
 
 /* =========================================
-6. DESKTOP HERO ANIMATION (Final Version - Glow Impulse)
+6. DESKTOP HERO ANIMATION (Final Version - Flow & Clean Glow)
 ========================================= */
 let introHasStarted = false;
 
@@ -179,7 +179,7 @@ function startIntroAnimations() {
   if (!heroContainer) return;
   introHasStarted = true;
 
-  // --- 1. SETUP (Alles unsichtbar außer Button & Cursor) ---
+  // --- 1. SETUP ---
   gsap.set(["#birne-links", "#dom", "#leucht-o", "#line-vertikal", "#line-horizontal"], { 
     opacity: 0, 
     scale: 1,
@@ -189,11 +189,11 @@ function startIntroAnimations() {
   
   gsap.set("#dom", { transformOrigin: "center bottom" });
   
-  // Leitungen vorbereiten
+  // Leitungen vorbereiten (Original-Werte beibehalten)
   gsap.set("#line-vertikal", { strokeDasharray: 836, strokeDashoffset: -836, stroke: "#FFEA00" });
   gsap.set("#line-horizontal", { strokeDasharray: 135, strokeDashoffset: 135, stroke: "#FFEA00" });
 
-  // Initial alle Glow-Filter auf 0 (über die SVG IDs)
+  // Alle Filter-Intensitäten auf 0 setzen
   gsap.set(["#filter1_d_28_70 feGaussianBlur", "#filter2_d_28_70 feGaussianBlur", "#filter3_d_28_70 feGaussianBlur"], {
     attr: { stdDeviation: 0 }
   });
@@ -215,7 +215,7 @@ function startIntroAnimations() {
       ease: "power1.inOut"
     })
 
-    // STATION 1: Lampe (Glow Impulse)
+    // STATION 1: Lampe (Glow Impulse & Cleanup)
     .to("#birne-links", { 
       opacity: 1, 
       scale: 1.2, 
@@ -223,33 +223,31 @@ function startIntroAnimations() {
       duration: 0.4, 
       ease: "back.out(2)" 
     }, "-=2.2")
-    // NEU: Glow blitzt auf
     .to("#filter3_d_28_70 feGaussianBlur", { attr: { stdDeviation: 15 }, duration: 0.2 }, "-=2.0")
     .to("#birne-links", { 
       scale: 1, 
       fill: "#D76C2F", 
-      duration: 0.5 
+      duration: 0.5,
+      onComplete: () => gsap.set("#birne-links", { clearProps: "filter" }) // Verhindert "Geister-Effekt"
     }, "-=1.7")
-    // NEU: Glow verschwindet wieder
     .to("#filter3_d_28_70 feGaussianBlur", { attr: { stdDeviation: 0 }, duration: 0.5 }, "-=1.7")
 
-    // STATION 2: Dom (Glow Impulse)
+    // STATION 2: Dom (Glow Impulse & Cleanup)
     .to("#dom", { 
       opacity: 1, 
       scale: 1.15, 
       fill: "#FFEA00", 
       duration: 0.3 
     }, "-=1.2")
-    // NEU: Glow blitzt auf
     .to("#filter2_d_28_70 feGaussianBlur", { attr: { stdDeviation: 20 }, duration: 0.2 }, "-=1.1")
     .to("#dom", { opacity: 0.5, duration: 0.1, repeat: 1, yoyo: true })
     .to("#dom", { 
         scale: 1, 
         fill: "#D76C2F", 
         opacity: 1, 
-        duration: 0.5 
+        duration: 0.5,
+        onComplete: () => gsap.set("#dom", { clearProps: "filter" })
     }, "-=0.7")
-    // NEU: Glow verschwindet wieder
     .to("#filter2_d_28_70 feGaussianBlur", { attr: { stdDeviation: 0 }, duration: 0.5 }, "-=0.7")
 
     // SCHRITT 3: Abzweig zum O
@@ -259,7 +257,7 @@ function startIntroAnimations() {
       duration: 0.6 
     }, "-=0.1")
 
-    // STATION 3: Leucht-O (Finale mit deinem Glow)
+    // STATION 3: Leucht-O (Finale & Cleanup)
     .to("#leucht-o", { 
       opacity: 1, 
       scale: 1.2, 
@@ -267,20 +265,18 @@ function startIntroAnimations() {
       duration: 0.5, 
       ease: "back.out(3)"
     })
-    .to("#filter1_d_28_70 feGaussianBlur", { 
-      attr: { stdDeviation: 20 }, 
-      duration: 0.4 
-    })
+    .to("#filter1_d_28_70 feGaussianBlur", { attr: { stdDeviation: 20 }, duration: 0.4 })
     .to("#leucht-o", { scale: 1, duration: 0.4 }, "-=0.4")
 
-    // --- SCHRITT 4: Abschlusszustand ---
+    // --- SCHRITT 4: Abschlusszustand (Alles ruhig & sauber) ---
     .to(["#line-vertikal", "#line-horizontal"], { 
         stroke: "#D76C2F", 
         duration: 1.5 
     }, "+=0.5")
     .to("#leucht-o", { 
         fill: "#D76C2F", 
-        duration: 1 
+        duration: 1,
+        onComplete: () => gsap.set("#leucht-o", { clearProps: "filter" }) // Macht das O wieder scharf
     }, "-=1")
     .to("#filter1_d_28_70 feGaussianBlur", { 
         attr: { stdDeviation: 0 }, 
