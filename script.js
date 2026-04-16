@@ -169,7 +169,7 @@ if (siteFooter) scrollObserver.observe(siteFooter);
 }
 
 /* =========================================
-6. DESKTOP HERO ANIMATION (Final Version - Flow & Stay)
+6. DESKTOP HERO ANIMATION (Glow-Impulse Version)
 ========================================= */
 let introHasStarted = false;
 
@@ -179,98 +179,74 @@ function startIntroAnimations() {
   if (!heroContainer) return;
   introHasStarted = true;
 
-  // --- 1. SETUP (Alles unsichtbar außer Button & Cursor) ---
+  // --- 1. SETUP (Startzustand: Nur Button & Cursor sichtbar) ---
+  // Wir blenden die Gruppen inkl. ihrer Filter aus
   gsap.set(["#birne-links", "#dom", "#leucht-o", "#line-vertikal", "#line-horizontal"], { 
     opacity: 0, 
     scale: 1,
-    fill: "#D76C2F", // Standardfarbe
     transformOrigin: "center center" 
+  });
+
+  // Filter-Glows initial auf 0 setzen (wir animieren die stdDeviation der Filter)
+  gsap.set(["#filter1_d_28_70 feGaussianBlur", "#filter2_d_28_70 feGaussianBlur", "#filter3_d_28_70 feGaussianBlur"], {
+    attr: { stdDeviation: 0 }
   });
   
   gsap.set("#dom", { transformOrigin: "center bottom" });
   
-  // Leitungen vorbereiten (unsichtbar und "leer")
-  gsap.set("#line-vertikal", { strokeDasharray: 836, strokeDashoffset: -836, stroke: "#FFEA00" });
-  gsap.set("#line-horizontal", { strokeDasharray: 135, strokeDashoffset: 135, stroke: "#FFEA00" });
+  // Leitungen vorbereiten (Pfadlänge ca. 840 / 140)
+  gsap.set("#line-vertikal", { strokeDasharray: 840, strokeDashoffset: 840, stroke: "#FFEA00" });
+  gsap.set("#line-horizontal", { strokeDasharray: 140, strokeDashoffset: 140, stroke: "#FFEA00" });
 
-  const masterTL = gsap.timeline({ defaults: { ease: "none" } });
+  const masterTL = gsap.timeline({ defaults: { ease: "power2.out" } });
 
   masterTL
-    // --- SCHRITT 1: Cursor & Klick ---
-    .to("#cursor", { x: 0, y: 0, duration: 0.8, ease: "power2.out" })
-    .to("#powerbutton", { scale: 0.85, duration: 0.1, transformOrigin: "center" })
+    // --- SCHRITT 1: Interaktion ---
+    .to("#cursor", { x: -80, y: -40, duration: 0.8 }) // Bewegt sich zum Powerbutton
+    .to("#powerbutton", { scale: 0.9, duration: 0.1, transformOrigin: "center" })
     .to("#powerbutton", { scale: 1, duration: 0.1 })
     .to("#cursor", { opacity: 0, duration: 0.3 })
 
-    // --- SCHRITT 2: Strom & Elemente erscheinen ---
-    // Leitung wird sichtbar und fließt
-    .to("#line-vertikal", { opacity: 1, duration: 0.1 })
+    // --- SCHRITT 2: Stromfluss Vertikal ---
+    .to("#line-vertikal", { opacity: 1, duration: 0.05 })
     .to("#line-vertikal", { 
       strokeDashoffset: 0, 
-      duration: 3, 
-      ease: "power1.inOut"
+      duration: 2.5, 
+      ease: "slow(0.7, 0.7, false)" 
     })
 
-    // STATION 1: Lampe (taucht auf, leuchtet, wird ruhig)
-    .to("#birne-links", { 
-      opacity: 1, 
-      scale: 1.2, 
-      fill: "#FFEA00", 
-      duration: 0.4, 
-      ease: "back.out(2)" 
-    }, "-=2.2")
-    .to("#birne-links", { 
-      scale: 1, 
-      fill: "#D76C2F", // Zurück zum normalen Orange
-      duration: 0.5 
-    }, "-=1.7")
+    // STATION 1: Lampe (Birne-Links)
+    // Erscheint, blitzt kurz auf (Glow), Glow fadet aus
+    .to("#birne-links", { opacity: 1, scale: 1.1, duration: 0.4 }, "-=1.8")
+    .to("#filter3_d_28_70 feGaussianBlur", { attr: { stdDeviation: 20 }, duration: 0.2 }, "-=1.4")
+    .to("#filter3_d_28_70 feGaussianBlur", { attr: { stdDeviation: 0 }, duration: 0.8 })
+    .to("#birne-links", { scale: 1, duration: 0.4 }, "-=0.8")
 
-    // STATION 2: Dom (taucht auf, blinkt, bleibt)
-    .to("#dom", { 
-      opacity: 1, 
-      scale: 1.15, 
-      fill: "#FFEA00", 
-      duration: 0.3 
-    }, "-=1.2")
-    .to("#dom", { opacity: 0.5, duration: 0.1, repeat: 1, yoyo: true })
-    .to("#dom", { 
-        scale: 1, 
-        fill: "#D76C2F", 
-        opacity: 1, 
-        duration: 0.5 
-    }, "-=0.7")
+    // STATION 2: Dom
+    // Erscheint wenn der Strom unten ankommt
+    .to("#dom", { opacity: 1, scale: 1.05, duration: 0.4 }, "-=0.8")
+    .to("#filter2_d_28_70 feGaussianBlur", { attr: { stdDeviation: 26 }, duration: 0.2 }, "-=0.5")
+    .to("#filter2_d_28_70 feGaussianBlur", { attr: { stdDeviation: 0 }, duration: 0.8 })
+    .to("#dom", { scale: 1, duration: 0.4 }, "-=0.4")
 
-    // SCHRITT 3: Abzweig zum O
-    .to("#line-horizontal", { opacity: 1, duration: 0.1 }, "-=0.2")
-    .to("#line-horizontal", { 
-      strokeDashoffset: 0, 
-      duration: 0.6 
-    }, "-=0.1")
+    // --- SCHRITT 3: Abzweig Horizontal ---
+    .to("#line-horizontal", { opacity: 1, duration: 0.05 }, "-=0.2")
+    .to("#line-horizontal", { strokeDashoffset: 0, duration: 0.8 })
 
-    // STATION 3: Leucht-O (Das Finale)
-    .to("#leucht-o", { 
-      opacity: 1, 
-      scale: 1.2, 
-      fill: "#D76C2F",
-      duration: 0.5, 
-      ease: "back.out(3)"
-    })
-    .to("#leucht-o", { 
-      filter: "drop-shadow(0 0 15px #FFEA00)", 
-      scale: 1, 
-      duration: 0.4 
-    })
+    // STATION 3: Leucht-O (Finale)
+    .to("#leucht-o", { opacity: 1, scale: 1.1, duration: 0.4 })
+    .to("#filter1_d_28_70 feGaussianBlur", { attr: { stdDeviation: 26 }, duration: 0.3 })
+    // Hier bleibt ein restlicher Glow (5px) für den "An"-Zustand, wenn gewünscht. 
+    // Falls er ganz weg soll, einfach auf 0 setzen:
+    .to("#filter1_d_28_70 feGaussianBlur", { attr: { stdDeviation: 5 }, duration: 1 }) 
+    .to("#leucht-o", { scale: 1, duration: 0.5 }, "-=1")
 
-    // --- SCHRITT 4: Abschlusszustand (Alles bleibt da, Strom wird ruhig) ---
+    // --- SCHRITT 4: Beruhigung ---
+    // Der Stromdraht wird von Gelb zu deinem Orange
     .to(["#line-vertikal", "#line-horizontal"], { 
-        stroke: "#D76C2F", // Strom von Knallgelb zurück zu Orange
+        stroke: "#D76C2F", 
         duration: 1.5 
-    }, "+=0.5")
-    .to("#leucht-o", { 
-        filter: "drop-shadow(0 0 0px #FFEA00)", 
-        fill: "#D76C2F", 
-        duration: 1 
-    }, "-=1");
+    }, "-=0.5");
 }
 
 /* =========================================
