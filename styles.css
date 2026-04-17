@@ -1325,3 +1325,121 @@ background: transparent;
 touch-action: pan-y;
 }
 
+
+/* --- Angebote Page Ergänzungen --- */
+
+.pricing-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: var(--space-4);
+margin-top: var(--space-5);
+margin-bottom: var(--space-6);
+}
+
+.offer-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--radius-xl);
+padding: var(--space-4);
+display: flex;
+flex-direction: column;
+transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
+position: relative;
+}
+
+.offer-card:hover {
+transform: translateY(-8px);
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+border-color: var(--orange);
+}
+
+/* Highlight für das Premium-Paket */
+.offer-card.premium {
+background: var(--green-900);
+color: var(--white-soft) !important;
+border: none;
+}
+
+.offer-card h3 {
+font-family: "Playfair Display", serif;
+font-size: var(--text-lg);
+margin-bottom: var(--space-1);
+}
+
+.price-box {
+margin: var(--space-3) 0;
+}
+
+.old-price {
+text-decoration: line-through;
+opacity: 0.5;
+font-size: var(--text-sm);
+display: block;
+}
+
+.current-price {
+font-size: 2.25rem;
+font-weight: 800;
+color: var(--text);
+}
+
+.offer-card.premium .current-price {
+color: var(--white-soft);
+}
+
+.feature-list {
+list-style: none;
+padding: 0;
+margin: var(--space-4) 0;
+flex-grow: 1;
+}
+
+.feature-list li {
+margin-bottom: var(--space-2);
+display: flex;
+align-items: flex-start;
+font-size: var(--text-sm);
+line-height: 1.4;
+}
+
+.feature-list li::before {
+content: "✦";
+color: var(--orange);
+margin-right: 12px;
+font-weight: bold;
+}
+
+.offer-card.premium .feature-list li::before {
+color: var(--white-soft);
+}
+
+/* Der "Zurück zur Startseite" Link */
+.back-home-link {
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+margin-bottom: var(--space-4);
+font-weight: 600;
+color: var(--text-soft);
+transition: color 0.2s ease;
+}
+
+.back-home-link:hover {
+color: var(--orange);
+}
+
+.pilot-badge {
+position: absolute;
+top: -12px;
+left: 50%;
+transform: translateX(-50%);
+background: var(--orange);
+color: white;
+padding: 6px 16px;
+border-radius: var(--radius-pill);
+font-size: 0.75rem;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+white-space: nowrap;
+}
