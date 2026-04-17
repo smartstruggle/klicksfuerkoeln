@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-/* Spezifisches Styling für die Angebots-Karten im Klicks-für-Köln Stil */
+/* Spezifisches Styling für die Angebots-Karten */
 .pricing-section { padding: var(--space-6) 0; }
 
 .pricing-grid {
@@ -27,6 +27,7 @@ padding: var(--space-4);
 display: flex;
 flex-direction: column;
 transition: transform 0.3s ease, box-shadow 0.3s ease;
+position: relative;
 }
 
 .offer-card:hover {
@@ -38,6 +39,7 @@ border-color: var(--orange);
 .offer-card.premium {
 background: var(--green-900);
 color: var(--white-soft);
+border: none;
 }
 
 .offer-card h3 {
@@ -47,15 +49,16 @@ margin-bottom: var(--space-2);
 }
 
 .price-box { margin: var(--space-3) 0; }
-.old-price { text-decoration: line-through; opacity: 0.5; font-size: var(--text-sm); }
+.old-price { text-decoration: line-through; opacity: 0.5; font-size: var(--text-sm); display: block; }
 .current-price { font-size: 2.5rem; font-weight: 800; display: block; }
 
 .feature-list { list-style: none; padding: 0; margin: var(--space-4) 0; flex-grow: 1; }
 .feature-list li {
 margin-bottom: var(--space-2);
 display: flex;
-align-items: center;
+align-items: flex-start;
 font-size: var(--text-sm);
+line-height: 1.4;
 }
 .feature-list li::before { content: "✦"; color: var(--orange); margin-right: 10px; font-weight: bold; }
 .offer-card.premium .feature-list li::before { color: var(--white-soft); }
@@ -63,43 +66,53 @@ font-size: var(--text-sm);
 .back-link {
 display: inline-flex;
 align-items: center;
-gap: 10px;
+gap: 8px;
 margin-bottom: var(--space-4);
 font-weight: 600;
 color: var(--text-soft);
-transition: color 0.2s;
+text-decoration: none;
+transition: color 0.2s, transform 0.2s;
 }
-.back-link:hover { color: var(--orange); }
+.back-link:hover { color: var(--orange); transform: translateX(-4px); }
 
 .pilot-badge {
 background: var(--orange);
 color: white;
-padding: var(--space-1) var(--space-3);
+padding: 4px 12px;
 border-radius: var(--radius-pill);
 font-weight: 700;
-font-size: var(--text-xs);
-display: inline-block;
-margin-bottom: var(--space-2);
+font-size: 10px;
+text-transform: uppercase;
+position: absolute;
+top: -12px;
+left: 20px;
+}
+
+.veedel-footer {
+margin-top: var(--space-6);
+padding: var(--space-4);
+background: #f9f9f9;
+border-radius: var(--radius-lg);
+border-left: 4px solid var(--orange);
 }
 </style>
 </head>
 <body>
+
 <header class="site-header">
 <div class="header-inner">
 <a href="index.html" class="brand">Klicks für Köln</a>
 <nav class="desktop-nav">
 <a href="index.html">Home</a>
-<a href="angebote.html" style="opacity: 1; border-bottom: 2px solid var(--orange)">Angebote</a>
+<a href="angebote.html" style="border-bottom: 2px solid var(--orange)">Angebote</a>
 <a href="index.html#process">Arbeitsweise</a>
-<a href="mailto:info@klicksfuerkoeln.de" class="header-cta-link">Kontakt</a>
+<a href="index.html?openContact=true" class="header-cta-link">Kontakt</a>
 </nav>
 </div>
 </header>
 
 <main class="container" style="padding-top: var(--space-6);">
-<a href="index.html" class="back-link">← Zurück zur Übersicht</a>
-<main class="container" style="padding-top: var(--space-5);">
-<a href="index.html" class="back-home-link">
+<a href="index.html" class="back-link">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
 <line x1="19" y1="12" x2="5" y2="12"></line>
 <polyline points="12 19 5 12 12 5"></polyline>
@@ -107,100 +120,92 @@ margin-bottom: var(--space-2);
 Zurück zur Übersicht
 </a>
 
-</main>
-
-  
 <section class="pricing-intro">
-<p class="contact-kicker">Preise & Pakete</p>
-<h1 style="font-family: 'Playfair Display', serif; font-size: var(--text-xl);">Dein digitales Fundament.</h1>
-<p style="max-width: 600px; color: var(--text-soft); margin-top: var(--space-2);">
-Handgefertigter Code, keine Abo-Fallen. Wir nutzen Profi-Technik von Vercel und GitHub für dein Business.
+<h1 style="font-family: 'Playfair Display', serif; font-size: var(--text-xl);">Wähle dein Fundament.</h1>
+<p style="color: var(--text-soft); max-width: 600px; margin-top: var(--space-2);">
+Ehrliches Handwerk, keine versteckten Abos. Wir bauen deine digitale Präsenz auf Profi-Niveau.
 </p>
 </section>
 
 <div class="pricing-grid">
 <div class="offer-card">
 <h3>Veedel-Basis</h3>
-<p class="text-soft">Die digitale Visitenkarte.</p>
 <div class="price-box">
-<span class="old-price">650 €</span>
+<span class="old-price">statt 650 €</span>
 <span class="current-price">500 €</span>
 </div>
 <ul class="feature-list">
-<li>Pure HTML/CSS/JS</li>
-<li>Hosting via Vercel (0 €)</li>
-<li>Blitzschnelle Ladezeit</li>
-<li>1 Monat Follow-up</li>
+<li>One-Pager (Landingpage)</li>
+<li>Mobil optimiert (Responsive)</li>
+<li>Basis SEO-Setup</li>
+<li>1 Monat technisches Follow-up</li>
 </ul>
-<a href="mailto:info@klicksfuerkoeln.de" class="header-cta-link">Anfragen</a>
+<a href="index.html?openContact=true" class="header-cta-link">Anfrage senden</a>
 </div>
 
-<div class="offer-card" style="border: 2px solid var(--orange);">
-<span class="pilot-badge">Pilot-Phase: 0 €</span>
-<h3>Veedel-Stolz</h3>
-<p class="text-soft">Der komplette Auftritt.</p>
+<div class="offer-card">
+<span class="pilot-badge">Beliebt</span>
+<h3>Stolz & Sichtbar</h3>
 <div class="price-box">
-<span class="old-price">1.100 €</span>
+<span class="old-price">statt 1.100 €</span>
 <span class="current-price">900 €</span>
 </div>
 <ul class="feature-list">
-<li>Kontaktformular</li>
-<li>Lokale SEO-Basics</li>
-<li>Infrarstruktur wie Netflix</li>
-<li>2 Monate Follow-up</li>
+<li>Bis zu 3 Unterseiten</li>
+<li>Individuelles Design-Konzept</li>
+<li>Kontaktformular & Google Maps</li>
+<li>3 Monate technisches Follow-up</li>
 </ul>
-<a href="mailto:info@klicksfuerkoeln.de" class="header-cta-link">Platz sichern</a>
+<a href="index.html?openContact=true" class="header-cta-link">Platz sichern</a>
 </div>
 
 <div class="offer-card">
 <h3>Maßanzug</h3>
-<p class="text-soft">Individuelles Design.</p>
 <div class="price-box">
-<span class="old-price">2.000 €</span>
+<span class="old-price">statt 2.000 €</span>
 <span class="current-price">1.500 €</span>
 </div>
 <ul class="feature-list">
-<li>Figma Design-Prototyp</li>
-<li>GSAP Animationen</li>
-<li>Branding-Beratung</li>
-<li>3 Monate Follow-up</li>
+<li>Umfangreiche Website</li>
+<li>Animations-Highlights (GSAP)</li>
+<li>Copywriting-Unterstützung</li>
+<li>3 Monate technisches Follow-up</li>
 </ul>
-<a href="mailto:info@klicksfuerkoeln.de" class="header-cta-link">Anfragen</a>
+<a href="index.html?openContact=true" class="header-cta-link">Anfrage senden</a>
 </div>
 
 <div class="offer-card premium">
 <h3>Dom-Spitze</h3>
-<p style="opacity: 0.7">Das Full-Service Paket.</p>
 <div class="price-box">
 <span class="current-price">4.500 €</span>
 </div>
 <ul class="feature-list">
-<li>High-End Animationen</li>
-<li>Logo & Branding</li>
-<li>Figma Master-Design</li>
-<li>12 Monate Follow-up</li>
+<li>High-End Motion Design</li>
+<li>Marken-Identität & Logo-Design</li>
+<li>Strategisches SEO & Content</li>
+<li>12 Monate technisches Follow-up</li>
 </ul>
-<a href="mailto:info@klicksfuerkoeln.de" class="header-cta-link" style="background: var(--white-soft); color: var(--green-900) !important;">Kontakt</a>
+<a href="index.html?openContact=true" class="header-cta-link" style="background: var(--white-soft); color: var(--green-900) !important;">Projekt starten</a>
 </div>
 </div>
 
-<section style="margin: var(--space-6) 0; padding: var(--space-4); background: var(--surface-2); border-radius: var(--radius-lg);">
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-4);">
-<div>
-<h4 style="font-family: 'Playfair Display'; font-size: var(--text-md);">Der Köln-Bonus 📍</h4>
-<p style="font-size: var(--text-sm); margin-top: 10px;">Preise für Kölner bereits um 10% reduziert. Neugründerinnen erhalten Sonderkonditionen auf Anfrage.</p>
+<div class="veedel-footer">
+<h2 style="font-family: 'Playfair Display'; font-size: var(--text-md); margin-bottom: 10px;">Der Veedel-Bonus 📍</h2>
+<p style="font-size: var(--text-sm); line-height: 1.6; color: var(--text-soft);">
+Wir unterstützen unsere Nachbarschaft. Die oben genannten Preise sind exklusive <strong>Veedel-Tarife</strong>
+für Unternehmen aus Köln – bereits deutlich reduziert gegenüber unseren regulären Sätzen für externe Anfragen.
+<br><br>
+<strong>Support für Neugründerinnen:</strong> Ihr seid die Zukunft unserer Stadt. Wir glauben an euch und
+möchten euch den Start erleichtern. Schreibt uns einfach für ganz individuelle Sonderkonditionen –
+<strong>wir pushen Female Power in Köln!</strong>
+</p>
 </div>
-<div>
-<h4 style="font-family: 'Playfair Display'; font-size: var(--text-md);">Anti-Abo-Garantie 🛡️</h4>
-<p style="font-size: var(--text-sm); margin-top: 10px;">Einmal zahlen, für immer besitzen. Hosting (Vercel) bleibt dauerhaft kostenfrei für dich.</p>
-</div>
-</div>
-</section>
 </main>
 
-<footer class="container" style="padding: var(--space-5) 0; border-top: 1px solid var(--border); text-align: center;">
-<p style="color: var(--text-soft); font-size: var(--text-xs);">© 2026 Klicks für Köln. <a href="impressum.html">Impressum</a> | <a href="datenschutz.html">Datenschutz</a></p>
+<footer style="padding: var(--space-5) 0; text-align: center; font-size: var(--text-xs); opacity: 0.6;">
+<p>&copy; 2026 Klicks für Köln. Handgemacht im Veedel.</p>
 </footer>
+
 </body>
 </html>
 
