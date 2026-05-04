@@ -20,6 +20,37 @@ if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
 });
 
 
+
+
+/* =========================================
+1b. HEADER SHOW/HIDE ON SCROLL
+========================================= */
+const siteHeader = document.querySelector('.site-header');
+let lastScrollY = window.scrollY;
+
+function updateHeaderVisibility() {
+  if (!siteHeader) return;
+  const currentY = window.scrollY;
+  const isMenuOpen = mobileMenu?.classList.contains('is-open');
+
+  if (currentY <= 8 || isMenuOpen) {
+    siteHeader.classList.remove('is-hidden');
+    lastScrollY = currentY;
+    return;
+  }
+
+  if (currentY > lastScrollY + 6) {
+    siteHeader.classList.add('is-hidden');
+  } else if (currentY < lastScrollY - 6) {
+    siteHeader.classList.remove('is-hidden');
+  }
+
+  lastScrollY = currentY;
+}
+
+window.addEventListener('scroll', updateHeaderVisibility, { passive: true });
+window.addEventListener('resize', updateHeaderVisibility);
+
 /* =========================================
 2. KONTAKT-MODAL & FLYER POPUP
 ========================================= */
