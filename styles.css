@@ -443,12 +443,140 @@ background: var(--green-800);
 transform: translateY(-1px);
 }
 
-/* Nur mobil sichtbar */
+
+.pilot-offer__actions {
+display: flex;
+flex-wrap: wrap;
+gap: 0.7rem;
+align-items: center;
+}
+
+.pilot-offer__actions .pilot-offer__button {
+flex: 1 1 13rem;
+width: auto;
+}
+
+.pilot-offer__whatsapp {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-height: 3.1rem;
+padding: 0.75rem 1rem;
+border-radius: 999rem;
+border: 1px solid var(--border-strong);
+background: #fff;
+color: var(--green-900);
+font-weight: 600;
+font-size: 0.94rem;
+text-decoration: none;
+transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.pilot-offer__whatsapp:hover {
+background: #f0f6ef;
+transform: translateY(-1px);
+}
+
 @media (min-width: 768px) {
 .pilot-offer {
-display: none;
+padding: 0 2rem 3.5rem;
+margin-top: -0.25rem;
+}
+
+.pilot-offer__inner {
+max-width: 70rem;
+margin-inline: auto;
+padding: 1.8rem 2rem;
+}
+
+.pilot-offer__list {
+grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 }
+
+.usp-section {
+padding-block: clamp(4rem, 7vw, 7rem);
+}
+
+.usp-section__container {
+display: grid;
+gap: 1rem;
+}
+
+.usp-section__lead {
+margin: 0;
+font-size: clamp(1.2rem, 1rem + 0.7vw, 1.5rem);
+font-weight: 600;
+line-height: 1.45;
+max-width: 40rem;
+}
+
+.usp-section__intro {
+margin: 0.25rem 0 0;
+max-width: 46rem;
+line-height: 1.75;
+color: var(--text-soft);
+}
+
+.usp-grid {
+margin-top: 1.3rem;
+display: grid;
+gap: 1rem;
+}
+
+.usp-card {
+background: rgba(255,255,255,0.55);
+border: 1px solid var(--border);
+border-radius: 1rem;
+padding: 1.2rem;
+}
+.usp-card h3 { margin:0 0 0.6rem; font-size:1.08rem; }
+.usp-card p { margin:0; color:var(--text-soft); line-height:1.65; }
+
+@media (min-width: 900px) {
+.usp-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+.about-layout {
+display: grid;
+gap: 1.75rem;
+align-items: center;
+}
+
+.about-portrait-wrap {
+display: flex;
+justify-content: center;
+}
+
+.about-portrait {
+width: clamp(130px, 25vw, 190px);
+aspect-ratio: 1/1;
+object-fit: cover;
+border-radius: 50%;
+border: 4px solid rgba(255,255,255,0.7);
+box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+}
+
+.about-say-hi {
+display: inline-flex;
+margin-top: 1rem;
+color: var(--green-900);
+font-weight: 600;
+text-decoration: none;
+border-bottom: 1px solid currentColor;
+padding-bottom: 0.1rem;
+}
+
+@media (min-width: 860px) {
+.about-layout {
+grid-template-columns: auto 1fr;
+gap: 2.5rem;
+}
+.about-portrait-wrap {
+justify-content: flex-start;
+}
+}
+
 
 /* ==========================================================================
 SECTION 2 (SERVICES) & ÜBERGÄNGE
