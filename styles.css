@@ -356,11 +356,11 @@ margin-top: -0.5rem;
 }
 
 .pilot-offer__inner {
-background: #f6f2ea;
-border: 1px solid rgba(22, 22, 22, 0.06);
+background: linear-gradient(180deg, #fff9f1 0%, #fff4e5 100%);
+border: 1px solid rgba(215, 108, 47, 0.32);
 border-radius: 1.5rem;
-padding: 1.3rem 1.2rem 1.35rem;
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+padding: 1.45rem 1.25rem 1.45rem;
+box-shadow: 0 16px 40px rgba(215, 108, 47, 0.1);
 }
 
 .pilot-offer__eyebrow {
@@ -393,10 +393,11 @@ color: var(--text-soft);
 
 .pilot-offer__list {
 list-style: none;
-margin: 0 0 1.15rem;
+margin: 0 0 1.25rem;
 padding: 0;
 display: grid;
 gap: 0.65rem;
+grid-template-columns: 1fr;
 }
 
 .pilot-offer__list li {
@@ -446,35 +447,11 @@ transform: translateY(-1px);
 
 .pilot-offer__actions {
 display: flex;
-flex-wrap: wrap;
-gap: 0.7rem;
-align-items: center;
+justify-content: center;
 }
 
 .pilot-offer__actions .pilot-offer__button {
-flex: 1 1 13rem;
-width: auto;
-}
-
-.pilot-offer__whatsapp {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-min-height: 3.1rem;
-padding: 0.75rem 1rem;
-border-radius: 999rem;
-border: 1px solid var(--border-strong);
-background: #fff;
-color: var(--green-900);
-font-weight: 600;
-font-size: 0.94rem;
-text-decoration: none;
-transition: background 0.18s ease, transform 0.18s ease;
-}
-
-.pilot-offer__whatsapp:hover {
-background: #f0f6ef;
-transform: translateY(-1px);
+width: min(100%, 18rem);
 }
 
 @media (min-width: 768px) {
@@ -490,25 +467,33 @@ padding: 1.8rem 2rem;
 }
 
 .pilot-offer__list {
-grid-template-columns: repeat(3, minmax(0, 1fr));
+grid-template-columns: 1fr;
+max-width: 34rem;
 }
 }
 
 .usp-section {
-padding-block: clamp(4rem, 7vw, 7rem);
+padding-block: clamp(4.5rem, 8vw, 8.5rem);
 }
 
 .usp-section__container {
 display: grid;
-gap: 1rem;
+gap: 1.25rem;
+max-width: 78rem;
+}
+
+.usp-section h2 {
+font-size: clamp(2.3rem, 2rem + 2vw, 3.4rem);
+line-height: 1.02;
 }
 
 .usp-section__lead {
 margin: 0;
-font-size: clamp(1.2rem, 1rem + 0.7vw, 1.5rem);
+font-size: clamp(1.35rem, 1.05rem + 0.95vw, 1.85rem);
 font-weight: 600;
 line-height: 1.45;
-max-width: 40rem;
+max-width: 52rem;
+color: #24352b;
 }
 
 .usp-section__intro {
@@ -519,9 +504,9 @@ color: var(--text-soft);
 }
 
 .usp-grid {
-margin-top: 1.3rem;
+margin-top: 1.8rem;
 display: grid;
-gap: 1rem;
+gap: 1.15rem;
 }
 
 .usp-card {
@@ -534,6 +519,9 @@ padding: 1.2rem;
 .usp-card p { margin:0; color:var(--text-soft); line-height:1.65; }
 
 @media (min-width: 900px) {
+.usp-section__container {
+gap: 1.5rem;
+}
 .usp-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 
@@ -546,6 +534,7 @@ align-items: center;
 .about-portrait-wrap {
 display: flex;
 justify-content: center;
+text-decoration: none;
 }
 
 .about-portrait {
@@ -1067,7 +1056,7 @@ font-size: 0.94rem;
 
 .floating-project-btn {
 position: fixed;
-right: clamp(1rem, 0.8rem + 0.8vw, 1.375rem);
+left: clamp(1rem, 0.8rem + 0.8vw, 1.375rem);
 bottom: clamp(1rem, 0.8rem + 0.8vw, 1.375rem);
 z-index: 1200;
 min-height: 4rem;
@@ -1103,9 +1092,32 @@ animation: pulseRing 1.8s ease-out infinite;
 .floating-project-btn::after {
 animation: pulseRing 1.8s ease-out 0.55s infinite;
 }
+.floating-whatsapp-btn {
+position: fixed;
+right: clamp(1rem, 0.8rem + 0.8vw, 1.375rem);
+bottom: clamp(1rem, 0.8rem + 0.8vw, 1.375rem);
+z-index: 1200;
+display: inline-flex;
+align-items: center;
+gap: 0.4rem;
+min-height: 3.35rem;
+padding: 0.8rem 1rem;
+border-radius: 999rem;
+background: #25d366;
+color: #fff;
+font-weight: 700;
+text-decoration: none;
+box-shadow: 0 12px 30px rgba(37, 211, 102, 0.28);
+}
+
+.floating-whatsapp-btn span {
+font-size: 1.05rem;
+}
+
 
 @media (max-width: 767px) {
-.floating-project-btn {
+.floating-project-btn,
+.floating-whatsapp-btn {
 opacity: 0;
 pointer-events: none;
 transition: opacity 0.4s ease;
@@ -1346,11 +1358,19 @@ min-width: 13.75rem;
 }
 
 .floating-project-btn {
-right: 1rem;
+left: 1rem;
 bottom: 5.5rem;
 min-height: 3.25rem;
 padding-inline: 1.1rem;
 font-size: 0.95rem;
+}
+
+.floating-whatsapp-btn {
+right: 1rem;
+bottom: 5.5rem;
+min-height: 3rem;
+padding: 0.66rem 0.9rem;
+font-size: 0.92rem;
 }
 
 .footer-inner {
