@@ -1879,3 +1879,83 @@ fill: #f5f3ef !important;
     background: #132a4a;
   }
 }
+
+/* 2026-05 UI cleanup: USP slider + CTA + about signature */
+.usp-section__container {
+  gap: clamp(1.4rem, 2.2vw, 2rem);
+}
+
+.usp-carousel-controls {
+  margin-top: 1.35rem;
+  justify-content: flex-start;
+  transform: translate(-0.35rem, 0.4rem);
+}
+
+.usp-nav {
+  background: rgba(245, 243, 239, 0.9);
+  border: 1px solid rgba(20, 24, 39, 0.2);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
+}
+
+.usp-grid {
+  margin-top: 1.8rem;
+  padding-bottom: 0.2rem;
+  scrollbar-width: none;
+}
+
+.usp-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.usp-scrollbar-wrap {
+  margin-top: 1.8rem;
+  margin-bottom: 0.35rem;
+}
+
+.usp-scrollbar {
+  background: linear-gradient(
+    to right,
+    #f26522 0%,
+    #f26522 var(--scroll-progress, 0%),
+    rgba(248, 247, 243, 0.32) var(--scroll-progress, 0%),
+    rgba(248, 247, 243, 0.32) 100%
+  );
+}
+
+.usp-scrollbar::-webkit-slider-thumb,
+.usp-scrollbar::-moz-range-thumb {
+  background: #f26522;
+  box-shadow: 0 0 0 2px rgba(242, 101, 34, 0.3);
+}
+
+.pilot-offer__actions .pilot-offer__button {
+  width: min(100%, 14rem);
+  background: var(--orange);
+  border: none;
+  box-shadow: 0 10px 24px rgba(20, 24, 39, 0.2);
+}
+
+.about-signature {
+  margin-top: 1.45rem;
+  color: #f26522;
+  font-style: italic;
+  font-family: "Playfair Display", "Inter", serif;
+  font-size: 1.18rem;
+  letter-spacing: 0.01em;
+  transform: rotate(-1.5deg);
+  transform-origin: left center;
+}
+
+@media (max-width: 767px) {
+  .usp-carousel-controls {
+    transform: translate(-0.25rem, 0.45rem);
+  }
+
+  .usp-grid {
+    margin-top: 1.55rem;
+  }
+
+  .usp-scrollbar-wrap {
+    margin-top: 1.45rem;
+  }
+}
