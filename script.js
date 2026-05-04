@@ -694,12 +694,34 @@ if (uspGrid && uspScrollbar) {
   uspGrid.addEventListener("scroll", syncUspScrollbarFromScroll, { passive: true });
   window.addEventListener("resize", syncUspScrollbarFromScroll);
 
-  uspScrollbar.addEventListener("input", (event) => {
-    const maxScroll = uspGrid.scrollWidth - uspGrid.clientWidth;
-    const percentage = Number(event.target.value) / 100;
+  const updateUspGridFromPercentage = (value) => {
+    const maxScroll = Math.max(uspGrid.scrollWidth - uspGrid.clientWidth, 0);
+    const percentage = Math.min(Math.max(Number(value), 0), 100) / 100;
     const nextLeft = maxScroll * percentage;
     uspGrid.scrollTo({ left: nextLeft, behavior: "auto" });
-    uspScrollbar.style.setProperty("--scroll-progress", `${event.target.value}%`);
-    syncUspScrollbarFromScroll();
+    uspScrollbar.value = String(percentage * 100);
+    uspScrollbar.style.setProperty("--scroll-progress", `${percentage * 100}%`);
+  };
+
+  uspScrollbar.addEventListener("input", (event) => {
+    updateUspGridFromPercentage(event.target.value);
+  });
+
+  const setSliderFromPointer = (clientX) => {
+    const rect = uspScrollbar.getBoundingClientRect();
+    if (!rect.width) return;
+    const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+    updateUspGridFromPercentage(ratio * 100);
+  };
+
+  uspScrollbar.addEventListener("pointerdown", (event) => {
+    setSliderFromPointer(event.clientX);
+    const onMove = (moveEvent) => setSliderFromPointer(moveEvent.clientX);
+    const onUp = () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp, { once: true });
   });
 }
