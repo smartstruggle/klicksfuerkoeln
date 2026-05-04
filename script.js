@@ -628,3 +628,21 @@ startIntroAnimations();
 }
 }
 });
+
+/* =========================================
+7. USP CAROUSEL CONTROLS
+========================================= */
+const uspGrid = document.getElementById("usp-grid");
+const uspPrev = document.querySelector(".usp-nav--prev");
+const uspNext = document.querySelector(".usp-nav--next");
+
+function scrollUsp(direction) {
+if (!uspGrid) return;
+const amount = Math.max(uspGrid.clientWidth * 0.75, 260);
+uspGrid.scrollBy({ left: direction * amount, behavior: "smooth" });
+}
+
+if (uspPrev && uspNext && uspGrid) {
+uspPrev.addEventListener("click", () => scrollUsp(-1));
+uspNext.addEventListener("click", () => scrollUsp(1));
+}
