@@ -2013,7 +2013,7 @@ fill: #f5f3ef !important;
 .usp-section__lead { color: var(--system-beige-soft); }
 
 .pilot-offer {
-  background: var(--blue-dark);
+  background: var(--color-navy);
   padding-inline: clamp(1rem, 4vw, 2rem);
 }
 
@@ -2057,6 +2057,13 @@ fill: #f5f3ef !important;
 }
 
 @media (max-width: 767px) {
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
   .about-layout {
     gap: clamp(1.5rem, 4vw, 2rem);
     align-items: start;
