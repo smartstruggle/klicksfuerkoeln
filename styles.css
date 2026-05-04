@@ -1959,3 +1959,98 @@ fill: #f5f3ef !important;
     margin-top: 1.45rem;
   }
 }
+
+/* 2026-05 targeted mobile fixes: USP slider, header/hero color, CTA flow, about text */
+:root {
+  --system-offwhite: #eef0f2;
+  --system-header-bg: #f2f1ec;
+  --system-beige-soft: #ded8cb;
+}
+
+.site-header {
+  background: var(--system-header-bg);
+}
+
+.brand,
+.desktop-nav a,
+.mobile-nav a {
+  color: var(--blue-dark);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.brand-cursor {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--blue-dark);
+  flex: 0 0 auto;
+}
+
+.hero-graphic-svg #headline path,
+.hero-graphic-svg #headline-mobil path {
+  fill: var(--system-offwhite);
+}
+
+.usp-section__lead { color: var(--system-beige-soft); }
+
+.pilot-offer {
+  background: var(--blue-dark);
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.pilot-offer__inner {
+  max-width: min(920px, 100%);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.usp-card {
+  padding: 1.45rem 1.25rem 1.3rem;
+}
+
+.usp-card h3 {
+  margin-top: 1.65rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.35;
+}
+
+.usp-card p {
+  line-height: 1.72;
+}
+
+.usp-scrollbar {
+  cursor: grab;
+  touch-action: pan-x;
+}
+
+.usp-scrollbar:active {
+  cursor: grabbing;
+}
+
+.about-content { text-align: left; }
+.about-statement h2 { text-align: center; }
+.about-subtext {
+  text-align: left;
+  max-width: 62ch;
+}
+
+@media (max-width: 767px) {
+  .brand { gap: 0.35rem; }
+  .brand-cursor { width: 0.78rem; height: 0.78rem; }
+  .usp-card {
+    padding: 1.35rem 1.1rem 1.2rem;
+    min-height: 8.8rem;
+  }
+  .usp-card h3 {
+    margin-top: 1.45rem;
+    margin-bottom: 0.65rem;
+    font-size: 1.03rem;
+  }
+  .usp-card p {
+    font-size: 0.94rem;
+    line-height: 1.62;
+  }
+}
