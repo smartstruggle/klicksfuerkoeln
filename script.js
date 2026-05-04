@@ -638,7 +638,7 @@ const uspNext = document.querySelector(".usp-nav--next");
 
 function scrollUsp(direction) {
 if (!uspGrid) return;
-const amount = Math.max(uspGrid.clientWidth * 0.75, 260);
+const amount = Math.max(uspGrid.clientWidth * 0.8, 320);
 uspGrid.scrollBy({ left: direction * amount, behavior: "smooth" });
 }
 
@@ -666,7 +666,9 @@ if (uspGrid && uspScrollbar) {
   uspScrollbar.addEventListener("input", (event) => {
     const maxScroll = uspGrid.scrollWidth - uspGrid.clientWidth;
     const percentage = Number(event.target.value) / 100;
-    uspGrid.scrollTo({ left: maxScroll * percentage, behavior: "auto" });
+    const nextLeft = maxScroll * percentage;
+    uspGrid.scrollTo({ left: nextLeft, behavior: "auto" });
     uspScrollbar.style.setProperty("--scroll-progress", `${event.target.value}%`);
+    syncUspScrollbarFromScroll();
   });
 }
