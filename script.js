@@ -646,3 +646,27 @@ if (uspPrev && uspNext && uspGrid) {
 uspPrev.addEventListener("click", () => scrollUsp(-1));
 uspNext.addEventListener("click", () => scrollUsp(1));
 }
+
+const uspScrollbar = document.getElementById("usp-scrollbar");
+
+function syncUspScrollbarFromScroll() {
+  if (!uspGrid || !uspScrollbar) return;
+  const maxScroll = uspGrid.scrollWidth - uspGrid.clientWidth;
+  const progress = maxScroll > 0 ? (uspGrid.scrollLeft / maxScroll) * 100 : 0;
+  uspScrollbar.value = String(progress);
+  uspScrollbar.style.setProperty("--scroll-progress", `${progress}%`);
+}
+
+if (uspGrid && uspScrollbar) {
+  syncUspScrollbarFromScroll();
+
+  uspGrid.addEventListener("scroll", syncUspScrollbarFromScroll, { passive: true });
+  window.addEventListener("resize", syncUspScrollbarFromScroll);
+
+  uspScrollbar.addEventListener("input", (event) => {
+    const maxScroll = uspGrid.scrollWidth - uspGrid.clientWidth;
+    const percentage = Number(event.target.value) / 100;
+    uspGrid.scrollTo({ left: maxScroll * percentage, behavior: "auto" });
+    uspScrollbar.style.setProperty("--scroll-progress", `${event.target.value}%`);
+  });
+}
