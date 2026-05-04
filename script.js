@@ -10,6 +10,16 @@ const expanded = menuToggle.getAttribute("aria-expanded") === "true";
 menuToggle.setAttribute("aria-expanded", String(!expanded));
 mobileMenu.classList.toggle("is-open");
 });
+
+document.addEventListener("click", (event) => {
+const isOpen = mobileMenu.classList.contains("is-open");
+if (!isOpen) return;
+const target = event.target;
+if (!(target instanceof Element)) return;
+if (mobileMenu.contains(target) || menuToggle.contains(target)) return;
+mobileMenu.classList.remove("is-open");
+menuToggle.setAttribute("aria-expanded", "false");
+});
 }
 
 document.querySelectorAll(".mobile-nav a, .mobile-contact-btn").forEach((item) => {
