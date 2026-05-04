@@ -573,7 +573,14 @@ display: grid;
 grid-template-columns: 1fr;
 gap: 1.75rem;
 align-items: center;
+grid-template-areas:
+"kicker"
+"portrait"
+"content";
 }
+.about-kicker { grid-area: kicker; }
+.about-content { grid-area: content; }
+.about-portrait-wrap { grid-area: portrait; }
 
 .about-portrait-wrap {
 display: flex;
@@ -602,6 +609,9 @@ padding-bottom: 0.1rem;
 @media (min-width: 860px) {
 .about-layout {
 grid-template-columns: 1fr 320px;
+grid-template-areas:
+"kicker portrait"
+"content portrait";
 gap: 3rem;
 }
 .about-portrait-wrap {
@@ -1963,7 +1973,7 @@ fill: #f5f3ef !important;
 /* 2026-05 targeted mobile fixes: USP slider, header/hero color, CTA flow, about text */
 :root {
   --system-offwhite: #eef0f2;
-  --system-header-bg: #f2f1ec;
+  --system-header-bg: #eef1f4;
   --system-beige-soft: #ded8cb;
 }
 
@@ -1977,6 +1987,10 @@ fill: #f5f3ef !important;
   color: var(--blue-dark);
 }
 
+.menu-toggle span {
+  background: var(--blue-dark);
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -1988,6 +2002,7 @@ fill: #f5f3ef !important;
   height: 0.9rem;
   color: var(--blue-dark);
   flex: 0 0 auto;
+  transform: translateY(0.03rem);
 }
 
 .hero-graphic-svg #headline path,
@@ -2036,8 +2051,23 @@ fill: #f5f3ef !important;
   text-align: left;
   max-width: 62ch;
 }
+.about-kicker {
+  margin-bottom: 0;
+  text-align: left;
+}
 
 @media (max-width: 767px) {
+  .about-layout {
+    gap: clamp(1.5rem, 4vw, 2rem);
+    align-items: start;
+  }
+  .about-content {
+    text-align: left;
+  }
+  .about-portrait-wrap {
+    order: 0;
+    justify-content: flex-start;
+  }
   .brand { gap: 0.35rem; }
   .brand-cursor { width: 0.78rem; height: 0.78rem; }
   .usp-card {
