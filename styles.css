@@ -2091,3 +2091,90 @@ fill: #f5f3ef !important;
     line-height: 1.62;
   }
 }
+
+/* Hero message and CTAs */
+.hero-message {
+  margin-top: clamp(0.8rem, 2vw, 1.4rem);
+  text-align: center;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.hero-subline {
+  margin: 0;
+  color: rgba(238, 240, 242, 0.94);
+  font-size: clamp(1.02rem, 1.8vw, 1.32rem);
+  line-height: 1.45;
+  letter-spacing: 0.005em;
+  font-weight: 500;
+}
+
+.hero-benefit {
+  margin: 0;
+  color: rgba(238, 240, 242, 0.82);
+  font-size: clamp(0.9rem, 1.25vw, 1rem);
+  line-height: 1.5;
+}
+
+.hero-benefit-check {
+  color: var(--orange);
+  font-weight: 700;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.15rem;
+}
+
+.hero-primary-cta {
+  border: 1px solid transparent;
+}
+
+.hero-whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--system-offwhite);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(234, 235, 225, 0.35);
+  padding-bottom: 0.12rem;
+}
+
+.hero-whatsapp-link svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--orange);
+  flex: 0 0 auto;
+}
+
+.hero-whatsapp-link:hover,
+.hero-whatsapp-link:focus-visible {
+  border-bottom-color: var(--orange);
+}
+
+@media (min-width: 768px) {
+  .hero-message {
+    margin-top: clamp(1rem, 1.5vw, 1.55rem);
+  }
+
+  .hero-subline {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-message {
+    max-width: 33ch;
+    margin-inline: auto;
+    gap: 0.72rem;
+  }
+
+  .hero-subline {
+    line-height: 1.55;
+  }
+}
