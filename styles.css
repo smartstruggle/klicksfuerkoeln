@@ -6,6 +6,13 @@
 --surface-2: #dfd7ca;
 
 --color-navy: #141827;
+--color-dark-section-gradient: linear-gradient(
+180deg,
+#101624 0%,
+#141d31 42%,
+#1b2638 72%,
+#25313a 100%
+);
 --color-offwhite: #f7f4ec;
 --color-soft: #f3f1ec;
 
@@ -248,7 +255,7 @@ HERO SECTION & GRAPHIC (Master-Code)
 .hero {
 position: relative;
 overflow: visible;
-background: var(--color-navy);
+background: var(--color-dark-section-gradient);
 /* Oben fast auf Null (0.5rem), unten kompakt */
 padding-block: 3.5rem 0.5rem !important;
 }
@@ -478,7 +485,7 @@ max-width: 34rem;
 
 .usp-section {
 padding-block: clamp(5rem, 9vw, 9rem);
-background: var(--color-navy);
+background: var(--color-dark-section-gradient);
 }
 
 .usp-section .section-kicker, .usp-section h2, .usp-section__lead, .usp-section__intro {
@@ -918,7 +925,7 @@ font-size: var(--text-md);
 
 .about-statement {
 padding-block: clamp(6rem, 10vw, 10rem);
-background: var(--color-navy);
+background: var(--color-dark-section-gradient);
 color: #f8f7f3;
 }
 
@@ -2013,7 +2020,7 @@ fill: #f5f3ef !important;
 .usp-section__lead { color: var(--system-beige-soft); }
 
 .pilot-offer {
-  background: var(--color-navy);
+  background: var(--color-dark-section-gradient);
   padding-inline: clamp(1rem, 4vw, 2rem);
 }
 
