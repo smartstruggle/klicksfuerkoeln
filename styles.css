@@ -152,7 +152,7 @@ white-space: nowrap;
 }
 
 .brand-logo {
-height: clamp(1.85rem, 1.45rem + 1.3vw, 2.45rem);
+height: clamp(2.8rem, 2.25rem + 1.9vw, 4rem);
 width: auto;
 display: block;
 object-fit: contain;
@@ -2336,5 +2336,67 @@ fill: #f5f3ef !important;
 
   .hero-actions {
     margin-top: 0.95rem;
+  }
+}
+
+
+.hero-topline {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-mobile-row {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .hero-topline .hero-title-anim {
+    margin: 0;
+    text-align: left;
+    max-width: 13ch;
+    font-size: clamp(2.15rem, 9vw, 3.2rem);
+  }
+
+  .hero-mobile-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(8.75rem, 41vw);
+    column-gap: clamp(0.45rem, 2.2vw, 0.95rem);
+    align-items: start;
+    margin-top: clamp(0.75rem, 3vw, 1.2rem);
+  }
+
+  .hero-message {
+    text-align: left;
+    margin: 0;
+    max-width: none;
+    align-self: start;
+  }
+
+  .hero-subline,
+  .hero-benefit {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+  }
+
+  .hero-graphic {
+    margin: 0;
+    justify-content: flex-end;
+    align-self: start;
+  }
+
+  .hero-actions {
+    margin-top: clamp(0.95rem, 3.2vw, 1.4rem);
+    justify-content: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-topline {
+    display: none;
+  }
+
+  .hero-mobile-row {
+    display: block;
   }
 }
