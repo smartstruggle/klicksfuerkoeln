@@ -4,14 +4,15 @@
 --bg-soft: var(--color-soft);
 --surface: #e9e3d7;
 --surface-2: #dfd7ca;
+--color-bg-beige: #f6f0e7;
+--color-bg-beige-card: #fbf7ef;
 
 --color-navy: #141827;
 --color-dark-section-gradient: linear-gradient(
 180deg,
-#101624 0%,
-#141d31 42%,
-#1b2638 72%,
-#25313a 100%
+#f6f0e7 0%,
+#f4efe6 52%,
+#f1ebdf 100%
 );
 --color-offwhite: #f7f4ec;
 --color-soft: #f3f1ec;
@@ -1733,7 +1734,7 @@ fill: #f5f3ef !important;
 .usp-section h2,
 .usp-section__lead,
 .usp-section__intro {
-  color: #f5f3ef;
+  color: var(--color-navy);
 }
 
 .hero h1 {
@@ -2103,7 +2104,8 @@ fill: #f5f3ef !important;
 :root {
   --system-offwhite: #eef0f2;
   --system-header-bg: #eef1f4;
-  --system-beige-soft: #ded8cb;
+  --system-beige-soft: rgba(20, 24, 39, 0.72);
+  --blue-dark: var(--color-navy);
 }
 
 .site-header {
@@ -2122,13 +2124,13 @@ fill: #f5f3ef !important;
 
 .hero-graphic-svg #headline path,
 .hero-graphic-svg #headline-mobil path {
-  fill: var(--system-offwhite);
+  fill: var(--color-navy);
 }
 
 .usp-section__lead { color: var(--system-beige-soft); }
 
 .pilot-offer {
-  background: var(--color-dark-section-gradient);
+  background: var(--color-bg-beige);
   padding-inline: clamp(1rem, 4vw, 2rem);
 }
 
@@ -2138,7 +2140,7 @@ fill: #f5f3ef !important;
 }
 
 .usp-card {
-  background: linear-gradient(162deg, #fdfcf8 0%, #f8f5ee 100%);
+  background: linear-gradient(162deg, var(--color-bg-beige-card) 0%, #f7f1e7 100%);
   border: 1px solid rgba(20, 24, 39, 0.09);
   border-radius: 1.5rem;
   padding: 2.8rem 2.2rem 2.5rem;
@@ -2158,6 +2160,14 @@ fill: #f5f3ef !important;
   max-width: 34ch;
   line-height: 1.82;
   font-size: 1.02rem;
+  color: rgba(20, 24, 39, 0.8);
+}
+
+.about-statement {
+  color: var(--color-navy);
+}
+
+.about-subtext {
   color: rgba(20, 24, 39, 0.8);
 }
 
@@ -2271,10 +2281,10 @@ fill: #f5f3ef !important;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  color: var(--system-offwhite);
+  color: var(--color-navy);
   font-weight: 500;
   text-decoration: none;
-  border-bottom: 1px solid rgba(234, 235, 225, 0.35);
+  border-bottom: 1px solid rgba(20, 24, 39, 0.3);
   padding-bottom: 0.12rem;
 }
 
