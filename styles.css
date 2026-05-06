@@ -268,174 +268,30 @@ HERO SECTION & GRAPHIC
 ========================================================================== */
 
 .hero {
-  position: relative;
-  overflow: visible;
   background: var(--color-dark-section-gradient);
-  padding-block: clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem);
+  padding-block: clamp(2rem, 5vw, 4rem);
 }
-
-.hero-single {
-  position: relative;
-  width: min(100% - (2 * var(--page-pad-x)), var(--container));
-  margin-inline: auto;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-bottom: 0;
-  z-index: 1;
-}
-
-.hero h1 {
-  position: relative;
-  z-index: 2;
-  margin: 0 auto;
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
-  font-size: clamp(3.2rem, 11vw, 4.8rem);
-  line-height: 1.02;
-  letter-spacing: 0.02em;
-  text-align: center;
-  max-width: 9ch;
-  text-transform: none;
-}
-
-.hero h1 br {
-  display: block;
-  content: "";
-  margin-top: 0.14em;
-}
-
-/* ==========================================================================
-HERO GRAPHIC
-========================================================================== */
 
 .hero-graphic {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  margin: clamp(0.75rem, 3vw, 1.5rem) auto 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  pointer-events: none;
+  width: min(100% - (2 * var(--page-pad-x)), var(--container));
+  margin: 0 auto;
 }
 
 .hero-graphic-svg {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: contain;
 }
 
 .mobile-only {
   display: block;
-  max-width: 560px;
-  margin-inline: auto;
 }
 
 .desktop-only {
   display: none !important;
 }
 
-/* ==========================================================================
-HERO MESSAGE / CTA
-========================================================================== */
-
-.hero-message {
-  position: relative;
-  z-index: 2;
-  width: min(100%, 760px);
-  margin-top: clamp(1.1rem, 3vw, 2rem);
-  margin-inline: auto;
-  text-align: center;
-}
-
-.hero-message h2,
-.hero-message .hero-message-title {
-  margin: 0 0 clamp(1.1rem, 2vw, 1.6rem);
-  font-size: clamp(2rem, 6vw, 3rem);
-  line-height: 1.14;
-  font-weight: 700;
-  color: var(--color-text-invert, #fff);
-}
-
-.hero-message p,
-.hero-message .hero-message-subline {
-  margin: 0 auto;
-  max-width: 680px;
-  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
-  line-height: 1.5;
-  color: var(--color-text-invert-muted, rgba(255, 255, 255, 0.86));
-}
-
-.hero-message .cta-row,
-.hero-message .hero-cta-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(0.9rem, 3vw, 1.25rem);
-  margin-top: clamp(2.4rem, 5vw, 3.6rem);
-}
-
-/* ==========================================================================
-DESKTOP HERO MESSAGE
-========================================================================== */
-
 @media (min-width: 768px) {
-  .hero-message {
-    width: min(100%, 980px);
-    margin-top: clamp(1.5rem, 2.2vw, 2.5rem);
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  .hero-message h2,
-  .hero-message .hero-message-title {
-    max-width: 980px;
-    font-size: clamp(2.8rem, 3.8vw, 4.6rem);
-    line-height: 1.1;
-    margin-bottom: clamp(1.25rem, 1.8vw, 2rem);
-  }
-
-  .hero-message p,
-  .hero-message .hero-message-subline {
-    margin-left: 0;
-    margin-right: 0;
-    max-width: 860px;
-    font-size: clamp(1.35rem, 1.65vw, 1.85rem);
-    line-height: 1.45;
-  }
-
-  .hero-message .cta-row,
-  .hero-message .hero-cta-row {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: clamp(1rem, 1.5vw, 1.5rem);
-    margin-top: clamp(3rem, 4vw, 4.75rem);
-  }
-}
-
-/* ==========================================================================
-GRAPHIC VISIBILITY
-========================================================================== */
-
-.mobile-only {
-  display: block;
-  width: 100%;
-  max-width: 560px;
-  margin-inline: auto;
-}
-
-.desktop-only {
-  display: none;
-}
-
-/* ==========================================================================
-DESKTOP GRAPHIC
-========================================================================== */
-
-@media (min-width: 768px) {
-
   .mobile-only {
     display: none !important;
   }
@@ -446,9 +302,51 @@ DESKTOP GRAPHIC
     max-width: 1560px;
     margin-inline: auto;
   }
-
 }
 
+.hero-cta {
+  width: min(100% - (2 * var(--page-pad-x)), var(--container));
+  margin: clamp(1.15rem, 4vw, 1.8rem) auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.95rem;
+}
+
+.hero-primary-cta {
+  border: 1px solid transparent;
+  background: var(--orange);
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(215, 108, 47, 0.26);
+}
+
+.hero-primary-cta:hover,
+.hero-primary-cta:focus-visible {
+  background: var(--orange-dark);
+}
+
+.hero-whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--color-navy);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(20, 24, 39, 0.3);
+  padding-bottom: 0.12rem;
+}
+
+.hero-whatsapp-link svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--orange);
+  flex: 0 0 auto;
+}
+
+.hero-whatsapp-link:hover,
+.hero-whatsapp-link:focus-visible {
+  border-bottom-color: var(--orange);
+}
 /* ==========================================================================
 MOBILE PILOT OFFER BLOCK
 zwischen Hero und Services
@@ -1584,17 +1482,6 @@ user-select: none;
 -webkit-tap-highlight-color: transparent;
 }
 
-.hero-touch-left {
-position: absolute;
-left: 0;
-top: 0;
-width: 38%;
-height: 100%;
-z-index: 10;
-background: transparent;
-touch-action: pan-y;
-}
-
 
 /* --- Angebote Page Ergänzungen --- */
 
@@ -2255,67 +2142,5 @@ fill: #f5f3ef !important;
 }
 
 
-/* Hero CTAs below graphic */
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem 1rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: clamp(1rem, 2.2vw, 1.8rem);
-}
-
-@media (max-width: 767px) {
-  .hero-graphic {
-    margin-top: clamp(0.65rem, 2vw, 1rem);
-  }
-
-  .mobile-only {
-    width: min(100%, 34rem);
-    max-width: 100%;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 0.95rem;
-    margin-top: clamp(1.15rem, 4vw, 1.8rem);
-  }
-}
-
-.hero-primary-cta {
-  border: 1px solid transparent;
-  background: var(--orange);
-  color: #fff;
-  box-shadow: 0 12px 24px rgba(215, 108, 47, 0.26);
-}
-
-.hero-primary-cta:hover,
-.hero-primary-cta:focus-visible {
-  background: var(--orange-dark);
-}
-
-.hero-whatsapp-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: var(--color-navy);
-  font-weight: 500;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(20, 24, 39, 0.3);
-  padding-bottom: 0.12rem;
-}
-
-.hero-whatsapp-link svg {
-  width: 0.95rem;
-  height: 0.95rem;
-  color: var(--orange);
-  flex: 0 0 auto;
-}
-
-.hero-whatsapp-link:hover,
-.hero-whatsapp-link:focus-visible {
-  border-bottom-color: var(--orange);
-}
 
 }
