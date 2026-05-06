@@ -1688,16 +1688,6 @@ fill: #f5f3ef !important;
 }
 
 .usp-card__icon {
-  width: 2.35rem;
-  height: 2.35rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.7rem;
-  background: linear-gradient(150deg, rgba(232, 106, 44, 0.14), rgba(123, 157, 122, 0.2));
-  box-shadow: inset 0 0 0 1px rgba(20, 24, 39, 0.08);
-  font-size: 1.25rem;
-}
 
 .usp-card h3 {
   margin-top: 1rem;
@@ -2143,4 +2133,85 @@ fill: #f5f3ef !important;
 
 
 
+}
+
+/* 2026-05 hero/layout stabilization: preserve original SVG colors + hybrid color system */
+:root {
+  --color-hero-bg: #121c2a;
+  --color-page-bg: #f6f1e8;
+  --color-section-light: #faf7f0;
+  --color-card-bg: #fffdf8;
+
+  --text: #101827;
+  --text-soft: #4d5563;
+  --muted: #8c8c88;
+
+  --orange: #e86a2a;
+  --orange-dark: #d95a1f;
+
+  --bg: var(--color-page-bg);
+  --bg-soft: var(--color-section-light);
+  --surface: var(--color-card-bg);
+  --surface-2: #f7f2e9;
+}
+
+body {
+  background: var(--color-page-bg);
+  color: var(--text);
+}
+
+.hero {
+  background: linear-gradient(180deg, #101827 0%, #172434 100%);
+}
+
+.hero-graphic-svg,
+.hero-graphic-svg * {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+.hero-graphic-svg #headline path,
+.hero-graphic-svg #headline-mobil path {
+  fill: unset !important;
+}
+
+.hero-cta {
+  position: static;
+  margin-top: clamp(1.15rem, 4vw, 1.8rem);
+}
+
+.hero-primary-cta {
+  background: var(--orange);
+  box-shadow: 0 8px 18px rgba(232, 106, 42, 0.18);
+}
+
+.hero-primary-cta:hover,
+.hero-primary-cta:focus-visible {
+  background: var(--orange-dark);
+  box-shadow: 0 6px 14px rgba(217, 90, 31, 0.16);
+}
+
+.pilot-offer {
+  background: var(--color-page-bg);
+}
+
+.pilot-offer__inner,
+.usp-card {
+  background: var(--color-card-bg);
+}
+
+.section-kicker,
+.pilot-offer__eyebrow,
+.usp-section .section-kicker {
+  color: var(--orange);
+}
+
+.floating-project-btn {
+  width: clamp(3.5rem, 3.1rem + 1vw, 4.4rem);
+  height: clamp(3.5rem, 3.1rem + 1vw, 4.4rem);
+  right: clamp(0.8rem, 0.6rem + 0.6vw, 1.1rem);
+  bottom: clamp(0.8rem, 0.6rem + 0.6vw, 1.1rem);
+  box-shadow: 0 8px 16px rgba(37, 211, 102, 0.18);
+  animation: none;
 }
