@@ -4,15 +4,14 @@
 --bg-soft: var(--color-soft);
 --surface: #e9e3d7;
 --surface-2: #dfd7ca;
---color-bg-beige: #f6f0e7;
---color-bg-beige-card: #fbf7ef;
 
 --color-navy: #141827;
 --color-dark-section-gradient: linear-gradient(
 180deg,
-#f6f0e7 0%,
-#f4efe6 52%,
-#f1ebdf 100%
+#101624 0%,
+#141d31 42%,
+#1b2638 72%,
+#25313a 100%
 );
 --color-offwhite: #f7f4ec;
 --color-soft: #f3f1ec;
@@ -268,30 +267,174 @@ HERO SECTION & GRAPHIC
 ========================================================================== */
 
 .hero {
+  position: relative;
+  overflow: visible;
   background: var(--color-dark-section-gradient);
-  padding-block: clamp(2rem, 5vw, 4rem);
+  padding-block: clamp(2rem, 5vw, 4rem) clamp(2rem, 5vw, 4rem);
 }
 
-.hero-graphic {
+.hero-single {
+  position: relative;
   width: min(100% - (2 * var(--page-pad-x)), var(--container));
+  margin-inline: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  z-index: 1;
+}
+
+.hero h1 {
+  position: relative;
+  z-index: 2;
   margin: 0 auto;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.2rem, 11vw, 4.8rem);
+  line-height: 1.02;
+  letter-spacing: 0.02em;
+  text-align: center;
+  max-width: 9ch;
+  text-transform: none;
+}
+
+.hero h1 br {
+  display: block;
+  content: "";
+  margin-top: 0.14em;
+}
+
+/* ==========================================================================
+HERO GRAPHIC
+========================================================================== */
+
+.hero-graphic {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: clamp(0.75rem, 3vw, 1.5rem) auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  pointer-events: none;
 }
 
 .hero-graphic-svg {
   display: block;
   width: 100%;
   height: auto;
+  object-fit: contain;
 }
 
 .mobile-only {
   display: block;
+  max-width: 380px;
+  margin-inline: auto;
 }
 
 .desktop-only {
   display: none !important;
 }
 
+/* ==========================================================================
+HERO MESSAGE / CTA
+========================================================================== */
+
+.hero-message {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 760px);
+  margin-top: clamp(1.1rem, 3vw, 2rem);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.hero-message h2,
+.hero-message .hero-message-title {
+  margin: 0 0 clamp(1.1rem, 2vw, 1.6rem);
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.14;
+  font-weight: 700;
+  color: var(--color-text-invert, #fff);
+}
+
+.hero-message p,
+.hero-message .hero-message-subline {
+  margin: 0 auto;
+  max-width: 680px;
+  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--color-text-invert-muted, rgba(255, 255, 255, 0.86));
+}
+
+.hero-message .cta-row,
+.hero-message .hero-cta-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.9rem, 3vw, 1.25rem);
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+}
+
+/* ==========================================================================
+DESKTOP HERO MESSAGE
+========================================================================== */
+
 @media (min-width: 768px) {
+  .hero-message {
+    width: min(100%, 980px);
+    margin-top: clamp(1.5rem, 2.2vw, 2.5rem);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero-message h2,
+  .hero-message .hero-message-title {
+    max-width: 980px;
+    font-size: clamp(2.8rem, 3.8vw, 4.6rem);
+    line-height: 1.1;
+    margin-bottom: clamp(1.25rem, 1.8vw, 2rem);
+  }
+
+  .hero-message p,
+  .hero-message .hero-message-subline {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 860px;
+    font-size: clamp(1.35rem, 1.65vw, 1.85rem);
+    line-height: 1.45;
+  }
+
+  .hero-message .cta-row,
+  .hero-message .hero-cta-row {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: clamp(1rem, 1.5vw, 1.5rem);
+    margin-top: clamp(3rem, 4vw, 4.75rem);
+  }
+}
+
+/* ==========================================================================
+GRAPHIC VISIBILITY
+========================================================================== */
+
+.mobile-only {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  margin-inline: auto;
+}
+
+.desktop-only {
+  display: none;
+}
+
+/* ==========================================================================
+DESKTOP GRAPHIC
+========================================================================== */
+
+@media (min-width: 768px) {
+
   .mobile-only {
     display: none !important;
   }
@@ -302,51 +445,9 @@ HERO SECTION & GRAPHIC
     max-width: 1560px;
     margin-inline: auto;
   }
+
 }
 
-.hero-cta {
-  width: min(100% - (2 * var(--page-pad-x)), var(--container));
-  margin: clamp(1.15rem, 4vw, 1.8rem) auto 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.95rem;
-}
-
-.hero-primary-cta {
-  border: 1px solid transparent;
-  background: var(--orange);
-  color: #fff;
-  box-shadow: 0 12px 24px rgba(215, 108, 47, 0.26);
-}
-
-.hero-primary-cta:hover,
-.hero-primary-cta:focus-visible {
-  background: var(--orange-dark);
-}
-
-.hero-whatsapp-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: var(--color-navy);
-  font-weight: 500;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(20, 24, 39, 0.3);
-  padding-bottom: 0.12rem;
-}
-
-.hero-whatsapp-link svg {
-  width: 0.95rem;
-  height: 0.95rem;
-  color: var(--orange);
-  flex: 0 0 auto;
-}
-
-.hero-whatsapp-link:hover,
-.hero-whatsapp-link:focus-visible {
-  border-bottom-color: var(--orange);
-}
 /* ==========================================================================
 MOBILE PILOT OFFER BLOCK
 zwischen Hero und Services
@@ -1482,6 +1583,17 @@ user-select: none;
 -webkit-tap-highlight-color: transparent;
 }
 
+.hero-touch-left {
+position: absolute;
+left: 0;
+top: 0;
+width: 38%;
+height: 100%;
+z-index: 10;
+background: transparent;
+touch-action: pan-y;
+}
+
 
 /* --- Angebote Page Ergänzungen --- */
 
@@ -1621,7 +1733,7 @@ fill: #f5f3ef !important;
 .usp-section h2,
 .usp-section__lead,
 .usp-section__intro {
-  color: var(--color-navy);
+  color: #f5f3ef;
 }
 
 .hero h1 {
@@ -1688,6 +1800,16 @@ fill: #f5f3ef !important;
 }
 
 .usp-card__icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.7rem;
+  background: linear-gradient(150deg, rgba(232, 106, 44, 0.14), rgba(123, 157, 122, 0.2));
+  box-shadow: inset 0 0 0 1px rgba(20, 24, 39, 0.08);
+  font-size: 1.25rem;
+}
 
 .usp-card h3 {
   margin-top: 1rem;
@@ -1981,8 +2103,7 @@ fill: #f5f3ef !important;
 :root {
   --system-offwhite: #eef0f2;
   --system-header-bg: #eef1f4;
-  --system-beige-soft: rgba(20, 24, 39, 0.72);
-  --blue-dark: var(--color-navy);
+  --system-beige-soft: #ded8cb;
 }
 
 .site-header {
@@ -2001,13 +2122,13 @@ fill: #f5f3ef !important;
 
 .hero-graphic-svg #headline path,
 .hero-graphic-svg #headline-mobil path {
-  fill: var(--color-navy);
+  fill: var(--system-offwhite);
 }
 
 .usp-section__lead { color: var(--system-beige-soft); }
 
 .pilot-offer {
-  background: var(--color-bg-beige);
+  background: var(--color-dark-section-gradient);
   padding-inline: clamp(1rem, 4vw, 2rem);
 }
 
@@ -2017,7 +2138,7 @@ fill: #f5f3ef !important;
 }
 
 .usp-card {
-  background: linear-gradient(162deg, var(--color-bg-beige-card) 0%, #f7f1e7 100%);
+  background: linear-gradient(162deg, #fdfcf8 0%, #f8f5ee 100%);
   border: 1px solid rgba(20, 24, 39, 0.09);
   border-radius: 1.5rem;
   padding: 2.8rem 2.2rem 2.5rem;
@@ -2037,14 +2158,6 @@ fill: #f5f3ef !important;
   max-width: 34ch;
   line-height: 1.82;
   font-size: 1.02rem;
-  color: rgba(20, 24, 39, 0.8);
-}
-
-.about-statement {
-  color: var(--color-navy);
-}
-
-.about-subtext {
   color: rgba(20, 24, 39, 0.8);
 }
 
@@ -2132,86 +2245,49 @@ fill: #f5f3ef !important;
 }
 
 
-
-}
-
-/* 2026-05 hero/layout stabilization: preserve original SVG colors + hybrid color system */
-:root {
-  --color-hero-bg: #121c2a;
-  --color-page-bg: #f6f1e8;
-  --color-section-light: #faf7f0;
-  --color-card-bg: #fffdf8;
-
-  --text: #101827;
-  --text-soft: #4d5563;
-  --muted: #8c8c88;
-
-  --orange: #e86a2a;
-  --orange-dark: #d95a1f;
-
-  --bg: var(--color-page-bg);
-  --bg-soft: var(--color-section-light);
-  --surface: var(--color-card-bg);
-  --surface-2: #f7f2e9;
-}
-
-body {
-  background: var(--color-page-bg);
-  color: var(--text);
-}
-
-.hero {
-  background: linear-gradient(180deg, #101827 0%, #172434 100%);
-}
-
-.hero-graphic-svg,
-.hero-graphic-svg * {
-  filter: none !important;
-  mix-blend-mode: normal !important;
-  opacity: 1 !important;
-}
-
-.hero-graphic-svg #headline path,
-.hero-graphic-svg #headline-mobil path {
-  fill: unset !important;
-}
-
-.hero-cta {
-  position: static;
-  margin-top: clamp(1.15rem, 4vw, 1.8rem);
+/* Hero CTAs below graphic */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: clamp(1rem, 2.2vw, 1.8rem);
 }
 
 .hero-primary-cta {
+  border: 1px solid transparent;
   background: var(--orange);
-  box-shadow: 0 8px 18px rgba(232, 106, 42, 0.18);
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(215, 108, 47, 0.26);
 }
 
 .hero-primary-cta:hover,
 .hero-primary-cta:focus-visible {
   background: var(--orange-dark);
-  box-shadow: 0 6px 14px rgba(217, 90, 31, 0.16);
 }
 
-.pilot-offer {
-  background: var(--color-page-bg);
+.hero-whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--system-offwhite);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(234, 235, 225, 0.35);
+  padding-bottom: 0.12rem;
 }
 
-.pilot-offer__inner,
-.usp-card {
-  background: var(--color-card-bg);
-}
-
-.section-kicker,
-.pilot-offer__eyebrow,
-.usp-section .section-kicker {
+.hero-whatsapp-link svg {
+  width: 0.95rem;
+  height: 0.95rem;
   color: var(--orange);
+  flex: 0 0 auto;
 }
 
-.floating-project-btn {
-  width: clamp(3.5rem, 3.1rem + 1vw, 4.4rem);
-  height: clamp(3.5rem, 3.1rem + 1vw, 4.4rem);
-  right: clamp(0.8rem, 0.6rem + 0.6vw, 1.1rem);
-  bottom: clamp(0.8rem, 0.6rem + 0.6vw, 1.1rem);
-  box-shadow: 0 8px 16px rgba(37, 211, 102, 0.18);
-  animation: none;
+.hero-whatsapp-link:hover,
+.hero-whatsapp-link:focus-visible {
+  border-bottom-color: var(--orange);
+}
+
 }
