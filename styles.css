@@ -144,12 +144,18 @@ gap: var(--space-3);
 }
 
 .brand {
-font-family: "Inter", sans-serif;
-font-size: clamp(1.5rem, 1.15rem + 1vw, 2rem);
-font-weight: 700;
-letter-spacing: 0.01em;
+display: inline-flex;
+align-items: center;
+line-height: 0;
 color: var(--color-navy);
 white-space: nowrap;
+}
+
+.brand-logo {
+height: clamp(1.85rem, 1.45rem + 1.3vw, 2.45rem);
+width: auto;
+display: block;
+object-fit: contain;
 }
 
 .desktop-nav {
@@ -2080,20 +2086,6 @@ fill: #f5f3ef !important;
   background: var(--blue-dark);
 }
 
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-
-.brand-cursor {
-  width: 0.9rem;
-  height: 0.9rem;
-  color: var(--blue-dark);
-  flex: 0 0 auto;
-  transform: translateY(0.03rem);
-}
-
 .hero-graphic-svg #headline path,
 .hero-graphic-svg #headline-mobil path {
   fill: var(--system-offwhite);
@@ -2164,8 +2156,6 @@ fill: #f5f3ef !important;
     order: 0;
     justify-content: flex-start;
   }
-  .brand { gap: 0.35rem; }
-  .brand-cursor { width: 0.78rem; height: 0.78rem; }
   .usp-card {
     padding: 1.35rem 1.1rem 1.2rem;
     min-height: 8.8rem;
