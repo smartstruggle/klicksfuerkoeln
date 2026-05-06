@@ -383,10 +383,9 @@ DESKTOP HERO MESSAGE
 @media (min-width: 768px) {
   .hero-message {
     width: min(100%, 980px);
-    margin-top: clamp(0.65rem, 1vw, 1.2rem);
-    margin-left: clamp(4.5rem, 8vw, 8rem);
-    margin-right: auto;
-    text-align: left;
+    margin-top: clamp(1.5rem, 2.2vw, 2.5rem);
+    margin-inline: auto;
+    text-align: center;
   }
 
   .hero-message h2,
@@ -2324,10 +2323,6 @@ fill: #f5f3ef !important;
 }
 
 @media (min-width: 768px) {
-  .hero-message {
-    margin-top: clamp(1.5rem, 2.2vw, 2.5rem);
-  }
-
   .hero-subline {
     white-space: nowrap;
   }
@@ -2358,8 +2353,7 @@ fill: #f5f3ef !important;
 
 
 .hero-topline {
-  margin: 0 auto;
-  width: 100%;
+  display: none;
 }
 
 .hero-mobile-row {
@@ -2409,11 +2403,8 @@ fill: #f5f3ef !important;
 }
 
 @media (min-width: 768px) {
-  .hero-topline {
-    display: none;
-  }
-
   .hero-mobile-row {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 }
