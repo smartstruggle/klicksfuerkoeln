@@ -404,6 +404,40 @@ DESKTOP HERO MESSAGE
 }
 
 /* ==========================================================================
+GRAPHIC VISIBILITY
+========================================================================== */
+
+.mobile-only {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  margin-inline: auto;
+}
+
+.desktop-only {
+  display: none;
+}
+
+/* ==========================================================================
+DESKTOP GRAPHIC
+========================================================================== */
+
+@media (min-width: 768px) {
+
+  .mobile-only {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: block !important;
+    width: 100%;
+    max-width: 1560px;
+    margin-inline: auto;
+  }
+
+}
+
+/* ==========================================================================
 MOBILE PILOT OFFER BLOCK
 zwischen Hero und Services
 ========================================================================== */
