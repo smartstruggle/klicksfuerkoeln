@@ -2361,26 +2361,20 @@ fill: #f5f3ef !important;
 }
 
 @media (max-width: 767px) {
-  .hero-topline .hero-title-anim {
-    margin: 0;
-    text-align: left;
-    max-width: 13ch;
-    font-size: clamp(2.15rem, 9vw, 3.2rem);
-  }
-
   .hero-mobile-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(8.75rem, 41vw);
-    column-gap: clamp(0.45rem, 2.2vw, 0.95rem);
+    grid-template-columns: minmax(0, 1fr) minmax(9.8rem, 43vw);
+    column-gap: clamp(0.35rem, 2vw, 0.75rem);
     align-items: start;
-    margin-top: clamp(0.75rem, 3vw, 1.2rem);
+    margin-top: clamp(0.55rem, 2.6vw, 1rem);
   }
 
   .hero-message {
     text-align: left;
-    margin: 0;
+    margin: clamp(0.25rem, 1vw, 0.45rem) 0 0;
     max-width: none;
     align-self: start;
+    padding-right: clamp(0.1rem, 0.8vw, 0.35rem);
   }
 
   .hero-subline,
@@ -2390,6 +2384,10 @@ fill: #f5f3ef !important;
     max-width: none;
   }
 
+  .hero-benefit {
+    margin-top: clamp(0.6rem, 2vw, 0.95rem);
+  }
+
   .hero-graphic {
     margin: 0;
     justify-content: flex-end;
@@ -2397,8 +2395,10 @@ fill: #f5f3ef !important;
   }
 
   .hero-actions {
-    margin-top: clamp(0.95rem, 3.2vw, 1.4rem);
-    justify-content: center;
+    margin-top: clamp(1.1rem, 3.8vw, 1.6rem);
+    justify-content: flex-start;
+    width: min(100%, 20rem);
+    margin-inline: auto;
   }
 }
 
