@@ -338,103 +338,83 @@ HERO GRAPHIC
 /* ==========================================================================
 HERO MESSAGE / CTA
 ========================================================================== */
+/* ==========================================================================
+HERO MESSAGE / CTA — RESET TO CORRECT ORDER
+========================================================================== */
 
+/* Die alten Subline-Texte komplett entfernen */
+.hero-message h2,
+.hero-message .hero-message-title,
+.hero-message p,
+.hero-message .hero-message-subline {
+  display: none !important;
+}
+
+/* Hero-Message wird nur noch als CTA-Block unter der Grafik genutzt */
 .hero-message {
-  position: relative;
+  position: relative !important;
   z-index: 2;
-  width: min(100%, 760px);
-  margin-top: clamp(1.1rem, 3vw, 2rem);
-  margin-inline: auto;
+  width: min(100% - (2 * var(--page-pad-x)), 760px);
+  margin: clamp(1.5rem, 4vw, 2.75rem) auto 0;
+  padding: 0;
   text-align: center;
 }
 
-.hero-message h2,
-.hero-message .hero-message-title {
-  margin: 0 0 clamp(1.1rem, 2vw, 1.6rem);
-  font-size: clamp(2rem, 6vw, 3rem);
-  line-height: 1.14;
-  font-weight: 700;
-  color: var(--color-text-invert, #fff);
-}
-
-.hero-message p,
-.hero-message .hero-message-subline {
-  margin: 0 auto;
-  max-width: 680px;
-  font-size: clamp(1.1rem, 3.8vw, 1.35rem);
-  line-height: 1.5;
-  color: var(--color-text-invert-muted, rgba(255, 255, 255, 0.86));
-}
-
+/* CTA immer untereinander auf Mobile */
 .hero-message .cta-row,
 .hero-message .hero-cta-row {
+  position: relative !important;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: clamp(0.9rem, 3vw, 1.25rem);
-  margin-top: clamp(2.4rem, 5vw, 3.6rem);
-}
-
-/* ==========================================================================
-DESKTOP HERO MESSAGE
-========================================================================== */
-
-@media (min-width: 768px) {
-  .hero-message {
-    width: min(100%, 980px);
-    margin-top: clamp(1.5rem, 2.2vw, 2.5rem);
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  .hero-message h2,
-  .hero-message .hero-message-title {
-    max-width: 980px;
-    font-size: clamp(2.8rem, 3.8vw, 4.6rem);
-    line-height: 1.1;
-    margin-bottom: clamp(1.25rem, 1.8vw, 2rem);
-  }
-
-  .hero-message p,
-  .hero-message .hero-message-subline {
-    margin-left: 0;
-    margin-right: 0;
-    max-width: 860px;
-    font-size: clamp(1.35rem, 1.65vw, 1.85rem);
-    line-height: 1.45;
-  }
-
-  .hero-message .cta-row,
-  .hero-message .hero-cta-row {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: clamp(1rem, 1.5vw, 1.5rem);
-    margin-top: clamp(3rem, 4vw, 4.75rem);
-  }
+  margin-top: 0;
+  transform: none !important;
 }
 
 /* ==========================================================================
 GRAPHIC VISIBILITY
 ========================================================================== */
 
-.mobile-only {
+.hero-graphic {
+  position: relative !important;
+  z-index: 1;
+  display: block;
+  width: min(100% - (2 * var(--page-pad-x)), var(--container));
+  margin-inline: auto;
+  margin-bottom: 0;
+  padding: 0;
+  pointer-events: none;
+  transform: none !important;
+}
+
+.hero-graphic-svg {
   display: block;
   width: 100%;
-  max-width: 380px;
+  height: auto;
+  max-width: none;
+  margin-inline: auto;
+  object-fit: contain;
+  transform: none !important;
+}
+
+.mobile-only {
+  display: block !important;
+  width: 100%;
+  max-width: 620px;
   margin-inline: auto;
 }
 
 .desktop-only {
-  display: none;
+  display: none !important;
 }
 
 /* ==========================================================================
-DESKTOP GRAPHIC
+DESKTOP
 ========================================================================== */
 
 @media (min-width: 768px) {
-
   .mobile-only {
     display: none !important;
   }
@@ -446,8 +426,20 @@ DESKTOP GRAPHIC
     margin-inline: auto;
   }
 
-}
+  .hero-message {
+    width: min(100% - (2 * var(--page-pad-x)), 980px);
+    margin: clamp(1.5rem, 2.2vw, 2.5rem) auto 0;
+    text-align: center;
+  }
 
+  .hero-message .cta-row,
+  .hero-message .hero-cta-row {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(1rem, 1.5vw, 1.5rem);
+  }
+}
 /* ==========================================================================
 MOBILE PILOT OFFER BLOCK
 zwischen Hero und Services
